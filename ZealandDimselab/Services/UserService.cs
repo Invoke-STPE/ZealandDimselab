@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,6 +45,35 @@ namespace ZealandDimselab.Services
             }
         }
 
+        public bool ValidateLogin(string email, string password)
+        {
+            User user = GetUserByEmail(email);
+            if (user != null)
+            {
+                if (passwordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+        /// <summary>
+        /// Checks if email is already in use, returns true if it is.
+        /// </summary>
+        /// <param name="email">Email of the user trying to register.</param>
+        /// <returns></returns>
+        private User GetUserByEmail(string email)
+        {
+            return _users.Values.SingleOrDefault(u => u.Email == email); // Checks all users in list "users" if incoming email matches one of them.
+        }
+
+        private PasswordVerificationResult passwordVerification(string hashedPassword, string providedPassword)
+        {
+            var passwordHasher = new PasswordHasher<string>();
+
+            return passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
+        }
 
     }
 }
