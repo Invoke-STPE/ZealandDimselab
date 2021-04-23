@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Services;
@@ -30,26 +33,23 @@ namespace ZealandDimselab.Pages.Account
         public async Task<IActionResult> OnPost()
         {
 
-                if (UserName == user.UserName)
-                {
-                    var passwordHasher = new PasswordHasher<string>();
-                    if (passwordHasher.VerifyHashedPassword(null, user.Password, Password) == PasswordVerificationResult.Success)
+            if (_userService.ValidateLogin(Email, Password))
+            {
+
+                    //LoggedInUser = user;
+                    var claims = new List<Claim>
                     {
-                        //LoggedInUser = user;
-                        var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, UserName)
-                        };
+                        new Claim(ClaimTypes.Name, Email)
+                    };
 
-                        if (UserName == "admin") claims.Add(new Claim(ClaimTypes.Role, "admin"));
+                    //if (UserName == "admin") claims.Add(new Claim(ClaimTypes.Role, "admin"));
 
-                        var claimsIdentity =
-                            new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                            new ClaimsPrincipal(claimsIdentity));
-                        return RedirectToPage("/Item/GetAllItems");
-                    }
-                }
+                    var claimsIdentity =
+                        new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity));
+                    return RedirectToPage("");
+            }
 
             Message = "Invalid attempt";
             return Page();
