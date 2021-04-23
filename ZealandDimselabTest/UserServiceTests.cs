@@ -60,6 +60,21 @@ namespace ZealandDimselabTest
             userService.AddUserAsync(user);
             
         }
+
+        [TestMethod]
+        public void DeleteUserAsync_RemovesUser_DecreasesCount()
+        {
+            // Arrange
+            var expectedCount = 3;
+            var id = 1;
+            userService.DeleteUserAsync(id);
+            // Act
+            var actualCount = userService.GetUsers().Count;
+
+            // Assert
+            Assert.AreEqual(expectedCount, actualCount);
+
+        }
     }
 
     internal class UserMockData : IRepository<User>
@@ -67,12 +82,12 @@ namespace ZealandDimselabTest
         private List<User> users = new List<User>();
         public Task AddObjectAsync(User entity)
         {
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task DeleteObjectAsync(User entity)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public List<User> GetAllAsync()
