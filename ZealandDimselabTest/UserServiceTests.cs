@@ -49,13 +49,25 @@ namespace ZealandDimselabTest
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AddUserAsync_IdAlreadyExists_ThrowsArgumentException()
+        {
+            // Arrange
+            User user = new User(2, "Mike", "Mike@gmail.com", "Mike1234");
+            // Act => Assert
+            userService.AddUserAsync(user);
+            
+        }
     }
 
     internal class UserMockData : IRepository<User>
     {
+        private List<User> users = new List<User>();
         public Task AddObjectAsync(User entity)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public Task DeleteObjectAsync(User entity)
@@ -70,7 +82,7 @@ namespace ZealandDimselabTest
                 new User(1, "Steven", "Steven@gmail.com", "Steven1234"),
                 new User(2, "Mikkel", "Mikkel@gmail.com", "Mikkel1234"),
                 new User(3, "Oscar", "Oscar@gmail.com", "Oscar1234"),
-                new User(1, "Christopher", "Christopher@gmail.com", "Christopher1234"),
+                new User(4, "Christopher", "Christopher@gmail.com", "Christopher1234"),
             };
         }
 
