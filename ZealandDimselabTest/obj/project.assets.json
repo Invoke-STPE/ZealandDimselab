@@ -5736,23 +5736,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Oscar\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Steven\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Oscar\\source\\repos\\ChristopherLoeve\\DimselabProject\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
+      "projectUniqueName": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
       "projectName": "ZealandDimselabTest",
-      "projectPath": "C:\\Users\\Oscar\\source\\repos\\ChristopherLoeve\\DimselabProject\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
-      "packagesPath": "C:\\Users\\Oscar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Oscar\\source\\repos\\ChristopherLoeve\\DimselabProject\\ZealandDimselabTest\\obj\\",
+      "projectPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
+      "packagesPath": "C:\\Users\\Steven\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Oscar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Steven\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -5767,8 +5767,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\Oscar\\source\\repos\\ChristopherLoeve\\DimselabProject\\ZealandDimselab\\ZealandDimselab.csproj": {
-              "projectPath": "C:\\Users\\Oscar\\source\\repos\\ChristopherLoeve\\DimselabProject\\ZealandDimselab\\ZealandDimselab.csproj"
+            "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
+              "projectPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj"
             }
           }
         }
@@ -5811,14 +5811,11 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
