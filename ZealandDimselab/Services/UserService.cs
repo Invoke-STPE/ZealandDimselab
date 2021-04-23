@@ -18,6 +18,10 @@ namespace ZealandDimselab.Services
             _users = repository.GetAllAsync();
         }
 
-
+        public async Task AddUserAsync(User user)
+        {
+            _users.Add(user);
+            await repository.AddObjectAsync(user);
+        }
     }
 }
