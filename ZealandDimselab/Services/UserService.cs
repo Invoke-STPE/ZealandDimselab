@@ -27,7 +27,7 @@ namespace ZealandDimselab.Services
         {
             _users.Add(user.Id, user);
             await repository.AddObjectAsync(user);
-    
+
         }
 
         public async Task DeleteUserAsync(int id)

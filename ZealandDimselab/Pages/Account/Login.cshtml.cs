@@ -35,7 +35,6 @@ namespace ZealandDimselab.Pages.Account
 
             if (_userService.ValidateLogin(Email, Password))
             {
-
                     //LoggedInUser = user;
                     var claims = new List<Claim>
                     {

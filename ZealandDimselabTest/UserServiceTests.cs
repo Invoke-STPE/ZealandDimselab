@@ -52,12 +52,14 @@ namespace ZealandDimselabTest
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void AddUserAsync_IdAlreadyExists_ThrowsArgumentException()
+        public async Task AddUserAsync_IdAlreadyExists_ThrowsArgumentException()
         {
             // Arrange
             User user = new User(2, "Mike", "Mike@gmail.com", "Mike1234");
             // Act => Assert
-            userService.AddUserAsync(user);
+            await userService.AddUserAsync(user);
+
+            var users = userService.GetUsers(); 
             
         }
 
