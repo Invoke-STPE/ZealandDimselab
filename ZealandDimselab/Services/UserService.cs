@@ -10,7 +10,7 @@ namespace ZealandDimselab.Services
     public class UserService
     {
         private readonly IRepository<User> repository;
-        private readonly Dictionary<int, User> _users;
+        private Dictionary<int, User> _users;
 
         public UserService(IRepository<User> repository)
         {
@@ -33,6 +33,15 @@ namespace ZealandDimselab.Services
         {
             await repository.DeleteObjectAsync(_users[id]);
             _users.Remove(id);
+        }
+
+        public async Task UpdateUserAsync(int id, User user)
+        {
+            if (user != null)
+            {
+                await repository.UpdateObjectAsync(user);
+                _users = repository.GetAllAsync().ToDictionary(i => i.Id);
+            }
         }
 
 
