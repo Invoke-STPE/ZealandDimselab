@@ -21,6 +21,34 @@ namespace ZealandDimselabTest
             repository = new UserMockData();
             userService = new UserService(repository);
         }
+
+        [TestMethod]
+        public void GetUsers_Default_ReturnsAllUsers()
+        {
+            // Arrange
+            var expectedCount = 4;
+
+            // Act
+            var actualCount = userService.GetUsers().Count;
+
+            // Assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        [TestMethod]
+        public void AddUserAsync_AddUser_IncrementCount()
+        {
+            // Arrange
+            var expectedCount = 5;
+            User user = new User(5, "Mike", "Mike@gmail.com", "Mike1234");
+            userService.AddUserAsync(user);
+
+            // Act
+            var actualCount = userService.GetUsers().Count;
+
+            // Assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 
     internal class UserMockData : IRepository<User>
