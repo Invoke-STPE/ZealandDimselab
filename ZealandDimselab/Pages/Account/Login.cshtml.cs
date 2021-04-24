@@ -14,7 +14,7 @@ namespace ZealandDimselab.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private UserService _userService;
+        private readonly UserService _userService;
 
         public LoginModel(UserService userService)
         {

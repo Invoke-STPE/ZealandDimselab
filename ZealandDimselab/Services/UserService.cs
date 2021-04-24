@@ -23,19 +23,34 @@ namespace ZealandDimselab.Services
         {
             return _users.Values.ToList();
         }
+        /// <summary>
+        /// Adds an user object.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task AddUserAsync(User user)
         {
             _users.Add(user.Id, user);
             await repository.AddObjectAsync(user);
 
         }
-
+        /// <summary>
+        /// Delete an user object.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task DeleteUserAsync(int id)
         {
             await repository.DeleteObjectAsync(_users[id]);
             _users.Remove(id);
         }
 
+        /// <summary>
+        /// Updates user object
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task UpdateUserAsync(int id, User user)
         {
             if (user != null)
@@ -45,12 +60,18 @@ namespace ZealandDimselab.Services
             }
         }
 
+        /// <summary>
+        /// Validates a user email.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public bool ValidateLogin(string email, string password)
         {
             User user = GetUserByEmail(email);
             if (user != null)
             {
-                if (passwordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
+                if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
                 {
                     return true;
                 }
@@ -68,7 +89,7 @@ namespace ZealandDimselab.Services
             return _users.Values.SingleOrDefault(u => u.Email == email); // Checks all users in list "users" if incoming email matches one of them.
         }
 
-        private PasswordVerificationResult passwordVerification(string hashedPassword, string providedPassword)
+        private PasswordVerificationResult PasswordVerification(string hashedPassword, string providedPassword)
         {
             var passwordHasher = new PasswordHasher<string>();
 

@@ -13,7 +13,7 @@ namespace ZealandDimselab.Services
     {
         private Dictionary<int, Item> items;
 
-        private IRepository<Item> repository;
+        private readonly IRepository<Item> repository;
 
         public ItemService(IRepository<Item> repository)
         {

@@ -58,8 +58,6 @@ namespace ZealandDimselabTest
             User user = new User(2, "Mike", "Mike@gmail.com", "Mike1234");
             // Act => Assert
             await userService.AddUserAsync(user);
-
-            var users = userService.GetUsers(); 
             
         }
 
@@ -83,7 +81,6 @@ namespace ZealandDimselabTest
 
     internal class UserMockData : IRepository<User>
     {
-        private List<User> users = new List<User>();
         public Task AddObjectAsync(User entity)
         {
             return Task.CompletedTask;
