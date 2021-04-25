@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
 using ZealandDimselab.Repository;
@@ -46,7 +49,7 @@ namespace ZealandDimselab.Services
         }
 
         /// <summary>
-        /// Updates user object
+        /// Updates an user object
         /// </summary>
         /// <param name="id"></param>
         /// <param name="user"></param>
@@ -61,7 +64,7 @@ namespace ZealandDimselab.Services
         }
 
         /// <summary>
-        /// Validates a user email.
+        /// Validates an user email.
         /// </summary>
         /// <param name="email"></param>
         /// <param name="password"></param>
@@ -80,15 +83,33 @@ namespace ZealandDimselab.Services
 
         }
         /// <summary>
-        /// Checks if email is already in use, returns true if it is.
+        /// Creates an ClaimsIdentity based on the provided email.
         /// </summary>
-        /// <param name="email">Email of the user trying to register.</param>
-        /// <returns></returns>
+        /// <param name="email">Email of the user.</param>
+        /// <returns>ClaimsIdentity</returns>
+        public ClaimsIdentity CreateClaimIdentity(string email)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, email)
+            };
+
+            if (email == "Admin@Dimselab") // This checks if the user attempts to login as an administrator account.
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "admin"));
+            }
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return claimsIdentity;
+        }
+
+        // Gets an user by email.
         private User GetUserByEmail(string email)
         {
             return _users.Values.SingleOrDefault(u => u.Email == email); // Checks all users in list "users" if incoming email matches one of them.
         }
 
+        // Verifies the provided password.
         private PasswordVerificationResult PasswordVerification(string hashedPassword, string providedPassword)
         {
             var passwordHasher = new PasswordHasher<string>();

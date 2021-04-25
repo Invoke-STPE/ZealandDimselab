@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Pages
 {
@@ -15,6 +16,7 @@ namespace ZealandDimselab.Pages
         public PrivacyModel(ILogger<PrivacyModel> logger)
         {
             _logger = logger;
+            
         }
 
         public void OnGet()

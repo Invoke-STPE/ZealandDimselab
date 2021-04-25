@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZealandDimselab.MockData;
+using ZealandDimselab.Models;
+using ZealandDimselab.Repository;
+using ZealandDimselab.Services;
 
 namespace ZealandDimselab
 {
@@ -24,6 +29,12 @@ namespace ZealandDimselab
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            services.AddSingleton<UserService, UserService>();
+            services.AddSingleton<IRepository<User>, MockUsers>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,12 +50,14 @@ namespace ZealandDimselab
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
