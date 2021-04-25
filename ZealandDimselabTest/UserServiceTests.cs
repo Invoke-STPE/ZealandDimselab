@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
@@ -58,16 +59,16 @@ namespace ZealandDimselabTest
             User user = new User(2, "Mike", "Mike@gmail.com", "Mike1234");
             // Act => Assert
             await userService.AddUserAsync(user);
-            
+
         }
 
         [TestMethod]
-        public void DeleteUserAsync_RemovesUser_DecreasesCount()
+        public async Task DeleteUserAsync_RemovesUser_DecreasesCount()
         {
             // Arrange
             var expectedCount = 3;
             var id = 1;
-            userService.DeleteUserAsync(id);
+            await userService.DeleteUserAsync(id);
             // Act
             var actualCount = userService.GetUsers().Count;
 
@@ -75,41 +76,60 @@ namespace ZealandDimselabTest
             Assert.AreEqual(expectedCount, actualCount);
 
         }
-
-        
-    }
-
-    internal class UserMockData : IRepository<User>
-    {
-        public Task AddObjectAsync(User entity)
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public async Task DeleteUserAsyn_IdDoesNotExist_ThrowsKeyNotFoundException()
         {
-            return Task.CompletedTask;
+            // Arrange
+            int id = 70000;
+            // Act => Assert
+            await userService.DeleteUserAsync(id);
+
         }
 
-        public Task DeleteObjectAsync(User entity)
-        {
-            return Task.CompletedTask;
-        }
 
-        public List<User> GetAllAsync()
+
+
+
+        internal class UserMockData : IRepository<User>
         {
-            return new List<User>()
+            private static List<User> _users;
+
+            public UserMockData()
+            {
+                _users = new List<User>()
             {
                 new User(1, "Steven", "Steven@gmail.com", "Steven1234"),
                 new User(2, "Mikkel", "Mikkel@gmail.com", "Mikkel1234"),
                 new User(3, "Oscar", "Oscar@gmail.com", "Oscar1234"),
                 new User(4, "Christopher", "Christopher@gmail.com", "Christopher1234"),
             };
-        }
+            }
+            public Task AddObjectAsync(User entity)
+            {
+                return Task.CompletedTask;
+            }
 
-        public Task<User> GetObjectByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+            public Task DeleteObjectAsync(User entity)
+            {
+                return Task.CompletedTask;
+            }
 
-        public Task UpdateObjectAsync(User entity)
-        {
-            throw new NotImplementedException();
+            public List<User> GetAllAsync()
+            {
+                return _users;
+            }
+
+            public Task<User> GetObjectByIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task UpdateObjectAsync(User entity)
+            {
+                User user = _users.SingleOrDefault(u => u.Id == entity.Id);
+                await Task.Run(() => user = entity);
+            }
         }
     }
 }
