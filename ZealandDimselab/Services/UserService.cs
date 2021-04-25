@@ -54,12 +54,18 @@ namespace ZealandDimselab.Services
         /// <param name="id"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task UpdateUserAsync(int id, User user)
+        public async Task UpdateUserAsync(User user)
         {
             if (user != null)
             {
-                await repository.UpdateObjectAsync(user);
-                _users = repository.GetAllAsync().ToDictionary(i => i.Id);
+                if (_users.ContainsKey(user.Id))
+                {
+                    await repository.UpdateObjectAsync(user);
+                    _users = repository.GetAllAsync().ToDictionary(i => i.Id);
+                } else
+                {
+                    throw new KeyNotFoundException();
+                }
             }
         }
 

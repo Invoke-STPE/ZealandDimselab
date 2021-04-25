@@ -78,7 +78,7 @@ namespace ZealandDimselabTest
         }
         [TestMethod]
         [ExpectedException(typeof(KeyNotFoundException))]
-        public async Task DeleteUserAsyn_IdDoesNotExist_ThrowsKeyNotFoundException()
+        public async Task DeleteUserAsync_IdDoesNotExist_ThrowsKeyNotFoundException()
         {
             // Arrange
             int id = 70000;
@@ -87,7 +87,33 @@ namespace ZealandDimselabTest
 
         }
 
+        [TestMethod]
+        public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
+        {
+            // Arrange
+            User expectedUser = new User(3, "Hoscar", "Hoscar@gmail.com", "Hoscar1234");
+            List<User> users = new List<User>();
+            // Act
+            await userService.UpdateUserAsync(expectedUser);
+            users = userService.GetUsers();
+            User actualUser = users.SingleOrDefault(u => u.Id == 3);
 
+            // Assert
+
+            Assert.AreEqual(expectedUser.Email, actualUser.Email);
+            Assert.AreEqual(expectedUser.Name, actualUser.Name);
+            Assert.AreEqual(expectedUser.Password, actualUser.Password);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public async Task UpdateUserAsync_IdDoesNotExist_ThrowsKeyNotFoundException()
+        {
+            // Arrange
+            User user = new User(700, "Hoscar", "Hoscar@gmail.com", "Hoscar1234");
+            // Act => Assert
+            await userService.UpdateUserAsync(user);
+
+        }
 
 
 
@@ -128,7 +154,10 @@ namespace ZealandDimselabTest
             public async Task UpdateObjectAsync(User entity)
             {
                 User user = _users.SingleOrDefault(u => u.Id == entity.Id);
-                await Task.Run(() => user = entity);
+                await Task.Run(() => user.Email = entity.Email);
+                await Task.Run(() => user.Name = entity.Name);
+                await Task.Run(() => user.Password = entity.Password);
+             
             }
         }
     }
