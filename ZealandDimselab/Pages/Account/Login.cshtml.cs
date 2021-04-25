@@ -37,42 +37,10 @@ namespace ZealandDimselab.Pages.Account
 
             if (_userService.ValidateLogin(Email, Password))
             {
-                //LoggedInUser = user;
-                //if (UserName == "admin") claims.Add(new Claim(ClaimTypes.Role, "admin"));
-                var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, Email)
-                    };
-
                 var claimsIdentity = _userService.CreateClaimIdentity(Email);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToPage("../Index");
             }
-
-            //List<User> users = _userService.GetUsers();
-            //foreach (User user in users)
-            //{
-            //    if (Email == user.Email)
-            //    {
-            //        var passwordHasher = new PasswordHasher<string>();
-            //        if (passwordHasher.VerifyHashedPassword(null, user.Password, Password) == PasswordVerificationResult.Success)
-            //        {
-            //            //LoggedInUser = user;
-            //            var claims = new List<Claim>
-            //            {
-            //                new Claim(ClaimTypes.Name, Email)
-            //            };
-
-            //            if (Email == "admin") claims.Add(new Claim(ClaimTypes.Role, "admin"));
-
-            //            var claimsIdentity =
-            //                new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            //                new ClaimsPrincipal(claimsIdentity));
-            //            return RedirectToPage("../Privacy");
-            //        }
-            //    }
-            //}
 
             Message = "Invalid attempt";
             return Page();

@@ -39,12 +39,12 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void AddUserAsync_AddUser_IncrementCount()
+        public async Task AddUserAsync_AddUser_IncrementCount()
         {
             // Arrange
             var expectedCount = 6;
             User user = new User(6, "Mike", "Mike@gmail.com", "Mike1234");
-            userService.AddUserAsync(user);
+            await userService.AddUserAsync(user);
 
             // Act
             var actualCount = userService.GetUsers().Count;
@@ -197,7 +197,7 @@ namespace ZealandDimselabTest
         internal class UserMockData : IRepository<User>
         {
             private static List<User> _users;
-            private PasswordHasher<string> passwordHasher;
+            private readonly PasswordHasher<string> passwordHasher;
 
             public UserMockData()
             {

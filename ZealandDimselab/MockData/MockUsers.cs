@@ -11,7 +11,7 @@ namespace ZealandDimselab.MockData
     public class MockUsers : IRepository<User>
     {
         public static List<User> users;
-        private PasswordHasher<string> passwordHasher;
+        private readonly PasswordHasher<string> passwordHasher;
         public MockUsers()
         {
             passwordHasher = new PasswordHasher<string>();
