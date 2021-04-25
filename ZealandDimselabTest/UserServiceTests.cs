@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
@@ -161,6 +162,20 @@ namespace ZealandDimselabTest
             // Assert
 
             Assert.IsFalse(expectedLoginResult);
+
+        }
+
+        [TestMethod]
+        public async Task CreateClaim_ValidEmail_ReturnsClaimIdentity()
+        {
+            // Arrange
+            string expectedClaimName = "Steven@outlook.com";
+            // Act
+            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(expectedClaimName);
+
+            // Assert
+
+            Assert.AreEqual(expectedClaimName, actualClaimIdentity.Name);
 
         }
 
