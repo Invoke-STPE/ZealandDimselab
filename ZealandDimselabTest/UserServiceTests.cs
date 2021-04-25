@@ -29,7 +29,7 @@ namespace ZealandDimselabTest
         public void GetUsers_Default_ReturnsAllUsers()
         {
             // Arrange
-            var expectedCount = 4;
+            var expectedCount = 5;
 
             // Act
             var actualCount = userService.GetUsers().Count;
@@ -42,8 +42,8 @@ namespace ZealandDimselabTest
         public void AddUserAsync_AddUser_IncrementCount()
         {
             // Arrange
-            var expectedCount = 5;
-            User user = new User(5, "Mike", "Mike@gmail.com", "Mike1234");
+            var expectedCount = 6;
+            User user = new User(6, "Mike", "Mike@gmail.com", "Mike1234");
             userService.AddUserAsync(user);
 
             // Act
@@ -68,7 +68,7 @@ namespace ZealandDimselabTest
         public async Task DeleteUserAsync_RemovesUser_DecreasesCount()
         {
             // Arrange
-            var expectedCount = 3;
+            var expectedCount = 4;
             var id = 1;
             await userService.DeleteUserAsync(id);
             // Act
@@ -179,6 +179,21 @@ namespace ZealandDimselabTest
 
         }
 
+        //[TestMethod] IS THE WORLD READY FOR THIS UNIT TEST YET? 
+        //public async Task CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
+        //{
+        //    Arrange
+        //    string expectedRole = "admin";
+        //    string email = "Admin@Dimselab";
+        //    Act
+        //   ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+
+        //    Assert
+        //    Assert.AreEqual(expectedRole, actualClaimIdentity.RoleClaimType);
+        //    actualClaimIdentity.RoleClaimType
+
+        //}
+
         internal class UserMockData : IRepository<User>
         {
             private static List<User> _users;
@@ -193,6 +208,7 @@ namespace ZealandDimselabTest
                 new User(2, "Mikkel", "Mikkel@gmail.com", PasswordEncrypt("Mikkel1234")),
                 new User(3, "Oscar", "Oscar@gmail.com", PasswordEncrypt("Oscar1234")),
                 new User(4, "Christopher", "Christopher@gmail.com", PasswordEncrypt("Christopher1234")),
+                new User(5, "Admin", "Admin@Dimselab", PasswordEncrypt("Admin1234")),
             };
             }
             public Task AddObjectAsync(User entity)

@@ -21,6 +21,7 @@ namespace ZealandDimselab.MockData
                 new User(2, "Mikkel", "Mikkel@gmail.com", PasswordEncrypt("Mikkel1234")),
                 new User(3, "Oscar", "Oscar@gmail.com", PasswordEncrypt("Oscar1234")),
                 new User(4, "Christopher", "Christopher@gmail.com", PasswordEncrypt("Christopher1234")),
+                new User(5, "Admin", "Admin@Dimselab", PasswordEncrypt("Admin1234")),
             };
         }
         public Task AddObjectAsync(User entity)
