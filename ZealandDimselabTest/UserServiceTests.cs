@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,20 +116,68 @@ namespace ZealandDimselabTest
 
         }
 
+        [TestMethod]
+        public async Task ValidateLogin_ValidLogin_ReturnsTrue()
+        {
+            // Arrange
+            string correctEmail = "Steven@gmail.com";
+            string correctPassword = "Steven1234";
+            bool expectedLoginResult;
+            // Act
+            expectedLoginResult = userService.ValidateLogin(correctEmail, correctPassword);
 
+            // Assert
+
+            Assert.IsTrue(expectedLoginResult);
+
+        }
+
+        [TestMethod]
+        public async Task ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
+        {
+            // Arrange
+            string correctEmail = "Steven@gmail.com";
+            string inCorrectPassword = "StevenIncorrect";
+            bool expectedLoginResult;
+            // Act
+            expectedLoginResult = userService.ValidateLogin(correctEmail, inCorrectPassword);
+
+            // Assert
+
+            Assert.IsFalse(expectedLoginResult);
+
+        }
+
+        [TestMethod]
+        public async Task ValidateLogin_InvalidEmailLogin_ReturnsFalse()
+        {
+            // Arrange
+            string inCorrectEmail = "Steven@outlook.com";
+            string correctPassword = "Steven1234";
+            bool expectedLoginResult;
+            // Act
+            expectedLoginResult = userService.ValidateLogin(inCorrectEmail, correctPassword);
+
+            // Assert
+
+            Assert.IsFalse(expectedLoginResult);
+
+        }
 
         internal class UserMockData : IRepository<User>
         {
             private static List<User> _users;
+            private PasswordHasher<string> passwordHasher;
 
             public UserMockData()
             {
+                passwordHasher = new PasswordHasher<string>();
                 _users = new List<User>()
             {
-                new User(1, "Steven", "Steven@gmail.com", "Steven1234"),
-                new User(2, "Mikkel", "Mikkel@gmail.com", "Mikkel1234"),
-                new User(3, "Oscar", "Oscar@gmail.com", "Oscar1234"),
-                new User(4, "Christopher", "Christopher@gmail.com", "Christopher1234"),
+                new User(1, "Steven", "Steven@gmail.com", PasswordEncrypt("Steven1234")),
+                new User(2, "Mikkel", "Mikkel@gmail.com", PasswordEncrypt("Mikkel1234")),
+                new User(3, "Oscar", "Oscar@gmail.com", PasswordEncrypt("Oscar1234")),
+                new User(4, "Christopher", "Christopher@gmail.com", PasswordEncrypt("Christopher1234")),
             };
             }
             public Task AddObjectAsync(User entity)
@@ -158,6 +207,11 @@ namespace ZealandDimselabTest
                 await Task.Run(() => user.Name = entity.Name);
                 await Task.Run(() => user.Password = entity.Password);
              
+            }
+
+            private string PasswordEncrypt(string password)
+            {
+                return passwordHasher.HashPassword(null, password);
             }
         }
     }
