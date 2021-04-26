@@ -179,20 +179,31 @@ namespace ZealandDimselabTest
 
         }
 
-        //[TestMethod] IS THE WORLD READY FOR THIS UNIT TEST YET? 
-        //public async Task CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
-        //{
-        //    Arrange
-        //    string expectedRole = "admin";
-        //    string email = "Admin@Dimselab";
-        //    Act
-        //   ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+        [TestMethod]
+        public async Task CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
+        {
+            // Arrange
+            string expectedRole = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role: admin"; // Why does it append schemas? Is it for intergration with AD?
+            string email = "Admin@Dimselab";
+            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+            // Act
+            string actualRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value== "admin").ToString();
 
-        //    Assert
-        //    Assert.AreEqual(expectedRole, actualClaimIdentity.RoleClaimType);
-        //    actualClaimIdentity.RoleClaimType
+            // Assert
+            Assert.AreEqual(expectedRole, actualRole);
+        }
 
-        //}
+        [TestMethod]
+        public async Task CreateClaim_LoginAsUser_DoesNotAddAdminRoleToClaim()
+        {
+            // Arrange
+            string email = "Steven@gmail.com";
+            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+            // Act
+            Claim claimRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin");
+            // Assert
+            Assert.IsNull(claimRole);
+        }
 
         internal class UserMockData : IRepository<User>
         {
