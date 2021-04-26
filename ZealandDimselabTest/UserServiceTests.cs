@@ -118,7 +118,7 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public async Task ValidateLogin_ValidLogin_ReturnsTrue()
+        public void ValidateLogin_ValidLogin_ReturnsTrue()
         {
             // Arrange
             string correctEmail = "Steven@gmail.com";
@@ -134,7 +134,7 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public async Task ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
+        public void ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
         {
             // Arrange
             string correctEmail = "Steven@gmail.com";
@@ -150,7 +150,7 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public async Task ValidateLogin_InvalidEmailLogin_ReturnsFalse()
+        public void ValidateLogin_InvalidEmailLogin_ReturnsFalse()
         {
             // Arrange
             string inCorrectEmail = "Steven@outlook.com";
@@ -166,7 +166,7 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public async Task CreateClaim_ValidEmail_ReturnsClaimIdentity()
+        public void CreateClaim_ValidEmail_ReturnsClaimIdentity()
         {
             // Arrange
             string expectedClaimName = "Steven@outlook.com";
@@ -180,7 +180,7 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public async Task CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
+        public void CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
         {
             // Arrange
             string expectedRole = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role: admin"; // Why does it append schemas? Is it for intergration with AD?
@@ -194,7 +194,7 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public async Task CreateClaim_LoginAsUser_DoesNotAddAdminRoleToClaim()
+        public void CreateClaim_LoginAsUser_DoesNotAddAdminRoleToClaim()
         {
             // Arrange
             string email = "Steven@gmail.com";
