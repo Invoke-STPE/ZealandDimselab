@@ -1,0 +1,49 @@
+﻿@page
+@model ZealandDimselab.Pages.Items.AllItemsModel
+@{
+}
+
+<table class="table table-bordered table-hover table-striped" width="70%">
+    <col style="width: 7%">
+    <col style="width: 70%">
+    <col style="width: 10%">
+    <col style="width: 13%">
+    
+    <thead>
+        <tr class="btn-secondary active">
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Id</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Name</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr class="btn-secondary">
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
