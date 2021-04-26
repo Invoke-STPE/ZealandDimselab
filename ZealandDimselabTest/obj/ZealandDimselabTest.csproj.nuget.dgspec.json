@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {}
+    "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {
+    "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
+        "projectUniqueName": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
         "projectName": "ZealandDimselabTest",
-        "projectPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
-        "packagesPath": "C:\\Users\\Steven\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselabTest\\obj\\",
+        "projectPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
+        "packagesPath": "C:\\Users\\Christopher\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Steven\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Christopher\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -32,8 +28,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
-                "projectPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj"
+              "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
+                "projectPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj"
               }
             }
           }
@@ -56,6 +52,20 @@
               "target": "Package",
               "version": "[2.1.1, )"
             },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[16.7.1, )"
@@ -76,30 +86,29 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
+    "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
+        "projectUniqueName": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
         "projectName": "ZealandDimselab",
-        "projectPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
-        "packagesPath": "C:\\Users\\Steven\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Steven\\Documents\\GitHub\\ZealandProject\\ZealandDimselab\\ZealandDimselab\\obj\\",
+        "projectPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
+        "packagesPath": "C:\\Users\\Christopher\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Steven\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Christopher\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -123,6 +132,22 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -133,6 +158,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.13, 3.1.13]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -141,7 +172,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     }

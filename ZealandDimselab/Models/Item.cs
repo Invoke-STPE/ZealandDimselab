@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ZealandDimselab.Models
 {
     public class Item
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        [Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int Id { get; set; }
+        [Required] [StringLength(100)] public string Name { get; set; }
+        [Required] [StringLength(1000)] public string Description { get; set; }
 
         public Item()
         {
@@ -14,7 +16,6 @@ namespace ZealandDimselab.Models
 
         public Item(int id, string name, string description)
         {
-            Id = id;
             Name = name;
             Description = description;
         }

@@ -31,11 +31,24 @@ namespace ZealandDimselab
         {
             services.AddRazorPages();
 
+
+            // DATABASE START //
+            services.AddDbContext<DimselabDbContext>();
+            services.AddTransient<GenericDbService<Item>, GenericDbService<Item>>();
+            services.AddTransient<GenericDbService<User>, GenericDbService<User>>();
+            // DATABASE END //
+
+            // SERVICES START //
             services.AddSingleton<UserService, UserService>();
             services.AddSingleton<IRepository<User>, MockUsers>();
+            services.AddSingleton<ItemService, ItemService>();
+            // SERVICES END //
 
+
+            // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+            // AUTHENTICATION END //
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,7 +18,7 @@ namespace ZealandDimselabTest
         public void InitializeTest()
         {
             items = new ItemMockData();
-            itemService = new ItemService(items);
+            itemService = new ItemService(new GenericDbService<Item>());
         }
 
         //AddItemTestCases
