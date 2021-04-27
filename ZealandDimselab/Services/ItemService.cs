@@ -20,12 +20,22 @@ namespace ZealandDimselab.Services
             _items = dbService.GetObjectsAsync().Result.ToList();
         }
 
+        /// <summary>
+        /// Adds an item asynchronously to the Database via DbService
+        /// </summary>
+        /// <param name="item">The item to be added to the Database</param>
+        /// <returns></returns>
         public async Task AddItemAsync(Item item)
         {
             _items.Add(item);
             await DbService.AddObjectAsync(item);
         }
 
+        /// <summary>
+        /// Returns a single item from the Database with the given id.
+        /// </summary>
+        /// <param name="id">The id of the item that should be returned</param>
+        /// <returns>Returns the item from the Database</returns>
         public async Task<Item> GetItemByIdAsync(int id)
         {
             return await DbService.GetObjectByIdAsync(id);
@@ -36,6 +46,12 @@ namespace ZealandDimselab.Services
             return _items;
         }
 
+        /// <summary>
+        /// Receives an item from the Database that is to be deleted. You get the item from the given Id.
+        /// If the Id matches and returns an item from the Database, is is then removed from the Database.
+        /// </summary>
+        /// <param name="id">The Id of the item that is to be deleted</param>
+        /// <returns></returns>
         public async Task DeleteItemAsync(int id)
         {
             Item item = await DbService.GetObjectByIdAsync(id);
@@ -43,6 +59,11 @@ namespace ZealandDimselab.Services
                 await DbService.DeleteObjectAsync(item);
         }
 
+        /// <summary>
+        /// Takes a given item and updates its properties via the DbService generic method: UpdateObjectAsync()
+        /// </summary>
+        /// <param name="item">The item that is to be updated</param>
+        /// <returns></returns>
         public async Task UpdateItemAsync(Item item)
         {
             if (item != null)
@@ -51,7 +72,12 @@ namespace ZealandDimselab.Services
                 _items = (await DbService.GetObjectsAsync()).ToList();
             }
         }
-
+        
+        /// <summary>
+        /// Uses Linq to make a query that should only return the items that matches the query
+        /// </summary>
+        /// <param name="name">The given name that is filtered by</param>
+        /// <returns>Returns the items that match the "name" parameter</returns>
         public IEnumerable<Item> FilterByName(string name)
         {
             return from item in _items
