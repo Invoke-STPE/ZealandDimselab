@@ -28,7 +28,7 @@ namespace ZealandDimselabTest
             //Arrange
             Item item = new Item(4, "TestItem4", "Test description 4");
             int expectedCount = 4;
-            itemService.AddItemAsync(item);
+            await itemService.AddItemAsync(item);
 
             //Act
             int actualCount = itemService.GetAllItems().Count;
