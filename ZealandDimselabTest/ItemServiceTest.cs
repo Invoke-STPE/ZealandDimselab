@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ZealandDimselab.Models;
 using ZealandDimselab.Repository;
@@ -12,78 +14,116 @@ namespace ZealandDimselabTest
     [TestClass]
     public class ItemServiceTest
     {
-        private ItemMockData items;
         private ItemService itemService;
+        private GenericDbService<Item> dbService;
+        private Item item;
+
         [TestInitialize]
         public void InitializeTest()
         {
-            items = new ItemMockData();
             itemService = new ItemService(new GenericDbService<Item>());
+            dbService = new GenericDbService<Item>();
+            item = new Item(0, "TestItem", "Test description");
         }
 
         //AddItemTestCases
         [TestMethod]
-        public async Task AddItemAsync_AddItem_IncrementsCount()
+        public async Task AddItemAsync_CountAsync()
         {
-            //Arrange
-            Item item = new Item(4, "TestItem4", "Test description 4");
-            int expectedCount = 4;
+            var expectedCount = itemService.GetAllItems().Count + 1;
+
             await itemService.AddItemAsync(item);
 
-            //Act
-            int actualCount = itemService.GetAllItems().Count;
+            var actualValueDb = (await dbService.GetObjectsAsync()).Count();
+            var actualValueList = itemService.GetAllItems().Count;
 
-            //Assert
-            Assert.AreEqual(expectedCount, actualCount);
+            Assert.AreEqual(expectedCount, actualValueDb);
+            Assert.AreEqual(expectedCount, actualValueList);
+
+            await dbService.DeleteObjectAsync(item);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task AddItemAsync_SameId_ThrowKeyAlreadyExists()
+        public async Task AddItemAsync_CorrectItemAsync()
         {
-            //Arrange
-            Item item = new Item(3, "FakeTestItem3", "Fake Test description 3");
-            Exception exception = null;
+            Item item = new Item(0, "TestItem", "Test Description");
 
             await itemService.AddItemAsync(item);
 
-            var items = itemService.GetAllItems();
+            Item databaseItem = (await dbService.GetObjectsAsync()).Last();
+            Assert.IsTrue(databaseItem.Equals(item));
 
+            await dbService.DeleteObjectAsync(item);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(DbUpdateException))]
+        // Name of item is too long (over 50 characters). Should throw a DbUpdateException
+        public async Task AddItemAsync_InvalidNameLengthAsync()
+        {
+            Item item = new Item(0, new String('a', 51), "Test Description");
+            await itemService.AddItemAsync(item);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DbUpdateException))]
+        // Name is null, which is not allowed in the database. Should throw a DbUpdateException
+        public async Task AddItemAsync_NullNameAsync()
+
+        {
+            Item item = new Item(0, null, "Test Description");
+            await itemService.AddItemAsync(item);
+        }
+
+
+        //DeleteItemCases
+        [TestMethod]
+        public async Task DeleteItemAsync_ItemCountAsync()
+        {
+            await itemService.AddItemAsync(item);
+
+            int expectedCount = (await dbService.GetObjectsAsync()).Count() - 1;
+            int id = (await dbService.GetObjectsAsync()).Last().Id;
+
+            await itemService.DeleteItemAsync(id);
+
+            int actualValueDb = (await dbService.GetObjectsAsync()).Count();
+            int actualValueList = itemService.GetAllItems().Count;
+
+            Assert.AreEqual(expectedCount, actualValueDb);
+            Assert.AreEqual(expectedCount, actualValueList);
+        }
+
+        [TestMethod]
+        public async Task DeleteItemAsync_InvalidItemAsync()
+        {
+            int expectedCount = (await dbService.GetObjectsAsync()).Count();
+
+            await itemService.DeleteItemAsync(1);
+
+            int actualValueDb = (await dbService.GetObjectsAsync()).Count();
+            int actualValueList = itemService.GetAllItems().Count;
+
+            // Start count and actual count should not be different, as the object does not exist
+            Assert.AreEqual(expectedCount, actualValueDb);
+            Assert.AreEqual(expectedCount, actualValueList);
+        }
+
+        // UpdateItemCases
+        [TestMethod]
+        public async Task UpdateItemAsync_ValidUpdateAsync()
+        {
+            await itemService.AddItemAsync(item);
+            int id = (await dbService.GetObjectsAsync()).Last().Id;
+            item.Name = "NewName";
+            item.Description = "NewDescription";
+
+            await itemService.UpdateItemAsync(id, item);
+
+            Assert.IsTrue(item.Equals(await itemService.GetItemByIdAsync(id)));
+
+            await itemService.DeleteItemAsync(id);
+        }
     }
 
-    public class ItemMockData: IRepository<Item>
-    {
-        public List<Item> Items { get; set; }
-        public ItemMockData()
-        {
-            Items = new List<Item>(){ new Item(1, "TestItem1", "Test description 1"), new Item(2, "TestItem2", "Test description 2"), new Item(3, "TestItem3", "Test description 3")};
-        }
-
-        public List<Item> GetAllAsync()
-        {
-            return Items;
-        }
-
-        public Task<Item> GetObjectByIdAsync(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task UpdateObjectAsync(Item entity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task DeleteObjectAsync(Item entity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task AddObjectAsync(Item entity)
-        {
-            return null;
-        }
-    }
 }
