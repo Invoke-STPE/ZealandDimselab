@@ -338,3 +338,23 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+ZealandDimselab/Pages/Items/AllItems.cshtml
+ZealandDimselab/Services/ItemService.cs
+ZealandDimselabTest/ItemServiceTest.cs
+ZealandDimselabTest/bin/Debug/netcoreapp3.1/ZealandDimselab.Views.dll
+ZealandDimselabTest/bin/Debug/netcoreapp3.1/ZealandDimselab.Views.pdb
+ZealandDimselabTest/bin/Debug/netcoreapp3.1/ZealandDimselab.dll
+ZealandDimselabTest/bin/Debug/netcoreapp3.1/ZealandDimselab.pdb
+ZealandDimselabTest/bin/Debug/netcoreapp3.1/ZealandDimselabTest.dll
+ZealandDimselabTest/bin/Debug/netcoreapp3.1/ZealandDimselabTest.pdb
+ZealandDimselabTest/obj/Debug/netcoreapp3.1/ZealandDimselabTest.assets.cache
+ZealandDimselabTest/obj/Debug/netcoreapp3.1/ZealandDimselabTest.csproj.CoreCompileInputs.cache
+ZealandDimselabTest/obj/Debug/netcoreapp3.1/ZealandDimselabTest.csproj.FileListAbsolute.txt
+ZealandDimselabTest/obj/Debug/netcoreapp3.1/ZealandDimselabTest.csprojAssemblyReference.cache
+ZealandDimselabTest/obj/Debug/netcoreapp3.1/ZealandDimselabTest.dll
+ZealandDimselabTest/obj/Debug/netcoreapp3.1/ZealandDimselabTest.genruntimeconfig.cache
+ZealandDimselabTest/obj/Debug/netcoreapp3.1/ZealandDimselabTest.pdb
+ZealandDimselabTest/obj/ZealandDimselabTest.csproj.nuget.dgspec.json
+ZealandDimselabTest/obj/project.assets.json
+ZealandDimselabTest/obj/project.nuget.cache
