@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {}
+    "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {
+    "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
+        "projectUniqueName": "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
         "projectName": "ZealandDimselabTest",
-        "projectPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
-        "packagesPath": "C:\\Users\\Christopher\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\obj\\",
+        "projectPath": "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\ZealandDimselabTest.csproj",
+        "packagesPath": "C:\\Users\\Mikke\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselabTest\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Christopher\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mikke\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +28,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
-                "projectPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj"
+              "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
+                "projectPath": "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj"
               }
             }
           }
@@ -97,17 +97,17 @@
         }
       }
     },
-    "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
+    "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
+        "projectUniqueName": "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
         "projectName": "ZealandDimselab",
-        "projectPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
-        "packagesPath": "C:\\Users\\Christopher\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Christopher\\source\\repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\obj\\",
+        "projectPath": "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\ZealandDimselab.csproj",
+        "packagesPath": "C:\\Users\\Mikke\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Mikke\\Source\\Repos\\ChristopherLoeve\\ZealandDimselab\\ZealandDimselab\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Christopher\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mikke\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

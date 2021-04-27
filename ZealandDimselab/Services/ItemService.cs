@@ -40,7 +40,12 @@ namespace ZealandDimselab.Services
         {
             Item item = await DbService.GetObjectByIdAsync(id);
             if (item != null)
+            {
                 await DbService.DeleteObjectAsync(item);
+                _items = (await DbService.GetObjectsAsync()).ToList();
+                _items.Remove(item);
+            }
+
         }
 
         public async Task UpdateItemAsync(Item item)
