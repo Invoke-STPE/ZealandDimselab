@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ZealandDimselab.MockData;
 using ZealandDimselab.Models;
 using ZealandDimselab.Repository;
@@ -39,14 +40,19 @@ namespace ZealandDimselab.Services
         public async Task DeleteItemAsync(int id)
         {
             Item item = await DbService.GetObjectByIdAsync(id);
+
             if (item != null)
+            {
                 await DbService.DeleteObjectAsync(item);
+                _items = (await DbService.GetObjectsAsync()).ToList();
+            }
         }
 
-        public async Task UpdateItemAsync(Item item)
+        public async Task UpdateItemAsync(int id, Item item)
         {
             if (item != null)
             {
+                item.Id = id;
                 await DbService.UpdateObjectAsync(item);
                 _items = (await DbService.GetObjectsAsync()).ToList();
             }
