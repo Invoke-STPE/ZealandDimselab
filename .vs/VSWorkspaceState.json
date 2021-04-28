@@ -1,6 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ZealandDimselab",
+    "\\ZealandDimselab\\Models",
+    "\\ZealandDimselab\\Pages",
+    "\\ZealandDimselab\\Pages\\DeleteItem",
+    "\\ZealandDimselab\\Pages\\Items",
+    "\\ZealandDimselab\\Repository",
+    "\\ZealandDimselab\\Services",
+    "\\ZealandDimselab\\wwwroot"
   ],
+  "SelectedNode": "\\ZealandDimselab\\Pages\\DeleteItem",
   "PreviewInSolutionExplorer": false
 }

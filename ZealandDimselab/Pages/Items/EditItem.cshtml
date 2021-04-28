@@ -1,0 +1,30 @@
+﻿@page
+@using ZealandDimselab.Models
+@model ZealandDimselab.Pages.Items.EditItemModel
+@{
+}
+
+<h1>EditEvent</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="@Model.Item.Name" class="control-lable"></label>
+                <input asp-for="@Model.Item.Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Item.Description" class="control-lable"></label>
+                <input asp-for="@Model.Item.Description" class="form-control" />
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="AllItems">Back to All items</a>
+</div>
