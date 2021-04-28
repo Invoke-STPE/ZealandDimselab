@@ -12,18 +12,12 @@ namespace ZealandDimselab.Pages.Items
     public class CreateItemModel : PageModel
     {
         private ItemService _itemService;
-        private GenericDbService<Item> _dbService;
-
-        private List<Item> _items;
         [BindProperty]
         public Item Item { get; set; }
 
-        public CreateItemModel(ItemService itemService, GenericDbService<Item> dbService)
+        public CreateItemModel(ItemService itemService)
         {
-            _dbService = dbService;
             _itemService = itemService;
-
-            _items = (List<Item>)dbService.GetObjectsAsync().Result;
         }
 
         public IActionResult OnGet()

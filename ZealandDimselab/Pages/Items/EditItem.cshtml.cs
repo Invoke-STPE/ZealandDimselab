@@ -28,7 +28,7 @@ namespace ZealandDimselab.Pages.Items
 
         public async Task<IActionResult> OnPostAsync(Item item)
         {
-            await ItemService.UpdateItemAsync(item);
+            await ItemService.UpdateItemAsync(item.Id, item);
             return RedirectToPage("/Items/AllItems");
         }
     }

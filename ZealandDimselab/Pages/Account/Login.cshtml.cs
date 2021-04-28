@@ -31,7 +31,6 @@ namespace ZealandDimselab.Pages.Account
 
         public string Message { get; set; }
 
-
         public async Task<IActionResult> OnPost()
         {
 
