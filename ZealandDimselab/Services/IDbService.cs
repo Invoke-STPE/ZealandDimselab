@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZealandDimselab.Services
 {
-    interface IDbService<T>
+    public interface IDbService<T>
     {
         Task<IEnumerable<T>> GetObjectsAsync();
         Task AddObjectAsync(T obj);
