@@ -1,5 +1,5 @@
 ﻿@page
-@model ZealandDimselab.Pages.Items.EditItemModel
+@model ZealandDimselab.Pages.Items.DeleteItemModel
 @{
 }
 
@@ -72,43 +72,31 @@
 </table>
 
 <!-- COPY FROM ABOVE THIS LINE -->
+
 <!-- MODAL START-->
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Editing item "@Model.Item.Name"</h5>
+                <h5 class="modal-title">Are you sure you want to delete "@Model.Item.Name"</h5>
             </div>
 
-            <form method="post">
-                <div class="modal-body">
+            <div class="modal-body">
+                <p><b>Description:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Description</p>
+            </div>
 
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.Name" class="control-label"></label>
-                        <input asp-for="@Model.Item.Name" class="form-control" />
-                        <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.Description" class="control-label"></label>
-                        <textarea asp-for="@Model.Item.Description" class="form-control" rows="8" id="textarea"></textarea>
-                        <span asp-validation-for="@Model.Item.Description" class="text-danger"></span>
-                    </div>
-
+            <div class="modal-footer justify-content-center">
+                <div class="col-2">
+                    <a type="button" class="btn btn-danger" asp-page="AllItems">No</a>
                 </div>
-
-                <div class="modal-footer justify-content-center">
-                    <div class="col-2">
-                        <a type="button" class="btn btn-danger" asp-page="AllItems">Cancel</a>
-                    </div>
-                    <div class="col-2">
-                        <form method="post">
-                            <input type="submit" value="Edit" class="btn btn-success" />
-                        </form>
-                    </div>
+                <div class="col-2">
+                    <form method="post">
+                        <input id="Delete Item" type="submit" value="Yes" class="btn btn-success" />
+                    </form>
                 </div>
-            </form>
-
+            </div>
         </div>
     </div>
 </div>

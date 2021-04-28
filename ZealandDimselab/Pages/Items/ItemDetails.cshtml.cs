@@ -12,8 +12,8 @@ namespace ZealandDimselab.Pages.Items
     public class ItemDetailsModel : PageModel
     {
         private ItemService itemService;
-        public Item Item;
-        public List<Item> Items;
+        public Item Item { get; set; }
+        public List<Item> Items { get; set; }
 
         public ItemDetailsModel(ItemService itemService)
         {

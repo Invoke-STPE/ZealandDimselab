@@ -7,27 +7,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
-namespace ZealandDimselab.Pages.RemoveItem
+namespace ZealandDimselab.Pages.Items
 {
-    public class RemoveItemModel : PageModel
+    public class DeleteItemModel : PageModel
     {
-        private ItemService ItemService { get; set; }
+        private ItemService itemService;
         public Item Item { get; set; }
+        public List<Item> Items { get; set; }
 
-        public RemoveItemModel(ItemService itemService)
+        public DeleteItemModel(ItemService itemService)
         {
-            this.ItemService = itemService;
+            this.itemService = itemService;
         }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task OnGetAsync(int id)
         {
-            Item = await ItemService.GetItemByIdAsync(id);
-            return Page();
+            Item = await itemService.GetItemByIdAsync(id);
+            Items = itemService.GetAllItems();
         }
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            await ItemService.DeleteItemAsync(id);
+            await itemService.DeleteItemAsync(id);
             return RedirectToPage("/Items/AllItems");
         }
     

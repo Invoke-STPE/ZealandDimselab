@@ -3,6 +3,8 @@
 @{
 }
 
+<!-- COPY FROM UNDER THIS LINE -->
+
 <p>
     <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
 </p>
@@ -10,8 +12,8 @@
 <table class="table table-bordered table-hover table-striped" width="70%">
     <col style="width: 5%">
     <col style="width: 30%">
-    <col style="width: 50%">
-    <col style="width: 15%">
+    <col style="width: 52%">
+    <col style="width: 13%">
 
 
     <thead>
@@ -33,6 +35,7 @@
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
                 </div>
             </th>
         </tr>
@@ -53,22 +56,24 @@
                 </td>
                 <td>
                     <li class="list-inline-item">
-                        <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="RemoveItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
                     </li>
                     <li class="list-inline-item">
                         <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
                     </li>
                     <li class="list-inline-item">
-                        <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
+                        <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
                     </li>
                 </td>
             </tr>
         }
     </tbody>
+
 </table>
 
+<!-- COPY FROM ABOVE THIS LINE -->
 
-
+<!-- MODAL START -->
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -80,19 +85,19 @@
             <div class="modal-body">
                 <p><b>Description:</b></p>
                 <p style="white-space: pre-line">@Model.Item.Description</p>
+            </div>
 
-                <div class="modal-footer">
-                    <a type="button" class="btn btn-danger" style="width: 10rem" asp-page="Allitems">Close</a>
-                </div>
-
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger" style="width: 10rem" asp-page="Allitems">Close</a>
             </div>
         </div>
     </div>
 </div>
-
+<!-- MODAL END -->
 
 
 @section Scripts
 {
+    <script src="~/js/showTooltips.js"></script>
     <script src="~/js/showModal.js"></script>
 }

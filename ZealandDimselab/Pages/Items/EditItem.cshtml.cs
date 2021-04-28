@@ -11,24 +11,33 @@ namespace ZealandDimselab.Pages.Items
 {
     public class EditItemModel : PageModel
     {
-        private ItemService ItemService { get; set; }
+        private ItemService itemService;
         [BindProperty]
         public Item Item { get; set; }
+        public List<Item> Items { get; set; }
 
         public EditItemModel(ItemService itemService)
         {
-            this.ItemService = itemService;
+            this.itemService = itemService;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Item = await ItemService.GetItemByIdAsync(id);
+            Items = itemService.GetAllItems();
+            Item = await itemService.GetItemByIdAsync(id);
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(Item item)
+        public async Task<IActionResult> OnPostAsync()
         {
-            await ItemService.UpdateItemAsync(item.Id, item);
+            if (!ModelState.IsValid)
+            {
+                Items = itemService.GetAllItems();
+                Item = await itemService.GetItemByIdAsync(Item.Id);
+                return Page();
+            }
+
+            await itemService.UpdateItemAsync(Item.Id, Item);
             return RedirectToPage("/Items/AllItems");
         }
     }

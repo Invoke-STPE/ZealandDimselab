@@ -45,6 +45,17 @@ namespace ZealandDimselab
             // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+            services.AddMvc()
+                .AddRazorPagesOptions(options =>
+                    {
+                        options.Conventions.AuthorizeFolder("/Account");
+                        options.Conventions.AllowAnonymousToPage("/Account/Login");
+
+                        options.Conventions.AuthorizeFolder("/Items");
+                        options.Conventions.AllowAnonymousToPage("/Items/AllItems");
+                        options.Conventions.AllowAnonymousToPage("/Items/ItemDetails");
+                    }
+                );
             // AUTHENTICATION END //
         }
 
@@ -61,14 +72,11 @@ namespace ZealandDimselab
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
-            
-            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

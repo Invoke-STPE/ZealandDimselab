@@ -3,27 +3,120 @@
 @{
 }
 
-<h1>Create a new Item</h1>
+<!-- COPY FROM UNDER THIS LINE -->
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="@Model.Item.Name" class="control-lable"></label>
-                <input asp-for="@Model.Item.Name" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Item.Description" class="control-lable"></label>
-                <input asp-for="@Model.Item.Description" class="form-control" />
+<p>
+    <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
+</p>
 
+<table class="table table-bordered table-hover table-striped" width="70%">
+    <col style="width: 5%">
+    <col style="width: 30%">
+    <col style="width: 52%">
+    <col style="width: 13%">
+
+
+    <thead>
+        <tr class="btn-secondary active">
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Id</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Name</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr class="btn-secondary">
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    <li class="list-inline-item">
+                        <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                    </li>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<!-- COPY FROM ABOVE THIS LINE -->
+<!-- MODAL START-->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Creating new item</h5>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+            <form method="post">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Name" class="control-label"></label>
+                        <input asp-for="@Model.Item.Name" class="form-control" />
+                        <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Description" class="control-label"></label>
+                        <textarea asp-for="@Model.Item.Description" class="form-control" rows="8" id="textarea"></textarea>
+                        <span asp-validation-for="@Model.Item.Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <div class="col-2">
+                        <a type="button" class="btn btn-danger" asp-page="AllItems">Cancel</a>
+                    </div>
+                    <div class="col-2">
+                        <form method="post">
+                            <input type="submit" value="Create" class="btn btn-success" />
+                        </form>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
 </div>
-<div>
-    <a asp-page="/Items/AllItems">Back to List</a>
-</div>
+<!-- MODAL END -->
+
+
+@section Scripts
+{
+    <script src="~/js/showTooltips.js"></script>
+    <script src="~/js/showModal.js"></script>
+}

@@ -11,28 +11,31 @@ namespace ZealandDimselab.Pages.Items
 {
     public class CreateItemModel : PageModel
     {
-        private ItemService _itemService;
+        private ItemService itemService;
         [BindProperty]
         public Item Item { get; set; }
+        public List<Item> Items { get; set; }
 
         public CreateItemModel(ItemService itemService)
         {
-            _itemService = itemService;
+            this.itemService = itemService;
         }
 
         public IActionResult OnGet()
         {
+            Items = itemService.GetAllItems();
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                Items = itemService.GetAllItems();
                 return Page();
             }
 
-            await _itemService.AddItemAsync(Item);
+            await itemService.AddItemAsync(Item);
             return RedirectToPage("AllItems");
         }
     }
