@@ -13,9 +13,9 @@ namespace ZealandDimselab.Services
     public class ItemService
     {
         private List<Item> _items;
-        public GenericDbService<Item> DbService { get; set; }
+        public IDbService<Item> DbService { get; set; }
 
-        public ItemService(GenericDbService<Item> dbService)
+        public ItemService(IDbService<Item> dbService)
         {
             DbService = dbService;
             _items = dbService.GetObjectsAsync().Result.ToList();
