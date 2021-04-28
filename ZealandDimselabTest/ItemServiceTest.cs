@@ -123,6 +123,7 @@ namespace ZealandDimselabTest
             Assert.IsTrue(item.Equals(await itemService.GetItemByIdAsync(id)));
 
             await itemService.DeleteItemAsync(id);
+
         }
     }
 
