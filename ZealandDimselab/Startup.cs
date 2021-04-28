@@ -12,7 +12,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.MockData;
 using ZealandDimselab.Models;
-using ZealandDimselab.Repository;
 using ZealandDimselab.Services;
 
 namespace ZealandDimselab
@@ -40,7 +39,6 @@ namespace ZealandDimselab
 
             // SERVICES START //
             services.AddSingleton<UserService, UserService>();
-            services.AddSingleton<IRepository<User>, MockUsers>(); // No need anymore
             services.AddSingleton<ItemService, ItemService>();
             // SERVICES END //
 
