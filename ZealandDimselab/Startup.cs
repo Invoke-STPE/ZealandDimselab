@@ -34,7 +34,7 @@ namespace ZealandDimselab
 
             // DATABASE START //
             services.AddDbContext<DimselabDbContext>();
-            services.AddTransient<GenericDbService<Item>, GenericDbService<Item>>();
+            services.AddTransient<IDbService<Item>, GenericDbService<Item>>();
             services.AddTransient<IDbService<User>, GenericDbService<User>>();
             // DATABASE END //
 

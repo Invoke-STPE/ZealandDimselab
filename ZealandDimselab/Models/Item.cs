@@ -14,7 +14,7 @@ namespace ZealandDimselab.Models
         {
         }
 
-        public Item(int id, string name, string description)
+        public Item(string name, string description)
         {
             Name = name;
             Description = description;

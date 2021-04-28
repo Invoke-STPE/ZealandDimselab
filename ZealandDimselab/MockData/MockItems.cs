@@ -16,9 +16,9 @@ namespace ZealandDimselab.MockData
         {
             items = new List<Item>()
             {
-                new Item(1, "Super cool wire", "Green wire, but it's cool"),
-                new Item(2, "Lame wire", "Red wire"),
-                new Item(3, "Big TV", "120 inch tv"),
+                new Item( "Super cool wire", "Green wire, but it's cool"),
+                new Item( "Lame wire", "Red wire"),
+                new Item( "Big TV", "120 inch tv"),
             };
         }
         public async Task AddObjectAsync(Item entity)
