@@ -11,17 +11,17 @@ namespace ZealandDimselab.Pages.Items
 {
     public class AllItemsModel : PageModel
     {
-        public List<Models.Item> Items { get; set; }
+        public List<Item> Items { get; set; }
         private ItemService _itemService;
 
         public AllItemsModel(ItemService itemService)
         {
             _itemService = itemService;
-            Items = _itemService.GetAllItems();
         }
 
         public void OnGet()
         {
+            Items = _itemService.GetAllItems();
         }
     }
 }

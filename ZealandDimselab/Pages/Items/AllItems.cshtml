@@ -29,6 +29,10 @@
                     <div><h5>Description</h5></div>
                 </div>
             </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                </div>
+            </th>
         </tr>
     </thead>
 
@@ -44,6 +48,20 @@
                 </td>
                 <td>
                     @item.Description
+                </td>
+                <td>
+                    <!-- Call to action buttons -->
+                    <ul class="list-inline m-0">
+                        <li class="list-inline-item">
+                            <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="RemoveItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="RemoveItem" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
+                        </li>
+                    </ul>
                 </td>
             </tr>
         }
