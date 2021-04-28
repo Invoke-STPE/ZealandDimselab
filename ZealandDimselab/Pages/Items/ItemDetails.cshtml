@@ -1,5 +1,5 @@
 ﻿@page
-@model ZealandDimselab.Pages.Items.AllItemsModel
+@model ZealandDimselab.Pages.Items.ItemDetailsModel
 @{
 }
 
@@ -65,5 +65,34 @@
             </tr>
         }
     </tbody>
-
 </table>
+
+
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.Item.Name</h5>
+            </div>
+
+            <div class="modal-body">
+                <p><b>Description:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Description</p>
+
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-danger" style="width: 10rem" asp-page="Allitems">Close</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script src="~/js/showModal.js"></script>
+}

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ZealandDimselab.Models;
-using ZealandDimselab.Repository;
 using ZealandDimselab.Services;
 
 namespace ZealandDimselabTest

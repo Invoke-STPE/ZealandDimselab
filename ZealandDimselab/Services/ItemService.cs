@@ -4,9 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using ZealandDimselab.MockData;
 using ZealandDimselab.Models;
-using ZealandDimselab.Repository;
 
 namespace ZealandDimselab.Services
 {
