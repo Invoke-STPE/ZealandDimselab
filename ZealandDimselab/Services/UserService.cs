@@ -7,7 +7,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
-using ZealandDimselab.Repository;
 
 namespace ZealandDimselab.Services
 {
