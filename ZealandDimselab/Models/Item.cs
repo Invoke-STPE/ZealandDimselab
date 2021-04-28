@@ -7,8 +7,8 @@ namespace ZealandDimselab.Models
     public class Item
     {
         [Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int Id { get; set; }
-        [Required] [StringLength(100)] public string Name { get; set; }
-        [Required] [StringLength(1000)] public string Description { get; set; }
+        [Required][MaxLength(50)] public string Name { get; set; }
+        [Required][MaxLength(500)] public string Description { get; set; }
 
         public Item()
         {
@@ -18,6 +18,11 @@ namespace ZealandDimselab.Models
         {
             Name = name;
             Description = description;
+        }
+
+        public bool Equals(Item item)
+        {
+            return this.Id == item.Id && this.Name == item.Name && this.Description == item.Description;
         }
     }
 }

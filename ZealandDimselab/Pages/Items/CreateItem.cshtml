@@ -1,0 +1,29 @@
+﻿@page
+@model ZealandDimselab.Pages.Items.CreateItemModel
+@{
+}
+
+<h1>Create a new Item</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="@Model.Item.Name" class="control-lable"></label>
+                <input asp-for="@Model.Item.Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Item.Description" class="control-lable"></label>
+                <input asp-for="@Model.Item.Description" class="form-control" />
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="/Items/AllItems">Back to List</a>
+</div>
