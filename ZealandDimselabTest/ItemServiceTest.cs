@@ -18,12 +18,12 @@ namespace ZealandDimselabTest
         public void InitializeTest()
         {
             items = new ItemMockData();
-            itemService = new ItemService(items);
+            itemService = new ItemService(new GenericDbService<Item>());
         }
 
         //AddItemTestCases
         [TestMethod]
-        public void AddItemAsync_AddItem_IncrementsCount()
+        public async Task AddItemAsync_AddItem_IncrementsCount()
         {
             //Arrange
             Item item = new Item(4, "TestItem4", "Test description 4");
@@ -39,14 +39,16 @@ namespace ZealandDimselabTest
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void AddItemAsync_SameId_ThrowKeyAlreadyExists()
+        public async Task AddItemAsync_SameId_ThrowKeyAlreadyExists()
         {
             //Arrange
             Item item = new Item(3, "FakeTestItem3", "Fake Test description 3");
             Exception exception = null;
 
-            itemService.AddItemAsync(item);
-            itemService.AddItemAsync(item);
+            await itemService.AddItemAsync(item);
+
+            var items = itemService.GetAllItems();
+
         }
 
     }

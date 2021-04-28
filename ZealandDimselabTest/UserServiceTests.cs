@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,13 @@ namespace ZealandDimselabTest
     [TestClass]
     public class UserServiceTests
     {
-        private IRepository<User> repository;
+        private IDbService<User> repository;
         private UserService userService;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            repository = new UserMockData();
+            repository = new UserMockData<User>();
             userService = new UserService(repository);
         }
 
@@ -32,7 +33,7 @@ namespace ZealandDimselabTest
             var expectedCount = 5;
 
             // Act
-            var actualCount = userService.GetUsers().Count;
+            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -43,27 +44,28 @@ namespace ZealandDimselabTest
         {
             // Arrange
             var expectedCount = 6;
-            User user = new User(6, "Mike", "Mike@gmail.com", "Mike1234");
+            User user = new User("Mike", "Mike@gmail.com", "Mike1234");
             await userService.AddUserAsync(user);
 
             // Act
-            var actualCount = userService.GetUsers().Count;
-
+            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
+           
         }
-
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task AddUserAsync_IdAlreadyExists_ThrowsArgumentException()
+        public async Task AddUserAsync_AddUser_HashesPassword()
         {
             // Arrange
-            User user = new User(2, "Mike", "Mike@gmail.com", "Mike1234");
-            // Act => Assert
-            await userService.AddUserAsync(user);
-
+            PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
+            string passwordIsNot = "Mike1234";
+            User user = new User("Mike", "Mike@gmail.com", "Mike1234");
+            // Act
+            userService.AddUserAsync(user);
+            user = await userService.GetUserByIdAsync(6);
+            // Assert
+            Assert.AreNotEqual(user.Password, passwordIsNot);
         }
-
         [TestMethod]
         public async Task DeleteUserAsync_RemovesUser_DecreasesCount()
         {
@@ -72,49 +74,44 @@ namespace ZealandDimselabTest
             var id = 1;
             await userService.DeleteUserAsync(id);
             // Act
-            var actualCount = userService.GetUsers().Count;
+            int actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
 
         }
         [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
-        public async Task DeleteUserAsync_IdDoesNotExist_ThrowsKeyNotFoundException()
+        public async Task GetUserByIdAsync_ValidId_ReturnsUserObject()
         {
-            // Arrange
-            int id = 70000;
-            // Act => Assert
-            await userService.DeleteUserAsync(id);
+            string expectedname = "Oscar";
+            string expectedEmail = "Oscar@gmail.com";
 
+            // Act
+            User actualUser = await userService.GetUserByIdAsync(3);
+
+            // Assert
+            Assert.AreEqual(expectedname, actualUser.Name);
+            Assert.AreEqual(expectedEmail, actualUser.Email);
         }
 
         [TestMethod]
         public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
         {
             // Arrange
-            User expectedUser = new User(3, "Hoscar", "Hoscar@gmail.com", "Hoscar1234");
-            List<User> users = new List<User>();
+            User user = await userService.GetUserByIdAsync(3); 
+            string expectedName = "Hoscar";
+            string expectedEmail = "Hoscar@gmail.com";
+
             // Act
-            await userService.UpdateUserAsync(expectedUser);
-            users = userService.GetUsers();
-            User actualUser = users.SingleOrDefault(u => u.Id == 3);
+            user.Name = expectedName;
+            user.Email = expectedEmail;
+            await userService.UpdateUserAsync(user);
+            User actualUser = await userService.GetUserByIdAsync(3);
 
             // Assert
 
-            Assert.AreEqual(expectedUser.Email, actualUser.Email);
-            Assert.AreEqual(expectedUser.Name, actualUser.Name);
-            Assert.AreEqual(expectedUser.Password, actualUser.Password);
-        }
-        [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
-        public async Task UpdateUserAsync_IdDoesNotExist_ThrowsKeyNotFoundException()
-        {
-            // Arrange
-            User user = new User(700, "Hoscar", "Hoscar@gmail.com", "Hoscar1234");
-            // Act => Assert
-            await userService.UpdateUserAsync(user);
-
+            Assert.AreEqual(expectedEmail, actualUser.Email);
+            Assert.AreEqual(expectedName, actualUser.Name);
         }
 
         [TestMethod]
@@ -187,7 +184,7 @@ namespace ZealandDimselabTest
             string email = "Admin@Dimselab";
             ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
             // Act
-            string actualRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value== "admin").ToString();
+            string actualRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin").ToString();
 
             // Assert
             Assert.AreEqual(expectedRole, actualRole);
@@ -205,50 +202,66 @@ namespace ZealandDimselabTest
             Assert.IsNull(claimRole);
         }
 
-        internal class UserMockData : IRepository<User>
+        internal class UserMockData<T> : IDbService<T> where T : class
         {
             private static List<User> _users;
             private readonly PasswordHasher<string> passwordHasher;
+            DimselabDbContext dbContext;
 
-            public UserMockData()
-            {
+                public UserMockData ()
+                {
                 passwordHasher = new PasswordHasher<string>();
-                _users = new List<User>()
+                    var options = new DbContextOptionsBuilder<DimselabDbContext>()
+                       .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                       .Options;
+                        dbContext = new DimselabDbContext(options);
+                LoadDatabase();
+                }
+
+            public async Task AddObjectAsync(T obj)
             {
-                new User(1, "Steven", "Steven@gmail.com", PasswordEncrypt("Steven1234")),
-                new User(2, "Mikkel", "Mikkel@gmail.com", PasswordEncrypt("Mikkel1234")),
-                new User(3, "Oscar", "Oscar@gmail.com", PasswordEncrypt("Oscar1234")),
-                new User(4, "Christopher", "Christopher@gmail.com", PasswordEncrypt("Christopher1234")),
-                new User(5, "Admin", "Admin@Dimselab", PasswordEncrypt("Admin1234")),
-            };
-            }
-            public Task AddObjectAsync(User entity)
-            {
-                return Task.CompletedTask;
+                await dbContext.Set<T>().AddAsync(obj);
+                await dbContext.SaveChangesAsync();
             }
 
-            public Task DeleteObjectAsync(User entity)
+            public async Task DeleteObjectAsync(T obj)
             {
-                return Task.CompletedTask;
+                
+                dbContext.Set<T>().Remove(obj);
+                await dbContext.SaveChangesAsync();
             }
 
-            public List<User> GetAllAsync()
+            public async Task<T> GetObjectByIdAsync(int id)
             {
-                return _users;
+                return await dbContext.Set<T>().FindAsync(id);
             }
 
-            public Task<User> GetObjectByIdAsync(int id)
+            public async Task<IEnumerable<T>> GetObjectsAsync()
             {
-                throw new NotImplementedException();
+                return await dbContext.Set<T>().AsNoTracking().ToListAsync();
             }
 
-            public async Task UpdateObjectAsync(User entity)
+            public async Task UpdateObjectAsync(T obj)
             {
-                User user = _users.SingleOrDefault(u => u.Id == entity.Id);
-                await Task.Run(() => user.Email = entity.Email);
-                await Task.Run(() => user.Name = entity.Name);
-                await Task.Run(() => user.Password = entity.Password);
-             
+                dbContext.Set<T>().Update(obj);
+                await dbContext.SaveChangesAsync();
+                
+            }
+
+            public void DropDatabase()
+            {
+                dbContext.Database.EnsureDeleted();
+            }
+
+            private void LoadDatabase()
+            {
+                dbContext.Users.Add(new User("Steven", "Steven@gmail.com", PasswordEncrypt("Steven1234")));
+                dbContext.Users.Add(new User("Mikkel", "Mikkel@gmail.com", PasswordEncrypt("Mikkel1234")));
+                dbContext.Users.Add(new User("Oscar", "Oscar@gmail.com", PasswordEncrypt("Oscar1234")));
+                dbContext.Users.Add(new User("Christopher", "Christopher@gmail.com", PasswordEncrypt("Christopher1234")));
+                dbContext.Users.Add(new User("Admin", "Admin@Dimselab", PasswordEncrypt("Admin1234")));
+
+                dbContext.SaveChangesAsync();
             }
 
             private string PasswordEncrypt(string password)

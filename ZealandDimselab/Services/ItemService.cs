@@ -11,58 +11,50 @@ namespace ZealandDimselab.Services
 {
     public class ItemService
     {
-        private Dictionary<int, Item> items;
+        private List<Item> _items;
+        public GenericDbService<Item> DbService { get; set; }
 
-        private readonly IRepository<Item> repository;
-
-        public ItemService(IRepository<Item> repository)
+        public ItemService(GenericDbService<Item> dbService)
         {
-            this.repository = repository;
-            items = repository.GetAllAsync().ToDictionary(i => i.Id);
+            DbService = dbService;
+            _items = dbService.GetObjectsAsync().Result.ToList();
         }
 
         public async Task AddItemAsync(Item item)
         {
-            items.Add(item.Id, item);
-            await repository.AddObjectAsync(item);
+            _items.Add(item);
+            await DbService.AddObjectAsync(item);
         }
 
-        public Item GetItemById(int id)
+        public async Task<Item> GetItemByIdAsync(int id)
         {
-            Item item = items[id];
-            return item;
+            return await DbService.GetObjectByIdAsync(id);
         }
 
         public List<Item> GetAllItems()
         {
-            return items.Values.ToList();
+            return _items;
         }
 
-        public async Task<Item> DeleteItemAsync(int id)
+        public async Task DeleteItemAsync(int id)
         {
-            Task<Item> itemToBeDeleted = repository.GetObjectByIdAsync(id);
-            
-            if (itemToBeDeleted != null)
-            {
-                items.Remove(id);
-                await repository.DeleteObjectAsync(itemToBeDeleted.Result);
-            }
-
-            return itemToBeDeleted.Result;
+            Item item = await DbService.GetObjectByIdAsync(id);
+            if (item != null)
+                await DbService.DeleteObjectAsync(item);
         }
 
         public async Task UpdateItemAsync(Item item)
         {
             if (item != null)
             {
-                await repository.UpdateObjectAsync(item);
-                items = repository.GetAllAsync().ToDictionary(i => i.Id);
+                await DbService.UpdateObjectAsync(item);
+                _items = (await DbService.GetObjectsAsync()).ToList();
             }
         }
 
         public IEnumerable<Item> FilterByName(string name)
         {
-            return from item in items.Values
+            return from item in _items
                    where item.Name == name
                    select item;
         }

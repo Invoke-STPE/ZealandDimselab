@@ -13,18 +13,20 @@ namespace ZealandDimselab.Services
 {
     public class UserService
     {
-        private readonly IRepository<User> repository;
-        private Dictionary<int, User> _users;
+        private readonly IDbService<User> DbContext;
+        private List<User> _users;
+        private PasswordHasher<string> passwordHasher;
 
-        public UserService(IRepository<User> repository)
+        public UserService(IDbService<User> DbContext)
         {
-            this.repository = repository;
-            _users = repository.GetAllAsync().ToDictionary(u => u.Id);
+            this.DbContext = DbContext;
+            _users = DbContext.GetObjectsAsync().Result.ToList();
+
         }
 
-        public List<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return _users.Values.ToList();
+            return await DbContext.GetObjectsAsync();
         }
         /// <summary>
         /// Adds an user object.
@@ -33,8 +35,10 @@ namespace ZealandDimselab.Services
         /// <returns></returns>
         public async Task AddUserAsync(User user)
         {
-            _users.Add(user.Id, user);
-            await repository.AddObjectAsync(user);
+            passwordHasher = new PasswordHasher<string>();
+            user.Password = passwordHasher.HashPassword(null, user.Password);
+            _users.Add(user);
+            await DbContext.AddObjectAsync(user);
 
         }
         /// <summary>
@@ -44,8 +48,14 @@ namespace ZealandDimselab.Services
         /// <returns></returns>
         public async Task DeleteUserAsync(int id)
         {
-            await repository.DeleteObjectAsync(_users[id]);
-            _users.Remove(id);
+            User user = await GetUserByIdAsync(id);
+            await DbContext.DeleteObjectAsync(user);
+            _users.Remove(user);
+        }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            return await DbContext.GetObjectByIdAsync(id);
         }
 
         /// <summary>
@@ -58,14 +68,8 @@ namespace ZealandDimselab.Services
         {
             if (user != null)
             {
-                if (_users.ContainsKey(user.Id))
-                {
-                    await repository.UpdateObjectAsync(user);
-                    _users = repository.GetAllAsync().ToDictionary(i => i.Id);
-                } else
-                {
-                    throw new KeyNotFoundException();
-                }
+                await DbContext.UpdateObjectAsync(user);
+                _users = GetUsersAsync().Result.ToList();
             }
         }
 
@@ -88,6 +92,7 @@ namespace ZealandDimselab.Services
             return false;
 
         }
+
         /// <summary>
         /// Creates an ClaimsIdentity based on the provided email.
         /// </summary>
@@ -112,13 +117,13 @@ namespace ZealandDimselab.Services
         // Gets an user by email.
         private User GetUserByEmail(string email)
         {
-            return _users.Values.SingleOrDefault(u => u.Email == email); // Checks all users in list "users" if incoming email matches one of them.
+            return _users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower()); // Checks all users in list "users" if incoming email matches one of them.
         }
 
         // Verifies the provided password.
         private PasswordVerificationResult PasswordVerification(string hashedPassword, string providedPassword)
         {
-            var passwordHasher = new PasswordHasher<string>();
+            passwordHasher = new PasswordHasher<string>();
 
             return passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
         }
