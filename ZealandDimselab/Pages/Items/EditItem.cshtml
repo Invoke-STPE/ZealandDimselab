@@ -5,9 +5,15 @@
 
 <!-- COPY FROM UNDER THIS LINE -->
 
-<p>
-    <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
-</p>
+@if (HttpContext.User.Identity.Name != null)
+{
+    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+    {
+        <p>
+            <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
+        </p>
+    }
+}
 
 <table class="table table-bordered table-hover table-striped" width="70%">
     <col style="width: 5%">
@@ -58,12 +64,18 @@
                     <li class="list-inline-item">
                         <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
                     </li>
-                    <li class="list-inline-item">
-                        <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
-                    </li>
+                    @if (HttpContext.User.Identity.Name != null)
+                    {
+                        if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                        {
+                            <li class="list-inline-item">
+                                <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                            </li>
+                        }
+                    }
                 </td>
             </tr>
         }
@@ -72,6 +84,7 @@
 </table>
 
 <!-- COPY FROM ABOVE THIS LINE -->
+
 <!-- MODAL START-->
 <div class="modal" id="myModal">
     <div class="modal-dialog">
