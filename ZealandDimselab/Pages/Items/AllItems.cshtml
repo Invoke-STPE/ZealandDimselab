@@ -52,9 +52,15 @@
                     @item.Description
                 </td>
                 <td>
-                    <a class="btn" type="button" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-arrow-left" style="color: grey"></i></a>
-                    <a class="btn" type="button" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-arrow-left" style="color: grey"></i></a>
-                    <a class="btn" type="button" asp-page="RemoveItem" asp-route-id="@item.Id"><i class="fa fa-arrow-left" style="color: grey"></i></a>
+                    <li class="list-inline-item">
+                        <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="RemoveItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
+                    </li>
                 </td>
             </tr>
         }
