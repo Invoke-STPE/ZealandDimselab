@@ -8,7 +8,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
-using ZealandDimselab.Repository;
 using ZealandDimselab.Services;
 
 namespace ZealandDimselabTest
