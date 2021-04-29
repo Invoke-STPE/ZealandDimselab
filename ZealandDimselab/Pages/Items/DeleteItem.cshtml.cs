@@ -20,10 +20,11 @@ namespace ZealandDimselab.Pages.Items
             this.itemService = itemService;
         }
 
-        public async Task OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             Item = await itemService.GetItemByIdAsync(id);
             Items = itemService.GetAllItems();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int id)
