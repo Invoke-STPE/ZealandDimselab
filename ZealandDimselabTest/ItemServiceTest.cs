@@ -154,7 +154,7 @@ namespace ZealandDimselabTest
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<T> GetObjectByIdAsync(int id)
+        public async Task<T> GetObjectByKeyAsync(int id)
         {
             return await dbContext.Set<T>().FindAsync(id);
         }
