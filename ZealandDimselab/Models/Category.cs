@@ -11,7 +11,8 @@ namespace ZealandDimselab.Models
     {
         [Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int CategoryId { get; set; }
         [Required] [MaxLength(50)] public string CategoryName { get; set; }
-        
+        [MaxLength(100)] public string ImageName { get; set; }
+
 
         public Category()
         {
