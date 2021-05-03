@@ -12,8 +12,8 @@ namespace ZealandDimselab.Services
     {
         public ItemService(IDbService<Item> dbService) : base(dbService)
         {
-
         }
+
         public List<Item> GetAllItems()
         {
             return GetAllObjects();
@@ -23,6 +23,7 @@ namespace ZealandDimselab.Services
         {
             return await GetObjectByKeyAsync(id);
         }
+
         public async Task AddItemAsync(Item item)
         {
             await AddObjectAsync(item);
