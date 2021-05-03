@@ -8,9 +8,9 @@ namespace ZealandDimselab.Services
     public interface IDbService<T>
     {
         Task<IEnumerable<T>> GetObjectsAsync();
+        Task<T> GetObjectByKeyAsync(int id);
         Task AddObjectAsync(T obj);
         Task DeleteObjectAsync(T obj);
         Task UpdateObjectAsync(T obj);
-        Task<T> GetObjectByIdAsync(int id);
     }
 }
