@@ -6,67 +6,73 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-public class GenericService <T>
-{
-    private List<T> objectList;
-    public IDbService<T> DbService { get; set; }
-
-    public GenericService(IDbService<T> dbService)
+    public class GenericService <T>
     {
-        DbService = dbService;
-        objectList = dbService.GetObjectsAsync().Result.ToList();
-    }
+        private List<T> _objectList;
+        public IDbService<T> DbService { get; set; }
 
-    /// <summary>
-    /// Adds an object asynchronously to the Database via DbService
-    /// </summary>
-    /// <param name="obj">The object to be added to the Database</param>
-    /// <returns></returns>
-    public async Task AddObjectAsync(T obj)
-    {
-        objectList.Add(obj);
-        await DbService.AddObjectAsync(obj);
-    }
-
-    /// <summary>
-    /// Returns a single item from the Database with the given id.
-    /// </summary>
-    /// <param name="id">The id of the item that should be returned</param>
-    /// <returns>Returns the item from the Database</returns>
-    public async Task<T> GetObjectByIdAsync(int id)
-    {
-        return await DbService.GetObjectByIdAsync(id);
-    }
-
-    public List<T> GetAllObjects()
-    {
-        return objectList;
-    }
-
-    /// <summary>
-    /// Receives an item from the Database that is to be deleted. You get the item from the given Id.
-    /// If the Id matches and returns an item from the Database, is is then removed from the Database.
-    /// </summary>
-    /// <param name="id">The Id of the item that is to be deleted</param>
-    /// <returns></returns>
-    public async Task DeleteObjectAsync(int id)
-    {
-        T obj = await DbService.GetObjectByIdAsync(id);
-
-        if (obj != null)
+        public GenericService(IDbService<T> dbService)
         {
-            await DbService.DeleteObjectAsync(obj);
-            objectList = (await DbService.GetObjectsAsync()).ToList();
+            DbService = dbService;
+            _objectList = dbService.GetObjectsAsync().Result.ToList();
         }
-    }
 
-    public async Task UpdateObjectAsync(T obj)
-    {
-        if (obj != null)
+        public List<T> GetAllObjects()
         {
-            await DbService.UpdateObjectAsync(obj);
-            objectList = (await DbService.GetObjectsAsync()).ToList();
+            return _objectList;
         }
-    }
+
+        /// <summary>
+        /// Returns the object with the matching key from the database
+        /// </summary>
+        /// <param name="key">The key of the object that should be returned</param>
+        /// <returns>Returns the object from the Database</returns>
+        public async Task<T> GetObjectByKeyAsync(int key)
+        {
+            return await DbService.GetObjectByKeyAsync(key);
+        }
+
+
+        /// <summary>
+        /// Adds an object asynchronously to the Database via DbService
+        /// </summary>
+        /// <param name="obj">The object to be added to the Database</param>
+        /// <returns></returns>
+        public async Task AddObjectAsync(T obj)
+        {
+            _objectList.Add(obj);
+            await DbService.AddObjectAsync(obj);
+        }
+
+
+
+        /// <summary>
+        /// Deletes the received object from the database
+        /// </summary>
+        /// <param name="obj">The object to remove from the database</param>
+        /// <returns></returns>
+        public async Task DeleteObjectAsync(T obj)
+        {
+            if (obj != null)
+            {
+                await DbService.DeleteObjectAsync(obj);
+                _objectList = (await DbService.GetObjectsAsync()).ToList();
+            }
+        }
+
+
+        /// <summary>
+        /// Updates an object via the database
+        /// </summary>
+        /// <param name="obj">The updated object</param>
+        /// <returns></returns>
+        public async Task UpdateObjectAsync(T obj)
+        {
+            if (obj != null)
+            {
+                await DbService.UpdateObjectAsync(obj);
+                _objectList = (await DbService.GetObjectsAsync()).ToList();
+            }
+        }
     }
 }

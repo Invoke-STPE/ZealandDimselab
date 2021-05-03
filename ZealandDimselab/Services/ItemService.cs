@@ -14,31 +14,34 @@ namespace ZealandDimselab.Services
         {
 
         }
+        public List<Item> GetAllItems()
+        {
+            return GetAllObjects();
+        }
 
+        public async Task<Item> GetItemByIdAsync(int id)
+        {
+            return await GetObjectByKeyAsync(id);
+        }
         public async Task AddItemAsync(Item item)
         {
             await AddObjectAsync(item);
         }
 
-        public async Task<Item> GetItemByIdAsync(int id)
-        {
-        }
-
-        public List<Item> GetAllItems()
-        {
-        }
-
         public async Task DeleteItemAsync(int id)
         {
+            await DeleteObjectAsync(await GetItemByIdAsync(id));
         }
 
         public async Task UpdateItemAsync(int id, Item item)
         {
+            item.Id = id;
+            await UpdateObjectAsync(item);
         }
         
         public IEnumerable<Item> FilterByName(string name)
         {
-            return from item in _items
+            return from item in GetAllItems()
                    where item.Name == name
                    select item;
         }

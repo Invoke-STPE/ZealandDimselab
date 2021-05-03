@@ -22,6 +22,19 @@ namespace ZealandDimselab.Services
         }
 
         /// <summary>
+        /// Finds object with the specified key in the database and returns it
+        /// </summary>
+        /// <param name="key">Key of the object you wish to find</param>
+        /// <returns>Object with the matching key</returns>
+        public async Task<T> GetObjectByKeyAsync(int key)
+        {
+            await using (var context = new DimselabDbContext())
+            {
+                return await context.Set<T>().FindAsync(key);
+            }
+        }
+
+        /// <summary>
         /// Adds the given object to the database for object type
         /// </summary>
         /// <param name="obj">The object you want to add. Has to be the correct type</param>
@@ -60,19 +73,6 @@ namespace ZealandDimselab.Services
             {
                 context.Set<T>().Update(obj);
                 await context.SaveChangesAsync();
-            }
-        }
-
-        /// <summary>
-        /// Finds object of a specific id in the database and returns it
-        /// </summary>
-        /// <param name="id">id of the object you wish to find</param>
-        /// <returns>Object with the correct id</returns>
-        public async Task<T> GetObjectByIdAsync(int id)
-        {
-            await using (var context = new DimselabDbContext())
-            {
-                return await context.Set<T>().FindAsync(id);
             }
         }
     }
