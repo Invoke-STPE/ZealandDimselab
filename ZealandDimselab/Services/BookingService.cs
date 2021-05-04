@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
 
@@ -8,9 +9,37 @@ namespace ZealandDimselab.Services
 {
     public class BookingService : GenericService<Booking>
     {
-        public BookingService(IDbService<Item> dbService) : base(dbService)
+        public BookingService(IDbService<Booking> dbService) : base(dbService)
         {
             
         }
+
+        public List<Booking> GetAllBookings()
+        {
+            return GetAllObjects();
+        }
+
+        public async Task<Booking> GetBookingByKeyAsync(int id)
+        {
+            return await GetBookingByKeyAsync(id);
+        }
+
+        public async Task AddBookingAsync(Booking booking)
+        {
+            await AddObjectAsync(booking);
+        }
+
+        public async Task DeleteBookingAsync(int id)
+        {
+            await DeleteObjectAsync(await GetBookingByKeyAsync(id));
+        }
+
+        public async Task UpdateItemAsync(int id, Booking booking)
+        {
+            booking.Id = id;
+            await UpdateObjectAsync(booking);
+        }
+
+
     }
 }
