@@ -45,6 +45,11 @@ namespace ZealandDimselab
             // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administrator", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "admin"));
+            });
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
                     {
@@ -54,6 +59,8 @@ namespace ZealandDimselab
                         options.Conventions.AuthorizeFolder("/Items");
                         options.Conventions.AllowAnonymousToPage("/Items/AllItems");
                         options.Conventions.AllowAnonymousToPage("/Items/ItemDetails");
+
+                        //options.Conventions.AuthorizeFolder("/BookingPages");
                     }
                 );
             // AUTHENTICATION END //

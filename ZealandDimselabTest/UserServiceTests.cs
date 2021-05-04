@@ -32,7 +32,7 @@ namespace ZealandDimselabTest
             var expectedCount = 5;
 
             // Act
-            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
+            var actualCount = userService.GetUsersAsync().ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -47,7 +47,7 @@ namespace ZealandDimselabTest
             await userService.AddUserAsync(user);
 
             // Act
-            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
+            var actualCount = userService.GetUsersAsync().ToList().Count;
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
            
@@ -73,7 +73,7 @@ namespace ZealandDimselabTest
             var id = 1;
             await userService.DeleteUserAsync(id);
             // Act
-            int actualCount = userService.GetUsersAsync().Result.ToList().Count;
+            int actualCount = userService.GetUsersAsync().ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -266,6 +266,11 @@ namespace ZealandDimselabTest
             private string PasswordEncrypt(string password)
             {
                 return passwordHasher.HashPassword(null, password);
+            }
+
+            public Task<T> GetObjectByKeyAsync(int id)
+            {
+                throw new NotImplementedException();
             }
         }
     }
