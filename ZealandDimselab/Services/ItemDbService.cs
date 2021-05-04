@@ -16,8 +16,11 @@ namespace ZealandDimselab.Services
             using (var context = new DimselabDbContext())
             {
                 item = await context.Items
+                    .Include(i => i.Category)
+                    .Where(i => i.Id == id)
                     .FirstOrDefaultAsync();
             }
+
             return item;
         }
 
@@ -28,11 +31,14 @@ namespace ZealandDimselab.Services
             using (var context = new DimselabDbContext())
             {
                 items = await context.Items
+                    .Include(i => i.Category)
                     .ToListAsync();
+
 
             }
 
             return items;
         }
+
     }
 }

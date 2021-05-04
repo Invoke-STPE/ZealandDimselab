@@ -9,8 +9,8 @@ using ZealandDimselab.Models;
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    [Migration("20210504090358_category9")]
-    partial class category9
+    [Migration("20210504105927_category1")]
+    partial class category1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,9 @@ namespace ZealandDimselab.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -60,22 +63,9 @@ namespace ZealandDimselab.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.ItemCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id", "CategoryId");
-
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ItemCategory");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("ZealandDimselab.Models.User", b =>
@@ -105,33 +95,15 @@ namespace ZealandDimselab.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ZealandDimselab.Models.ItemCategory", b =>
+            modelBuilder.Entity("ZealandDimselab.Models.Item", b =>
                 {
                     b.HasOne("ZealandDimselab.Models.Category", "Category")
-                        .WithMany("ItemCategories")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ZealandDimselab.Models.Item", "Item")
-                        .WithMany("ItemCategories")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.Category", b =>
-                {
-                    b.Navigation("ItemCategories");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.Item", b =>
-                {
-                    b.Navigation("ItemCategories");
                 });
 #pragma warning restore 612, 618
         }

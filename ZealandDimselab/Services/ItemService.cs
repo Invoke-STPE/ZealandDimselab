@@ -47,20 +47,20 @@ namespace ZealandDimselab.Services
                    select item;
         }
 
-        //public async Task<List<Item>> GetAllItemsWithCategoriesAsync()
-        //{
-        //    return await _itemDbService.GetAllItemsWithCategoriesAsync();
-        //}
+        public async Task<List<Item>> GetAllItemsWithCategoriesAsync()
+        {
+            return await _itemDbService.GetAllItemsWithCategoriesAsync();
+        }
 
-        //public async Task<Item> GetItemWithCategoriesAsync(int id)
-        //{
-        //    return await _itemDbService.GetItemWithCategoriesAsync(id);
-        //}
+        public async Task<Item> GetItemWithCategoriesAsync(int id)
+        {
+            return await _itemDbService.GetItemWithCategoriesAsync(id);
+        }
 
-        //public async Task AddItemCategory(Item item, Category category)
-        //{
-        //    item.Categories.Add(category);
-        //    await UpdateItemAsync(item.Id, item);
-        //}
+        public async Task AddItemCategory(Item item, Category category)
+        {
+            item.Category = category;
+            await UpdateItemAsync(item.Id, item);
+        }
     }
 }

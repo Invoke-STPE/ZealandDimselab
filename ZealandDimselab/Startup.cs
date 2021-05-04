@@ -42,6 +42,7 @@ namespace ZealandDimselab
             // SERVICES START //
             services.AddSingleton<UserService, UserService>();
             services.AddSingleton<ItemService, ItemService>();
+
             services.AddSingleton<CategoryService, CategoryService>();
             // SERVICES END //
 
