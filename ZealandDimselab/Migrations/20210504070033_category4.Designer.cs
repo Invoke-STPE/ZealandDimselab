@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    partial class DimselabDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210504070033_category4")]
+    partial class category4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,6 +48,9 @@ namespace ZealandDimselab.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -58,22 +63,9 @@ namespace ZealandDimselab.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.ItemCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id", "CategoryId");
-
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ItemCategory");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("ZealandDimselab.Models.User", b =>
@@ -103,33 +95,15 @@ namespace ZealandDimselab.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ZealandDimselab.Models.ItemCategory", b =>
+            modelBuilder.Entity("ZealandDimselab.Models.Item", b =>
                 {
                     b.HasOne("ZealandDimselab.Models.Category", "Category")
-                        .WithMany("ItemCategories")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ZealandDimselab.Models.Item", "Item")
-                        .WithMany("ItemCategories")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.Category", b =>
-                {
-                    b.Navigation("ItemCategories");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.Item", b =>
-                {
-                    b.Navigation("ItemCategories");
                 });
 #pragma warning restore 612, 618
         }

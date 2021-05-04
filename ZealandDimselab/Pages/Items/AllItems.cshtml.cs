@@ -19,7 +19,7 @@ namespace ZealandDimselab.Pages.Items
             _itemService = itemService;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
             Items = _itemService.GetAllItems();
         }

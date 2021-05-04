@@ -2,21 +2,38 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    partial class DimselabDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210504085038_category8")]
+    partial class category8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("PostTag", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("PostTag");
+                });
 
             modelBuilder.Entity("ZealandDimselab.Models.Category", b =>
                 {
@@ -61,21 +78,6 @@ namespace ZealandDimselab.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("ZealandDimselab.Models.ItemCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("ItemCategory");
-                });
-
             modelBuilder.Entity("ZealandDimselab.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -103,33 +105,21 @@ namespace ZealandDimselab.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ZealandDimselab.Models.ItemCategory", b =>
+            modelBuilder.Entity("PostTag", b =>
                 {
-                    b.HasOne("ZealandDimselab.Models.Category", "Category")
-                        .WithMany("ItemCategories")
+                    b.HasOne("ZealandDimselab.Models.Category", null)
+                        .WithMany()
                         .HasForeignKey("CategoryId")
+                        .HasConstraintName("FK_CategoryItem_Categories_CategoriesCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ZealandDimselab.Models.Item", "Item")
-                        .WithMany("ItemCategories")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("ZealandDimselab.Models.Item", null)
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .HasConstraintName("FK_CategoryItem_Items_ItemsId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.Category", b =>
-                {
-                    b.Navigation("ItemCategories");
-                });
-
-            modelBuilder.Entity("ZealandDimselab.Models.Item", b =>
-                {
-                    b.Navigation("ItemCategories");
                 });
 #pragma warning restore 612, 618
         }

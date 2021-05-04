@@ -4,7 +4,17 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to</h1>
-    <img class="rounded" src="~/images/Dimselab.png"/>
+<a class="btn" asp-page="/Items/AllItems"><img src="~/images/Dimselab.png"/></a>
+
+<div class="card" width="70%">
+    <div class="card-body"><a class="btn" style="background: green" asp-page="/Items/AllItems">All Items</a></div>
+
 </div>
+
+@foreach (var category in @Model.Categories)
+{
+    <div class="card" width="70%">
+        <div class="card-body"><a class="btn" style="background: green" asp-page="/Items/AllItems">@category.CategoryName</a></div>
+
+    </div>
+}
