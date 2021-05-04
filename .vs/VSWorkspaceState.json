@@ -2,14 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\ZealandDimselab",
-    "\\ZealandDimselab\\Models",
     "\\ZealandDimselab\\Pages",
-    "\\ZealandDimselab\\Pages\\DeleteItem",
+    "\\ZealandDimselab\\Pages\\Account",
     "\\ZealandDimselab\\Pages\\Items",
-    "\\ZealandDimselab\\Repository",
-    "\\ZealandDimselab\\Services",
-    "\\ZealandDimselab\\wwwroot"
+    "\\ZealandDimselab\\Services"
   ],
-  "SelectedNode": "\\ZealandDimselab\\Pages\\DeleteItem",
+  "SelectedNode": "\\ZealandDimselab\\Pages\\Account\\Logout.cshtml.cs",
   "PreviewInSolutionExplorer": false
 }

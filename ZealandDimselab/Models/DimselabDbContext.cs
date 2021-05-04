@@ -14,11 +14,11 @@ namespace ZealandDimselab.Models
             
         }
 
-        public DimselabDbContext(DbContextOptions<DimselabDbContext> options) : base (options)
+        
+        public DimselabDbContext(DbContextOptions<DimselabDbContext> options) : base(options)
         {
 
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (!options.IsConfigured) // If no options provided by DimselabDbContext constructor, use this:
