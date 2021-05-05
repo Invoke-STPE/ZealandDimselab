@@ -29,7 +29,7 @@ namespace ZealandDimselab.Services
             return await GetObjectByKeyAsync(id);
         }
 
-        private User GetUserByEmail(string email)
+        public User GetUserByEmail(string email)
         {
             return GetUsersAsync().SingleOrDefault(u => u.Email.ToLower() == email.ToLower()); // Checks all users in list "users" if incoming email matches one of them.
         }

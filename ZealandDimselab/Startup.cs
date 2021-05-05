@@ -41,6 +41,9 @@ namespace ZealandDimselab
             services.AddSingleton<ItemService, ItemService>();
             // SERVICES END //
 
+            // SESSION START //
+            services.AddSession(); // Giver mulighed for at gemme i brugerens cache.
+            // SESSION END
 
             // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -85,6 +88,10 @@ namespace ZealandDimselab
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
+            // SESSION START //
+            app.UseSession(); // Starter automatisk en session med brugeren.
+            // SESSION END // 
 
             app.UseEndpoints(endpoints =>
             {

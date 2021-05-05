@@ -1,0 +1,71 @@
+﻿@page
+@model ZealandDimselab.Pages.BookingPages.BookingCartModel
+@{
+}
+
+<h1>
+    Cart
+</h1>
+<form method="post">
+    <table class="table table-bordered table-hover table-striped" width="70%">
+        <tr class="btn-secondary active">
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Image</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Product</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Quantity</h5></div>
+                </div>
+            </th>
+        </tr>
+        <tbody>
+            @foreach (var item in @Model.Cart)
+            {
+                <tr class="btn-secondary">
+                    @*<td>@item.Id</td>*@
+                    <td>PlaceHolder</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>Placeholder</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-lg" asp-page-handler="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+            @*<tr>
+                    <td colspan="6" align="right">Total</td>
+                    <td align="center">$@Model.Total</td>
+                </tr>*@
+        </tbody>
+    </table>
+    <div class="form-group">
+        <label class="control-label">Additional comments.</label>
+        <textarea rows="3" value="details" class="form-control" name="details"></textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Return date</label>
+        <input type="date" name="returnDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        @foreach (var item in Model.Cart)
+        {
+            <input type="hidden" asp-for="CheckoutItems" />
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" asp-page="BookingCart" asp-page-handler="Create">Confirm</button>
+    <button type="submit" class="btn btn-danger btn-lg">Clear Cart</button>
+</form>
+<a asp-page="index">Continue Shopping</a>
