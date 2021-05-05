@@ -28,7 +28,7 @@ namespace ZealandDimselab.Pages.Items
         {
             Items = await itemService.GetAllItemsWithCategoriesAsync();
             Categories = categoryService.GetAllCategories();
-            Item = await itemService.GetItemByIdAsync(id);
+            Item = await itemService.GetItemWithCategoriesAsync(id);
             return Page();
         }
 
@@ -38,7 +38,7 @@ namespace ZealandDimselab.Pages.Items
             {
                 Items = await itemService.GetAllItemsWithCategoriesAsync();
                 Categories = categoryService.GetAllCategories();
-                Item = await itemService.GetItemByIdAsync(Item.Id);
+                Item = await itemService.GetItemWithCategoriesAsync(Item.Id);
                 return Page();
             }
 
