@@ -23,5 +23,10 @@ namespace ZealandDimselab.Pages.Items
         {
             Items = await _itemService.GetAllItemsWithCategoriesAsync();
         }
+
+        public async Task OnGetFilterByCategoryAsync(int category)
+        {
+            Items = await _itemService.GetItemsWithCategoryIdAsync(category);
+        }
     }
 }

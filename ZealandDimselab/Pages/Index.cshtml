@@ -9,7 +9,7 @@
 @foreach (var category in @Model.Categories)
 {
     <div style="white-space: nowrap; margin-top: 8px;">
-    <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Categories/AllItemsCategory" asp-route-id="@category.CategoryId">@category.CategoryName</a>
+    <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Items/AllItems" asp-page-handler="FilterByCategory" asp-route-category="@category.CategoryId">@category.CategoryName</a>
         
         @if (HttpContext.User.Identity.Name != null)
         {

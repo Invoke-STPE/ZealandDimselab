@@ -32,13 +32,13 @@ namespace ZealandDimselab.Pages.Items
             return Page();
         }
 
+
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                Items = await itemService.GetAllItemsWithCategoriesAsync();
-                Categories = categoryService.GetAllCategories();
-                return Page();
+                return await OnGetAsync();
             }
 
             await itemService.AddItemAsync(Item);
