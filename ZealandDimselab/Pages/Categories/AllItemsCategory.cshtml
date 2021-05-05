@@ -1,5 +1,5 @@
 ﻿@page
-@model ZealandDimselab.Pages.Items.CreateItemModel
+@model ZealandDimselab.Pages.Categories.AllItemsCategoryModel
 @{
 }
 
@@ -80,6 +80,10 @@
                 </td>
                 <td>
                     @item.Description
+                    @if (item.Category != null)
+                    {
+                        <p>Category:  @item.Category.CategoryName</p>
+                    }
                 </td>
                 <td>
                     <ol class="p-0">
@@ -107,58 +111,6 @@
 </table>
 
 <!-- COPY FROM ABOVE THIS LINE -->
-
-<!-- MODAL START-->
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">Creating new item</h5>
-            </div>
-
-            <form method="post">
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.Name" class="control-label"></label>
-                        <input asp-for="@Model.Item.Name" class="form-control" />
-                        <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.Description" class="control-label"></label>
-                        <textarea asp-for="@Model.Item.Description" class="form-control" rows="8" id="textarea"></textarea>
-                        <span asp-validation-for="@Model.Item.Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.CategoryId" class="control-label"></label>
-                        <select class="form-control" asp-for="@Model.Item.CategoryId">
-                            @foreach (var category in @Model.Categories)
-                            {
-                                <option value="@category.CategoryId">@category.CategoryName</option>
-                            }
-                        </select>
-                    </div>
-
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <div class="col-2">
-                        <a type="button" class="btn btn-danger" asp-page="AllItems">Cancel</a>
-                    </div>
-                    <div class="col-2">
-                        <form method="post">
-                            <input type="submit" value="Create" class="btn btn-success" />
-                        </form>
-                    </div>
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>
-<!-- MODAL END -->
-
 
 @section Scripts
 {

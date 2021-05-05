@@ -57,10 +57,9 @@ namespace ZealandDimselab.Services
             return await _itemDbService.GetItemWithCategoriesAsync(id);
         }
 
-        public async Task AddItemCategory(Item item, Category category)
+        public async Task<List<Item>> GetItemsWithCategoryIdAsync(int id)
         {
-            item.Category = category;
-            await UpdateItemAsync(item.Id, item);
+            return await _itemDbService.GetItemsWithCategoryId(id);
         }
     }
 }

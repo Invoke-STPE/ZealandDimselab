@@ -4,17 +4,9 @@
     ViewData["Title"] = "Home page";
 }
 
-<a class="btn" asp-page="/Items/AllItems"><img src="~/images/Dimselab.png"/></a>
-
-<div class="card" width="70%">
-    <div class="card-body"><a class="btn" style="background: green" asp-page="/Items/AllItems">All Items</a></div>
-
-</div>
+<a type="button" class="btn btn-primary btn-block" asp-page="/Items/AllItems">All Items</a>
 
 @foreach (var category in @Model.Categories)
 {
-    <div class="card" width="70%">
-        <div class="card-body"><a class="btn" style="background: green" asp-page="/Items/AllItems">@category.CategoryName</a></div>
-
-    </div>
+    <a type="button" class="btn btn-primary btn-block" asp-page="/Categories/AllItemsCategory" asp-route-id="@category.CategoryId">@category.CategoryName</a>
 }

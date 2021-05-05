@@ -40,5 +40,20 @@ namespace ZealandDimselab.Services
             return items;
         }
 
+        public async Task<List<Item>> GetItemsWithCategoryId(int id)
+        {
+            List<Item> items;
+
+            using (var context = new DimselabDbContext())
+            {
+                items = await context.Items
+                    .Include(i => i.Category)
+                    .Where(i => i.CategoryId == id)
+                    .ToListAsync();
+            }
+
+            return items;
+        }
+
     }
 }
