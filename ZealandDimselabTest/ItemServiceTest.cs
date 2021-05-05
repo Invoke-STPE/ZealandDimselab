@@ -15,13 +15,15 @@ namespace ZealandDimselabTest
     {
         private ItemService itemService;
         private IDbService<Item> dbService;
+        private CategoryService categoryService;
         private Item item;
 
         [TestInitialize]
         public void InitializeTest()
         {
             dbService = new ItemMockData<Item>();
-            itemService = new ItemService(dbService);
+            categoryService = new CategoryService(new GenericDbService<Category>());
+            itemService = new ItemService(dbService, categoryService);
             item = new Item("Test item 4", "Test description");
         }
 
@@ -154,7 +156,7 @@ namespace ZealandDimselabTest
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<T> GetObjectByIdAsync(int id)
+        public async Task<T> GetObjectByKeyAsync(int id)
         {
             return await dbContext.Set<T>().FindAsync(id);
         }

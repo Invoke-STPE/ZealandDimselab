@@ -10,10 +10,13 @@ namespace ZealandDimselab.Services
 {
     public class ItemService: GenericService<Item>
     {
-        public ItemService(IDbService<Item> dbService) : base(dbService)
-        {
+        private CategoryService _categoryService;
 
+        public ItemService(IDbService<Item> dbService, CategoryService categoryService) : base(dbService)
+        {
+            _categoryService = categoryService;
         }
+
         public List<Item> GetAllItems()
         {
             return GetAllObjects();
@@ -23,6 +26,7 @@ namespace ZealandDimselab.Services
         {
             return await GetObjectByKeyAsync(id);
         }
+
         public async Task AddItemAsync(Item item)
         {
             await AddObjectAsync(item);
@@ -44,6 +48,12 @@ namespace ZealandDimselab.Services
             return from item in GetAllItems()
                    where item.Name == name
                    select item;
+        }
+
+        public async Task AddItemCategory(Item item, Category category)
+        {
+            item.Category = category;
+            await UpdateItemAsync(item.Id, item);
         }
     }
 }

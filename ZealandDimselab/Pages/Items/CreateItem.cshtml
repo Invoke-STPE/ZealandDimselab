@@ -4,31 +4,46 @@
 }
 
 <!-- COPY FROM UNDER THIS LINE -->
-
-@if (HttpContext.User.Identity.Name != null)
-{
-    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
-    {
-        <p>
-            <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
-        </p>
-    }
-}
-
 <table class="table table-bordered table-hover table-striped" width="70%">
-    <col style="width: 5%">
-    <col style="width: 30%">
-    <col style="width: 52%">
-    <col style="width: 13%">
-
+    @if (HttpContext.User.Identity.Name != null)
+    {
+        if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+        {
+            <p>
+                <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
+            </p>
+            <col style="width: 5%">
+            <col style="width: 30%">
+            <col style="width: 52%">
+            <col style="width: 13%">
+        }
+        else
+        {
+            <col style="width: 30%">
+            <col style="width: 62%">
+            <col style="width: 8%">
+        }
+    }
+    else
+    {
+        <col style="width: 30%">
+        <col style="width: 62%">
+        <col style="width: 8%">
+    }
 
     <thead>
         <tr class="btn-secondary active">
-            <th>
-                <div class="d-flex justify-content-between p-0">
-                    <div><h5>Id</h5></div>
-                </div>
-            </th>
+            @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
+            {
+                if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                {
+                    <th>
+                        <div class="d-flex justify-content-between p-0">
+                            <div><h5>Id</h5></div>
+                        </div>
+                    </th>
+                }
+            }
             <th>
                 <div class="d-flex justify-content-between p-0">
                     <div><h5>Name</h5></div>
@@ -51,9 +66,15 @@
         @foreach (var item in Model.Items)
         {
             <tr class="btn-secondary">
-                <td>
-                    @item.Id
-                </td>
+                @if (HttpContext.User.Identity.Name != null)
+                {
+                    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                    {
+                        <td>
+                            @item.Id
+                        </td>
+                    }
+                }
                 <td>
                     @item.Name
                 </td>
@@ -61,21 +82,23 @@
                     @item.Description
                 </td>
                 <td>
-                    <li class="list-inline-item">
-                        <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
-                    </li>
-                    @if (HttpContext.User.Identity.Name != null)
-                    {
-                        if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                    <ol class="p-0">
+                        <li class="list-inline-item">
+                            <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
+                        </li>
+                        @if (HttpContext.User.Identity.Name != null) // Only shows edit/delete if logged in as admin
                         {
-                            <li class="list-inline-item">
-                                <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
-                            </li>
+                            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                            {
+                                <li class="list-inline-item">
+                                    <a class="btn btn-warning btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Edit" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="btn btn-danger btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                                </li>
+                            }
                         }
-                    }
+                    </ol>
                 </td>
             </tr>
         }
