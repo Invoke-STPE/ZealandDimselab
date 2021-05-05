@@ -9,6 +9,12 @@ namespace ZealandDimselab.Models
 {
     public class DimselabDbContext : DbContext
     {
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<User> Users { get; set; }
+       
+        public DbSet<Booking> Bookings { get; set; }
+
         public DimselabDbContext()
         {
             
@@ -26,8 +32,5 @@ namespace ZealandDimselab.Models
                 options.UseSqlServer(@"Server=tcp:dimselab.database.windows.net,1433;Initial Catalog=dimselabDb;Persist Security Info=False;User ID=dimselabadmin;Password=516zVIbTxK5T;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
-
-        public DbSet<Item> Items { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }

@@ -4,30 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
-namespace ZealandDimselab.Pages.Items
+namespace ZealandDimselab.Pages.Categories
 {
-    public class CreateItemModel : PageModel
+    public class CreateCategoryModel : PageModel
     {
-        private ItemService itemService;
         private CategoryService categoryService;
-        [BindProperty]
-        public Item Item { get; set; }
-        public List<Item> Items { get; set; }
+        private ItemService itemService;
+        [BindProperty] 
+        public Category Category { get; set; }
         public List<Category> Categories { get; set; }
+        public List<Item> Items { get; set; }
 
-        public CreateItemModel(ItemService itemService, CategoryService categoryService)
+        public CreateCategoryModel(CategoryService categoryService, ItemService itemService)
         {
-            this.itemService = itemService;
             this.categoryService = categoryService;
+            this.itemService = itemService;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public IActionResult OnGet()
         {
-            Items = await itemService.GetAllItemsWithCategoriesAsync();
             Categories = categoryService.GetAllCategories();
             return Page();
         }
@@ -36,13 +34,12 @@ namespace ZealandDimselab.Pages.Items
         {
             if (!ModelState.IsValid)
             {
-                Items = await itemService.GetAllItemsWithCategoriesAsync();
                 Categories = categoryService.GetAllCategories();
                 return Page();
             }
 
-            await itemService.AddItemAsync(Item);
-            return RedirectToPage("AllItems");
+            await categoryService.AddCategoryAsync(Category);
+            return RedirectToPage("/Index");
         }
     }
 }

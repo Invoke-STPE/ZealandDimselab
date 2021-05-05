@@ -34,11 +34,16 @@ namespace ZealandDimselab
             services.AddDbContext<DimselabDbContext>();
             services.AddTransient<IDbService<Item>, GenericDbService<Item>>();
             services.AddTransient<IDbService<User>, GenericDbService<User>>();
+            services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
+            services.AddTransient<ItemDbService, ItemDbService>();
+
             // DATABASE END //
 
             // SERVICES START //
             services.AddSingleton<UserService, UserService>();
             services.AddSingleton<ItemService, ItemService>();
+
+            services.AddSingleton<CategoryService, CategoryService>();
             // SERVICES END //
 
             // SESSION START //

@@ -60,7 +60,7 @@ namespace ZealandDimselabTest
             string passwordIsNot = "Mike1234";
             User user = new User("Mike", "Mike@gmail.com", "Mike1234");
             // Act
-            userService.AddUserAsync(user);
+            await userService.AddUserAsync(user);
             user = await userService.GetUserByIdAsync(6);
             // Assert
             Assert.AreNotEqual(user.Password, passwordIsNot);
@@ -230,7 +230,7 @@ namespace ZealandDimselabTest
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task<T> GetObjectByIdAsync(int id)
+            public async Task<T> GetObjectByKeyAsync(int id)
             {
                 return await dbContext.Set<T>().FindAsync(id);
             }
