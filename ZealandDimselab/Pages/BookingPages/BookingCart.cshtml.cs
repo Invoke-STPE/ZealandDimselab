@@ -16,22 +16,26 @@ namespace ZealandDimselab.Pages.BookingPages
         public List<Item> Cart { get; set; }
         public double Total { get; set; }
         private readonly UserService userService;
+        private readonly ItemService itemService;
         private readonly BookingService bookingService;
 
         [BindProperty]
         public List<Item> CheckoutItems { get; set; }
 
-        public BookingCartModel(UserService userService/* BookingService bookingService*/)
+        public BookingCartModel(UserService userService/* BookingService bookingService*/, ItemService itemService)
         {
             this.userService = userService;
+            this.itemService = itemService;
             //this.bookingService = bookingService;
         }
 
         public void OnGet()
         {
-            MockDataItems mockDataItems = new MockDataItems();
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", mockDataItems.findAll());
             Cart = GetCart();
+            if (Cart == null)
+            {
+                Cart = new List<Item>();
+            }
         }
 
         /// <summary>
@@ -39,16 +43,15 @@ namespace ZealandDimselab.Pages.BookingPages
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult OnGetAddToCart(int id)
+        public async Task<IActionResult> OnGetAddToCart(int id)
         {
-            var mockDataItems = new MockDataItems(); // THIS IS ONLY FOR TESTING
             Cart = GetCart();
 
             if (Cart == null) // Check if Cart exists in user cache.
             {
                 Cart = new List<Item>
                 {
-                    mockDataItems.find(id)
+                    await itemService.GetItemByIdAsync(id)
                 };
                 SetCart(Cart);
             }
@@ -57,7 +60,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 int index = Exists(Cart, id);
                 if (index == -1) // if the item does not exists in the cart, append it.
                 {
-                    Cart.Add(mockDataItems.find(id));
+                    Cart.Add( await itemService.GetItemByIdAsync(id) );
                 }
                 //else 
                 //{
@@ -99,6 +102,12 @@ namespace ZealandDimselab.Pages.BookingPages
                 //BookingService.AddBookingAsync(newBooking);
         }
             return Page();
+        }
+
+        public IActionResult OnPostClearCart()
+        {
+            SetCart(new List<Item>());
+            return RedirectToPage("BookingCart");
         }
 
         /// <summary>

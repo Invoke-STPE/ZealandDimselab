@@ -9,7 +9,6 @@ namespace ZealandDimselab.Services
     public class GenericService <T>
     {
         private List<T> _objectList;
-        private IDbService<Item> dbService;
 
         public IDbService<T> DbService { get; set; }
 
@@ -17,11 +16,6 @@ namespace ZealandDimselab.Services
         {
             DbService = dbService;
             _objectList = dbService.GetObjectsAsync().Result.ToList();
-        }
-
-        public GenericService(IDbService<Item> dbService)
-        {
-            this.dbService = dbService;
         }
 
         public List<T> GetAllObjects()

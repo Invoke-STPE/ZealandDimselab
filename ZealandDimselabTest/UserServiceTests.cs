@@ -267,11 +267,6 @@ namespace ZealandDimselabTest
             {
                 return passwordHasher.HashPassword(null, password);
             }
-
-            public Task<T> GetObjectByKeyAsync(int id)
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }
