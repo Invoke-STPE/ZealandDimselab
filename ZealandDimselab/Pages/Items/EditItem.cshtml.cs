@@ -26,7 +26,7 @@ namespace ZealandDimselab.Pages.Items
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Items = itemService.GetAllItems();
+            Items = await itemService.GetAllItemsWithCategoriesAsync();
             Categories = categoryService.GetAllCategories();
             Item = await itemService.GetItemByIdAsync(id);
             return Page();
@@ -36,7 +36,7 @@ namespace ZealandDimselab.Pages.Items
         {
             if (!ModelState.IsValid)
             {
-                Items = itemService.GetAllItems();
+                Items = await itemService.GetAllItemsWithCategoriesAsync();
                 Categories = categoryService.GetAllCategories();
                 Item = await itemService.GetItemByIdAsync(Item.Id);
                 return Page();

@@ -3,6 +3,7 @@
 @{
 }
 
+
 <!-- COPY FROM UNDER THIS LINE -->
 <table class="table table-bordered table-hover table-striped" width="70%">
     @if (HttpContext.User.Identity.Name != null)
@@ -80,6 +81,10 @@
                 </td>
                 <td>
                     @item.Description
+                    @if (item.Category != null)
+                    {
+                        <p>Category:  @item.Category.CategoryName</p>
+                    }
                 </td>
                 <td>
                     <ol class="p-0">

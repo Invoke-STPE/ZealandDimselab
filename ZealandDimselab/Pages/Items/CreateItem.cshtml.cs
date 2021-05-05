@@ -25,9 +25,9 @@ namespace ZealandDimselab.Pages.Items
             this.categoryService = categoryService;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            Items = itemService.GetAllItems();
+            Items = await itemService.GetAllItemsWithCategoriesAsync();
             Categories = categoryService.GetAllCategories();
             return Page();
         }
@@ -36,7 +36,7 @@ namespace ZealandDimselab.Pages.Items
         {
             if (!ModelState.IsValid)
             {
-                Items = itemService.GetAllItems();
+                Items = await itemService.GetAllItemsWithCategoriesAsync();
                 Categories = categoryService.GetAllCategories();
                 return Page();
             }
