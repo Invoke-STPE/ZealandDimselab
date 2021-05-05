@@ -12,18 +12,22 @@ namespace ZealandDimselab.Pages.Items
     public class EditItemModel : PageModel
     {
         private ItemService itemService;
+        private CategoryService categoryService;
         [BindProperty]
         public Item Item { get; set; }
         public List<Item> Items { get; set; }
+        public List<Category> Categories { get; set; }
 
-        public EditItemModel(ItemService itemService)
+        public EditItemModel(ItemService itemService, CategoryService categoryService)
         {
             this.itemService = itemService;
+            this.categoryService = categoryService;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Items = itemService.GetAllItems();
+            Categories = categoryService.GetAllCategories();
             Item = await itemService.GetItemByIdAsync(id);
             return Page();
         }
@@ -33,6 +37,7 @@ namespace ZealandDimselab.Pages.Items
             if (!ModelState.IsValid)
             {
                 Items = itemService.GetAllItems();
+                Categories = categoryService.GetAllCategories();
                 Item = await itemService.GetItemByIdAsync(Item.Id);
                 return Page();
             }
