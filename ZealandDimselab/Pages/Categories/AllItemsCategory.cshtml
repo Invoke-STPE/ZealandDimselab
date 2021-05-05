@@ -1,8 +1,7 @@
 ﻿@page
-@model ZealandDimselab.Pages.Items.DeleteItemModel
+@model ZealandDimselab.Pages.Categories.AllItemsCategoryModel
 @{
 }
-
 
 <!-- COPY FROM UNDER THIS LINE -->
 <table class="table table-bordered table-hover table-striped" width="70%">
@@ -112,36 +111,6 @@
 </table>
 
 <!-- COPY FROM ABOVE THIS LINE -->
-
-<!-- MODAL START-->
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">Are you sure you want to delete "@Model.Item.Name"</h5>
-            </div>
-
-            <div class="modal-body">
-                <p><b>Description:</b></p>
-                <p style="white-space: pre-line">@Model.Item.Description</p>
-            </div>
-
-            <div class="modal-footer justify-content-center">
-                <div class="col-2">
-                    <a type="button" class="btn btn-danger" asp-page="AllItems">No</a>
-                </div>
-                <div class="col-2">
-                    <form method="post">
-                        <input id="Delete Item" type="submit" value="Yes" class="btn btn-success" />
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- MODAL END -->
-
 
 @section Scripts
 {

@@ -9,6 +9,10 @@ namespace ZealandDimselab.Models
 {
     public class DimselabDbContext : DbContext
     {
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<User> Users { get; set; }
+
         public DimselabDbContext()
         {
             
@@ -19,6 +23,7 @@ namespace ZealandDimselab.Models
 
         }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (!options.IsConfigured) // If no options provided by DimselabDbContext constructor, use this:
@@ -27,7 +32,6 @@ namespace ZealandDimselab.Models
             }
         }
 
-        public DbSet<Item> Items { get; set; }
-        public DbSet<User> Users { get; set; }
+
     }
 }

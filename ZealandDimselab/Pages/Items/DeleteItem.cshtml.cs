@@ -23,7 +23,7 @@ namespace ZealandDimselab.Pages.Items
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Item = await itemService.GetItemByIdAsync(id);
-            Items = itemService.GetAllItems();
+            Items = await itemService.GetAllItemsWithCategoriesAsync();
             return Page();
         }
 
