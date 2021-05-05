@@ -80,6 +80,10 @@
                 </td>
                 <td>
                     @item.Description
+                    @if (item.Category != null)
+                    {
+                    <p>Category:  @item.Category.CategoryName</p>
+                    }
                 </td>
                 <td>
                     <ol class="p-0">

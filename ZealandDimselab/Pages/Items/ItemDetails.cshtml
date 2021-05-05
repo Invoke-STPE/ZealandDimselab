@@ -3,6 +3,7 @@
 @{
 }
 
+
 <!-- COPY FROM UNDER THIS LINE -->
 <table class="table table-bordered table-hover table-striped" width="70%">
     @if (HttpContext.User.Identity.Name != null)
@@ -80,6 +81,10 @@
                 </td>
                 <td>
                     @item.Description
+                    @if (item.Category != null)
+                    {
+                        <p>Category:  @item.Category.CategoryName</p>
+                    }
                 </td>
                 <td>
                     <ol class="p-0">
@@ -120,8 +125,11 @@
             <div class="modal-body">
                 <p><b>Description:</b></p>
                 <p style="white-space: pre-line">@Model.Item.Description</p>
-            </div>
 
+                <p><b>Category:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Category.CategoryName</p>
+
+            </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-danger" style="width: 10rem" asp-page="Allitems">Close</a>
             </div>

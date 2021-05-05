@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
     public class ItemService: GenericService<Item>
     {
-        private CategoryService _categoryService;
-
-        public ItemService(IDbService<Item> dbService, CategoryService categoryService) : base(dbService)
+        private ItemDbService _itemDbService;
+        public ItemService(IDbService<Item> dbService, ItemDbService itemDbService) : base(dbService)
         {
-            _categoryService = categoryService;
+            _itemDbService = itemDbService;
         }
 
         public List<Item> GetAllItems()
@@ -50,10 +47,19 @@ namespace ZealandDimselab.Services
                    select item;
         }
 
-        public async Task AddItemCategory(Item item, Category category)
+        public async Task<List<Item>> GetAllItemsWithCategoriesAsync()
         {
-            item.Category = category;
-            await UpdateItemAsync(item.Id, item);
+            return await _itemDbService.GetAllItemsWithCategoriesAsync();
+        }
+
+        public async Task<Item> GetItemWithCategoriesAsync(int id)
+        {
+            return await _itemDbService.GetItemWithCategoriesAsync(id);
+        }
+
+        public async Task<List<Item>> GetItemsWithCategoryIdAsync(int id)
+        {
+            return await _itemDbService.GetItemsWithCategoryId(id);
         }
     }
 }

@@ -7,21 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
-namespace ZealandDimselab.Pages.Items
+namespace ZealandDimselab.Pages.Categories
 {
-    public class AllItemsModel : PageModel
+    public class AllItemsCategoryModel : PageModel
     {
         public List<Item> Items { get; set; }
         private ItemService _itemService;
 
-        public AllItemsModel(ItemService itemService)
+        public AllItemsCategoryModel(ItemService itemService)
         {
             _itemService = itemService;
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int id)
         {
-            Items = await _itemService.GetAllItemsWithCategoriesAsync();
+            Items = await _itemService.GetItemsWithCategoryIdAsync(id);
         }
     }
 }

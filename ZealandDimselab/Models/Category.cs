@@ -13,7 +13,6 @@ namespace ZealandDimselab.Models
         [Required] [MaxLength(50)] public string CategoryName { get; set; }
         [MaxLength(100)] public string ImageName { get; set; }
 
-
         public Category()
         {
 
