@@ -268,10 +268,6 @@ namespace ZealandDimselabTest
                 return passwordHasher.HashPassword(null, password);
             }
 
-            public async Task<T> GetObjectByKeyAsync(int id)
-            {
-                return await dbContext.Set<T>().FindAsync(id);
-            }
         }
     }
 }
