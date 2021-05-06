@@ -8,12 +8,13 @@
 @foreach (var category in @Model.Categories)
 {
     <div style="white-space: nowrap; margin-top: 8px;">
-        <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Categories/AllItemsCategory" asp-route-id="@category.CategoryId">@category.CategoryName</a>
+        <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Items/AllItems" asp-page-handler="FilterByCategory" asp-route-category="@category.CategoryId">@category.CategoryName</a>
 
         @if (HttpContext.User.Identity.Name != null)
         {
             if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
             {
+                <a class="btn btn-warning btn-sm" style="display: inline-block;" type="button" data-toggle="tooltip" data-placement="top" title="Edit" asp-page="/Categories/EditCategory" asp-route-id="@category.CategoryId"><i class="fa fa-edit"></i></a>
                 <a class="btn btn-danger btn-sm" style="display: inline-block;" type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="/Categories/DeleteCategory" asp-route-id="@category.CategoryId"><i class="fa fa-trash"></i></a>
             }
         }
@@ -43,7 +44,7 @@
                     <input asp-for="@Model.Category.CategoryId" type="hidden" />
 
                     <div class="form-group">
-                        <label asp-for="@Model.Category.CategoryName" class="control-label"></label>
+                        <label asp-for="@Model.Category.CategoryName" class="control-label">Category Name:</label>
                         <input asp-for="@Model.Category.CategoryName" class="form-control" />
                         <span asp-validation-for="@Model.Category.CategoryName" class="text-danger"></span>
                     </div>
