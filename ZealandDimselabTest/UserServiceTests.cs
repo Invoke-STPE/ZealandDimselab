@@ -180,7 +180,7 @@ namespace ZealandDimselabTest
         {
             // Arrange
             string expectedRole = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role: admin"; // Why does it append schemas? Is it for intergration with AD?
-            string email = "Admin@Dimselab";
+            string email = "Admin@Dimselab.dk";
             ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
             // Act
             string actualRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin").ToString();
