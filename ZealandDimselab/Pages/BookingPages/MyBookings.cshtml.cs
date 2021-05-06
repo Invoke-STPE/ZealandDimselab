@@ -15,21 +15,21 @@ namespace ZealandDimselab.Pages.BookingPages
 
         public List<Booking> Bookings { get; set; }
 
-        public MyBookingsModel(/*BookingService bookingService*/)
+        public MyBookingsModel(BookingService bookingService)
         {
-            //this.bookingService = bookingService;
+            this.bookingService = bookingService;
         }
         public IActionResult OnGet()
         {
             
             if (HttpContext.User.IsInRole("admin"))
             {
-                //Bookings = bookingService.GetAllBookings();
-                Bookings = null;
+                Bookings = bookingService.GetAllBookings();
+                //Bookings = null;
             } else
             {
-                Bookings = MockData.MockDataBooking.GetBookings();
-                // Bookings = bookingService.GetBookingsByEmail(HttpContext.User.Identity.Name);
+                //Bookings = MockData.MockDataBooking.GetBookings();
+                Bookings = bookingService.GetBookingsByEmail(HttpContext.User.Identity.Name);
             }
 
             return Page();

@@ -22,11 +22,11 @@ namespace ZealandDimselab.Pages.BookingPages
         [BindProperty]
         public List<Item> CheckoutItems { get; set; }
 
-        public BookingCartModel(UserService userService/* BookingService bookingService*/, ItemService itemService)
+        public BookingCartModel(UserService userService, BookingService bookingService, ItemService itemService)
         {
             this.userService = userService;
             this.itemService = itemService;
-            //this.bookingService = bookingService;
+            this.bookingService = bookingService;
         }
 
         public void OnGet()
@@ -85,7 +85,7 @@ namespace ZealandDimselab.Pages.BookingPages
             return RedirectToPage("BookingCart");
         }
 
-        public IActionResult OnPostCreate(string details, DateTime returnDate)
+        public async Task<IActionResult> OnPostCreate(string details, DateTime returnDate)
         {
             Cart = GetCart();
             User user = userService.GetUserByEmail(HttpContext.User.Identity.Name);
@@ -93,14 +93,14 @@ namespace ZealandDimselab.Pages.BookingPages
             {
                 Booking newBooking = new Booking()
                 {
-                    Items = Cart,
-                    User = user,
+                    Items = new List<Item>(),
+                    UserId =  user.Id,
                     Details = details,
                     BookingDate = DateTime.Now.Date,
                     ReturnDate = returnDate.Date
-            };
-                //BookingService.AddBookingAsync(newBooking);
-        }
+                };
+                await bookingService.AddBookingAsync(newBooking);
+            }
             return Page();
         }
 

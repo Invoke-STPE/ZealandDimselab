@@ -46,7 +46,7 @@ namespace ZealandDimselab.Services
             await UpdateObjectAsync(booking);
         }
         
-        public List<Booking> GetBookingsByEmail(string email)
+        public List<Booking> GetBookingsByEmail(string email) // TODO Pretty sure this doesn't work
         {
             List<Booking> userBookings = new List<Booking>();
             foreach (Booking booking in GetAllBookings())
@@ -54,10 +54,10 @@ namespace ZealandDimselab.Services
                 if (booking.User.Email.ToLower() == email.ToLower())
                 {
                     userBookings.Add(booking);
-                    return userBookings;
+                    
                 }
             }
-            return null;
+            return userBookings;
         }
     }
 }
