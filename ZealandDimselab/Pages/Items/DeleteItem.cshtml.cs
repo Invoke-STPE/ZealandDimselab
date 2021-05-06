@@ -14,6 +14,7 @@ namespace ZealandDimselab.Pages.Items
         private ItemService itemService;
         public Item Item { get; set; }
         public List<Item> Items { get; set; }
+        [BindProperty] public int CategoryId { get; set; }
 
         public DeleteItemModel(ItemService itemService)
         {
@@ -24,13 +25,25 @@ namespace ZealandDimselab.Pages.Items
         {
             Item = await itemService.GetItemWithCategoriesAsync(id);
             Items = await itemService.GetAllItemsWithCategoriesAsync();
+            CategoryId = 0;
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetFilterByCategory(int id, int category)
+        {
+            if (category == 0) return RedirectToPage("DeleteItem", new { id = id });
+
+            Item = await itemService.GetItemWithCategoriesAsync(id);
+            Items = await itemService.GetItemsWithCategoryIdAsync(category);
+            CategoryId = category;
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
             await itemService.DeleteItemAsync(id);
-            return RedirectToPage("/Items/AllItems");
+            return RedirectToPage("/Items/AllItems", "FilterByCategory", new { category = CategoryId });
         }
     
     }

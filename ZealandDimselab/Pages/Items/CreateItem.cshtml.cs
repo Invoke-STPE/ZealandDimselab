@@ -14,10 +14,10 @@ namespace ZealandDimselab.Pages.Items
     {
         private ItemService itemService;
         private CategoryService categoryService;
-        [BindProperty]
-        public Item Item { get; set; }
+        [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
+        [BindProperty] public int CategoryId { get; set; }
 
         public CreateItemModel(ItemService itemService, CategoryService categoryService)
         {
@@ -29,6 +29,19 @@ namespace ZealandDimselab.Pages.Items
         {
             Items = await itemService.GetAllItemsWithCategoriesAsync();
             Categories = categoryService.GetAllCategories();
+            CategoryId = 0;
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetFilterByCategoryAsync(int category)
+        {
+            if (category == 0) return RedirectToPage("CreateItem");
+
+            Items = await itemService.GetItemsWithCategoryIdAsync(category);
+            Categories = categoryService.GetAllCategories();
+            CategoryId = category;
+
             return Page();
         }
 
@@ -36,13 +49,16 @@ namespace ZealandDimselab.Pages.Items
         {
             if (!ModelState.IsValid)
             {
-                Items = await itemService.GetAllItemsWithCategoriesAsync();
-                Categories = categoryService.GetAllCategories();
-                return Page();
+                if (CategoryId == 0) return await OnGetAsync();
+                return await OnGetFilterByCategoryAsync(CategoryId);
             }
 
             await itemService.AddItemAsync(Item);
-            return RedirectToPage("AllItems");
+
+            if (CategoryId == 0) return RedirectToPage("AllItems");
+            if (Item.CategoryId != CategoryId)
+                return RedirectToPage("AllItems", "FilterByCategory", new {category = Item.CategoryId});
+            return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });
         }
     }
 }

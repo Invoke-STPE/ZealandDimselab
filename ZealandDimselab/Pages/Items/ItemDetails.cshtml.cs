@@ -14,16 +14,28 @@ namespace ZealandDimselab.Pages.Items
         private ItemService itemService;
         public Item Item { get; set; }
         public List<Item> Items { get; set; }
+        public int CategoryId { get; set; }
 
         public ItemDetailsModel(ItemService itemService)
         {
             this.itemService = itemService;
         }
 
-        public async Task OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             Item = await itemService.GetItemWithCategoriesAsync(id);
             Items = await itemService.GetAllItemsWithCategoriesAsync();
+            CategoryId = 0;
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetFilterByCategory(int id, int category)
+        {
+            if (category == 0) return RedirectToPage("ItemDetails", new { id = id });
+            Items = await itemService.GetItemsWithCategoryIdAsync(category);
+            Item = await itemService.GetItemWithCategoriesAsync(id);
+            CategoryId = category;
+            return Page();
         }
     }
 }

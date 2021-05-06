@@ -124,7 +124,9 @@
 
             <form method="post">
                 <div class="modal-body">
-
+                    <div class="form-group">
+                        <input asp-for="@Model.CategoryId" type="hidden"/>
+                    </div>
                     <div class="form-group">
                         <label asp-for="@Model.Item.Name" class="control-label"></label>
                         <input asp-for="@Model.Item.Name" class="form-control" />
@@ -149,7 +151,7 @@
 
                 <div class="modal-footer justify-content-center">
                     <div class="col-2">
-                        <a type="button" class="btn btn-danger" asp-page="AllItems">Cancel</a>
+                        <a type="button" class="btn btn-danger" asp-page="AllItems" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId">Cancel</a>
                     </div>
                     <div class="col-2">
                         <form method="post">

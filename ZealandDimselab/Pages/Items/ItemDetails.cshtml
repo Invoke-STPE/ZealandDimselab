@@ -131,7 +131,7 @@
 
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-danger" style="width: 10rem" asp-page="Allitems">Close</a>
+                <a type="button" class="btn btn-danger" style="width: 10rem" asp-page="Allitems" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId">Close</a>
             </div>
         </div>
     </div>
