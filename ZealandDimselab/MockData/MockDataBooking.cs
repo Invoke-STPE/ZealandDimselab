@@ -12,9 +12,9 @@ namespace ZealandDimselab.MockData
         {
             return new List<Booking>()
             {
-                new Booking(){Items = GetItems(), User = GetUser(), Details = "Booking 1", BookingDate = DateTime.Now, ReturnDate = DateTime.Now},
-                new Booking(){Items = GetItems(), User = GetUser(), Details = "Booking 2", BookingDate = DateTime.Now, ReturnDate = DateTime.Now},
-                new Booking(){Items = GetItems(), User = GetUser(), Details = "Booking 3", BookingDate = DateTime.Now, ReturnDate = DateTime.Now}
+                //new Booking(){BookingItems = GetItems(), User = GetUser(), Details = "Booking 1", BookingDate = DateTime.Now, ReturnDate = DateTime.Now},
+                //new Booking(){BookingItems = GetItems(), User = GetUser(), Details = "Booking 2", BookingDate = DateTime.Now, ReturnDate = DateTime.Now},
+                //new Booking(){BookingItems = GetItems(), User = GetUser(), Details = "Booking 3", BookingDate = DateTime.Now, ReturnDate = DateTime.Now}
             };
         }
 

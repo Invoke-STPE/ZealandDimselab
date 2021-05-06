@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
@@ -18,9 +19,16 @@ namespace ZealandDimselab.Services
 
         public List<Booking> GetAllBookings()
         {
-            return GetAllObjects();
+            List<Booking> bookings;
+            using (var context = new DimselabDbContext())
+            {
+                bookings = context.Bookings
+                    .Include(u => u.User)
+                    .Include(i => i.BookingItems)
+                    .ThenInclude(bi => bi.Item).ToList();
+            }
+            return bookings;
         }
-
         //public List<Booking> GetAllBookingsTest()
         //{
         //    return dbContext;

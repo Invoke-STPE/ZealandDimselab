@@ -38,11 +38,6 @@
                     <div><h5>Return Date</h5></div>
                 </div>
             </th>
-            <th>
-                <div class="d-flex justify-content-between p-0">
-                    <div><h5>Actions</h5></div>
-                </div>
-            </th>
         </tr>
     </thead>
 
@@ -59,12 +54,13 @@
                 <td>
                     <details>
                         <summary>Items booked.</summary>
-                            @foreach (var item in booking.Items)
-                            {
-                                <li>
-                                    @item.ToString() @*Quantenty property?*@
-                                </li>
-                            }
+                        @foreach (var item in booking.BookingItems)
+                        {
+                        <li>
+                            @item.Item.ToString()    @*Quantenty property?*@
+                        </li>
+                        }
+
                     </details>
                 </td>
                 <td>

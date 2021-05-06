@@ -13,6 +13,7 @@ namespace ZealandDimselab.Models
         public DbSet<Item> Items { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<BookingItem> BookingItems { get; set; }
 
         public DimselabDbContext()
         {
@@ -28,8 +29,14 @@ namespace ZealandDimselab.Models
         {
             if (!options.IsConfigured) // If no options provided by DimselabDbContext constructor, use this:
             {
-                options.UseSqlServer(@"Server=tcp:dimselab.database.windows.net,1433;Initial Catalog=dimselabDb;Persist Security Info=False;User ID=dimselabadmin;Password=516zVIbTxK5T;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                //options.UseSqlServer(@"Server=tcp:dimselab.database.windows.net,1433;Initial Catalog=dimselabDb;Persist Security Info=False;User ID=dimselabadmin;Password=516zVIbTxK5T;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=DimseLabTest;Trusted_Connection=True");
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BookingItem>().HasKey(bi => new { bi.BookingId, bi.ItemId });
         }
     }
 }

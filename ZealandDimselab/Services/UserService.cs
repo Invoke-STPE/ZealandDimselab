@@ -17,6 +17,9 @@ namespace ZealandDimselab.Services
         public UserService(IDbService<User> DbService): base(DbService)
         {
             _passwordHasher = new PasswordHasher<string>();
+
+            //User user = new User("admin", "admin@dimselab.dk", "secret1234");
+            //AddUserAsync(user);
         }
 
         public List<User> GetUsersAsync()

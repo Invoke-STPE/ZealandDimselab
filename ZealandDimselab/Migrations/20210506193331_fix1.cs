@@ -2,7 +2,7 @@
 
 namespace ZealandDimselab.Migrations
 {
-    public partial class Bookings5 : Migration
+    public partial class fix1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

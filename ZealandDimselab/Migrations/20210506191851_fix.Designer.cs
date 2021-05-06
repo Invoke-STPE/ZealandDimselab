@@ -10,8 +10,8 @@ using ZealandDimselab.Models;
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    [Migration("20210506110942_Bookings3")]
-    partial class Bookings3
+    [Migration("20210506191851_fix")]
+    partial class fix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,6 +47,21 @@ namespace ZealandDimselab.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("ZealandDimselab.Models.BookingItem", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("BookingItems");
+                });
+
             modelBuilder.Entity("ZealandDimselab.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
@@ -75,9 +90,6 @@ namespace ZealandDimselab.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -92,8 +104,6 @@ namespace ZealandDimselab.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
 
                     b.HasIndex("CategoryId");
 
@@ -138,12 +148,27 @@ namespace ZealandDimselab.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ZealandDimselab.Models.BookingItem", b =>
+                {
+                    b.HasOne("ZealandDimselab.Models.Booking", "Booking")
+                        .WithMany("BookingItems")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ZealandDimselab.Models.Item", "Item")
+                        .WithMany("BookingItems")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("ZealandDimselab.Models.Item", b =>
                 {
-                    b.HasOne("ZealandDimselab.Models.Booking", null)
-                        .WithMany("Items")
-                        .HasForeignKey("BookingId");
-
                     b.HasOne("ZealandDimselab.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -155,7 +180,12 @@ namespace ZealandDimselab.Migrations
 
             modelBuilder.Entity("ZealandDimselab.Models.Booking", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("BookingItems");
+                });
+
+            modelBuilder.Entity("ZealandDimselab.Models.Item", b =>
+                {
+                    b.Navigation("BookingItems");
                 });
 
             modelBuilder.Entity("ZealandDimselab.Models.User", b =>
