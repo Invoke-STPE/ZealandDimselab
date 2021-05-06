@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,10 +16,10 @@ namespace ZealandDimselab.Models
 
         public DimselabDbContext()
         {
-
+            
         }
 
-
+        
         public DimselabDbContext(DbContextOptions<DimselabDbContext> options) : base(options)
         {
 
