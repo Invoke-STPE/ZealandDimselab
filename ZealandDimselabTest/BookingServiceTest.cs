@@ -15,17 +15,12 @@ namespace ZealandDimselabTest
     {
         private BookingService bookingService;
         private IDbService<Booking> dbService;
-        private Booking booking;
 
         [TestInitialize]
         public void InitializeTest()
         {
             dbService = new BookingMockData<Booking>();
             bookingService = new BookingService(dbService);
-
-            List<Item> Items = new List<Item>() {new Item("Raspery Pi", "minicomputer")};
-            User user = new User(1, "Mikkel", "meilig@.com", "1234");
-            booking = new Booking(1, Items, user, "Details", DateTime.Now, DateTime.Now);
         }
 
         //AddBookingTestCases
@@ -50,9 +45,9 @@ namespace ZealandDimselabTest
             var expectedCount = 4;
 
             List<Item> Items = new List<Item>() { new Item("Raspery Pi", "minicomputer") };
-            User user = new User(1, "Mikkel", "meilig@.com", "1234");
+            User user = new User("Mikkel", "meilig@.com", "1234");
             
-            Booking booking = new Booking(1, Items, user, "Details", DateTime.Now, DateTime.Now);
+            Booking booking = new Booking(Items, user, "Details", DateTime.Now, DateTime.Now);
             await bookingService.AddBookingAsync(booking);
 
             // Act
@@ -63,6 +58,56 @@ namespace ZealandDimselabTest
 
         }
 
+        [TestMethod]
+        public async Task UpdateBookingAsync_UpdateExsitingBooking_ReturnsUpdatedObject()
+        {
+            // Arrange
+            Booking booking = await bookingService.GetBookingByKeyAsync(2);
+            List<Item> expecteItems = new List<Item>() { new Item("Batmobil", "luksusbil") };
+            User expecteUser = new User("daddycool", "batman@secret.com", "007Jamesbond");
+
+
+            // Act
+            booking.Items = expecteItems;
+            booking.User = expecteUser;
+            await bookingService.UpdateBookingAsync(booking);
+            Booking actualBooking = await bookingService.GetBookingByKeyAsync(2);
+
+            // Assert
+            Assert.AreEqual(expecteItems, actualBooking.Items);
+            Assert.AreEqual(expecteUser, actualBooking.User);
+        }
+
+        [TestMethod]
+        public async Task GetBookingByIdAsync_ValidId_ReturnsBookingObject()
+        {
+            string expectedDetials = "Details";
+
+            // Act
+            Booking actualBooking = await bookingService.GetBookingByKeyAsync(3);
+
+            // Assert
+            Assert.AreEqual(expectedDetials, actualBooking.Details);
+
+        }
+
+        [TestMethod]
+        public async Task GetBookingByEmailAsync_ValidEmail_ReturnsBookingObject()
+        {
+            //Arrange
+            string expectedEmail = "smelly@.com";
+            string expectedBookingDetails = "skal bruges i morgen";
+            Booking expecBooking = new Booking(new List<Item>() { new Item("RC car", "fjernstyret bil") }, new User("Simon", "smelly@.com", "1234"), "skal bruges i morgen", DateTime.Now, DateTime.Now);
+            List<Booking> expectedBookings = new List<Booking>() { expecBooking };
+
+            // Act
+            List<Booking> actualBookings = bookingService.GetBookingsByEmail(expectedEmail);
+
+            // Assert
+            Assert.AreEqual(expectedBookings, expectedBookings);
+        }
+
+
         public class BookingMockData<T> : IDbService<T> where T : class
         {
             private DimselabDbContext dbContext;
@@ -72,13 +117,36 @@ namespace ZealandDimselabTest
                 var options = new DbContextOptionsBuilder<DimselabDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options;
-                dbContext = new DimselabDbContext(options);
-                LoadDatabase();
+                    dbContext = new DimselabDbContext(options);
+                    LoadDatabase();
             }
 
             public async Task<IEnumerable<T>> GetObjectsAsync()
             {
-                return await dbContext.Set<T>().AsNoTracking().ToListAsync();
+                //return await dbContext.Set<T>().AsNoTracking().ToListAsync();
+                List<Booking> booking = new List<Booking>();
+                //dbContext.Bookings
+                //    //.Include(b => b.User)
+                //    //.Include(i => i.Items)
+                //    //.Include(bd => bd.BookingDate)
+                //    //.Include(rd => rd.ReturnDate)
+                //    .Include(b => b).ToList();
+
+                foreach (var Booking in dbContext.Bookings)
+                {
+                    booking.Add(Booking);
+                }
+
+                return (IEnumerable<T>)booking;
+            }
+
+            public IEnumerable<T> GetBookings()
+            {
+                List<Booking> booking = new List<Booking>();
+                dbContext.Bookings
+                    .Include(b => b.User)
+                    .Include(i => i.Items).ToList();
+                return (IEnumerable<T>)booking;
             }
 
             public async Task AddObjectAsync(T obj)
@@ -104,14 +172,19 @@ namespace ZealandDimselabTest
                 return await dbContext.Set<T>().FindAsync(id);
             }
 
-            private void LoadDatabase()
+            private async Task LoadDatabase()
             {
+                List<Item> item1 = new List<Item>() {new Item("RC car", "fjernstyret bil")};
+                List<Item> item2 = new List<Item>() {new Item("vr headset", "glasses")};
+                List<Item> item3 = new List<Item>() {new Item("Din Mor", "Er fed")};
 
-                dbContext.Bookings.Add(new Booking(2, new List<Item>(){new Item("RC car", "fjernstyret bil")},new User("Simon", "smelly@.com", "1234"),"skal bruges i morgen", DateTime.Now, DateTime.Now));
-                dbContext.Bookings.Add(new Booking(3, new List<Item>() { new Item("vr headset", "glasses") }, new User(1, "Mikkel", "meilig@.com", "1234"), "Details", DateTime.Now, DateTime.Now));
-                dbContext.Bookings.Add(new Booking(4, new List<Item>() { new Item("Din Mor", "Er fed") }, new User(1, "Oscar", "oscar@.com", "1234"), "Details", DateTime.Now, DateTime.Now));
 
-                dbContext.SaveChangesAsync();
+
+                dbContext.Bookings.Add(new Booking(item1,new User("Simon", "smelly@.com", "1234"),"skal bruges i morgen", DateTime.Now, DateTime.Now));
+                dbContext.Bookings.Add(new Booking(item2, new User("Mikkel", "meilig@.com", "1234"), "Details", DateTime.Now, DateTime.Now));
+                dbContext.Bookings.Add(new Booking(item3, new User("Oscar", "oscar@.com", "1234"), "Details", DateTime.Now, DateTime.Now));
+
+                await dbContext.SaveChangesAsync();
             }
 
         }

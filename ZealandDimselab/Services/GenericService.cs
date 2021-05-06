@@ -19,6 +19,11 @@ namespace ZealandDimselab.Services
             _objectList = dbService.GetObjectsAsync().Result.ToList();
         }
 
+        //public List<T> GetAllBookingsTest()
+        //{
+        //    DbService
+        //}
+
         public GenericService(IDbService<Item> dbService)
         {
             this.dbService = dbService;

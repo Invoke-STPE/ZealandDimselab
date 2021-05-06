@@ -12,11 +12,25 @@ namespace ZealandDimselab.Models
         [Key] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int Id { get; set; }
         [Required] public List<Item> Items { get; set; }
-        [Required] public User User { get; set; }
+        [ForeignKey("UserId")] public User User { get; set; }
         public string Details { get; set; }
         [Required] public DateTime BookingDate { get; set; }
         [Required] public DateTime ReturnDate { get; set; }
 
+        public Booking(List<Item> items, User user, string details, DateTime bookingDate, DateTime returnDate)
+        {
+            Items = items;
+            User = user;
+            Details = details;
+            BookingDate = bookingDate;
+            ReturnDate = returnDate;
+
+        }
+
+        public Booking()
+        {
+            
+        }
 
         public Booking(int id, List<Item> items, User user, string details, DateTime bookingDate, DateTime returnDate)
         {
@@ -28,10 +42,9 @@ namespace ZealandDimselab.Models
             ReturnDate = returnDate;
 
         }
-        
-        public Booking()
-        {
-            Items = new List<Item>();
-        }
+
+
+
+
     }
 }
