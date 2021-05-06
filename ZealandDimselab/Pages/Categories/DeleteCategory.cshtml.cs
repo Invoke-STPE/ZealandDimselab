@@ -11,15 +11,12 @@ namespace ZealandDimselab.Pages.Categories
 {
     public class DeleteCategoryModel : PageModel
     {
-        private ItemService itemService;
         private CategoryService categoryService;
         public Category Category { get; set; }
-        public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
 
-        public DeleteCategoryModel(ItemService itemService, CategoryService categoryService)
+        public DeleteCategoryModel(CategoryService categoryService)
         {
-            this.itemService = itemService;
             this.categoryService = categoryService;
         }
 

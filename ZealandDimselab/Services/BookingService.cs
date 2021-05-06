@@ -24,7 +24,7 @@ namespace ZealandDimselab.Services
 
         public async Task<Booking> GetBookingByKeyAsync(int id)
         {
-            return await GetBookingByKeyAsync(id);
+            return await GetObjectByKeyAsync(id);
         }
 
         public async Task AddBookingAsync(Booking booking)

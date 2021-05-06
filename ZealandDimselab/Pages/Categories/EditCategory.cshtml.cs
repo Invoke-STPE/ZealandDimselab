@@ -11,15 +11,13 @@ namespace ZealandDimselab.Pages.Categories
 {
     public class EditCategoryModel : PageModel
     {
-        private ItemService itemService;
         private CategoryService categoryService;
         [BindProperty]
         public Category Category { get; set; }
         public List<Category> Categories { get; set; }
 
-        public EditCategoryModel(ItemService itemService, CategoryService categoryService)
+        public EditCategoryModel(CategoryService categoryService)
         {
-            this.itemService = itemService;
             this.categoryService = categoryService;
         }
 
