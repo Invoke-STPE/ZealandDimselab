@@ -1,5 +1,5 @@
 ﻿@page
-@model ZealandDimselab.Pages.Categories.DeleteCategoryModel
+@model ZealandDimselab.Pages.Categories.EditCategoryModel
 @{
 }
 
@@ -36,19 +36,34 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Are you sure you want to delete "@Model.Category.CategoryName"</h5>
+                <h5 class="modal-title">Editing item "@Model.Category.CategoryName"</h5>
             </div>
 
-            <div class="modal-footer justify-content-center">
-                <div class="col-2">
-                    <a type="button" class="btn btn-danger" asp-page="/Index">No</a>
+            <form method="post">
+                <div class="modal-body">
+                    <input asp-for="@Model.Category.CategoryId" type="hidden" />
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Category.CategoryName" class="control-label">Category Name:</label>
+                        <input asp-for="@Model.Category.CategoryName" class="form-control" />
+                        <span asp-validation-for="@Model.Category.CategoryName" class="text-danger"></span>
+                    </div>
+
+
                 </div>
-                <div class="col-2">
-                    <form method="post">
-                        <input id="Delete Item" type="submit" value="Yes" class="btn btn-success" />
-                    </form>
+
+                <div class="modal-footer justify-content-center">
+                    <div class="col-2">
+                        <a type="button" class="btn btn-danger" asp-page="/Index">Cancel</a>
+                    </div>
+                    <div class="col-2">
+                        <form method="post">
+                            <input type="submit" value="Edit" class="btn btn-success" />
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </form>
+
         </div>
     </div>
 </div>

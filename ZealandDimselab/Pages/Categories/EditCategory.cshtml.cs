@@ -9,28 +9,37 @@ using ZealandDimselab.Services;
 
 namespace ZealandDimselab.Pages.Categories
 {
-    public class DeleteCategoryModel : PageModel
+    public class EditCategoryModel : PageModel
     {
         private CategoryService categoryService;
+        [BindProperty]
         public Category Category { get; set; }
         public List<Category> Categories { get; set; }
 
-        public DeleteCategoryModel(CategoryService categoryService)
+        public EditCategoryModel(CategoryService categoryService)
         {
             this.categoryService = categoryService;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Category = await categoryService.GetCategoryByIdAsync(id);
             Categories = categoryService.GetAllCategories();
+            Category = await categoryService.GetCategoryByIdAsync(id);
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            await categoryService.DeleteCategoryAsync(id);
+            if (!ModelState.IsValid)
+            {
+                Categories = categoryService.GetAllCategories();
+                Category = await categoryService.GetCategoryByIdAsync(id);
+                return Page();
+            }
+
+            await categoryService.UpdateCategoryAsync(Category.CategoryId, Category);
             return RedirectToPage("/Index");
+
         }
     }
 }

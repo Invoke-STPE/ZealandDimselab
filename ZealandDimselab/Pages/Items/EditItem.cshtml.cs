@@ -13,10 +13,10 @@ namespace ZealandDimselab.Pages.Items
     {
         private ItemService itemService;
         private CategoryService categoryService;
-        [BindProperty]
-        public Item Item { get; set; }
+        [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
+        [BindProperty] public int CategoryId { get; set; }
 
         public EditItemModel(ItemService itemService, CategoryService categoryService)
         {
@@ -28,7 +28,21 @@ namespace ZealandDimselab.Pages.Items
         {
             Items = await itemService.GetAllItemsWithCategoriesAsync();
             Categories = categoryService.GetAllCategories();
-            Item = await itemService.GetItemByIdAsync(id);
+            Item = await itemService.GetItemWithCategoriesAsync(id);
+            CategoryId = 0;
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetFilterByCategoryAsync(int id, int category)
+        {
+            if (category == 0) return RedirectToPage("EditItem", new { id = id });
+
+            Items = await itemService.GetItemsWithCategoryIdAsync(category);
+            Categories = categoryService.GetAllCategories();
+            Item = await itemService.GetItemWithCategoriesAsync(id);
+            CategoryId = category;
+
             return Page();
         }
 
@@ -36,14 +50,12 @@ namespace ZealandDimselab.Pages.Items
         {
             if (!ModelState.IsValid)
             {
-                Items = await itemService.GetAllItemsWithCategoriesAsync();
-                Categories = categoryService.GetAllCategories();
-                Item = await itemService.GetItemByIdAsync(Item.Id);
-                return Page();
+                if (CategoryId == 0) return await OnGetAsync(Item.Id);
+                return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
             }
 
             await itemService.UpdateItemAsync(Item.Id, Item);
-            return RedirectToPage("/Items/AllItems");
+            return RedirectToPage("/Items/AllItems", "FilterByCategory", new { category = CategoryId });
         }
     }
 }

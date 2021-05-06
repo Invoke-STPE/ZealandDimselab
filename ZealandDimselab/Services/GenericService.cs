@@ -9,7 +9,6 @@ namespace ZealandDimselab.Services
     public class GenericService <T>
     {
         private List<T> _objectList;
-
         public IDbService<T> DbService { get; set; }
 
         public GenericService(IDbService<T> dbService)

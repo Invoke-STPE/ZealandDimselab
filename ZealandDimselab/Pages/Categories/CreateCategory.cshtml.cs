@@ -12,16 +12,13 @@ namespace ZealandDimselab.Pages.Categories
     public class CreateCategoryModel : PageModel
     {
         private CategoryService categoryService;
-        private ItemService itemService;
         [BindProperty] 
         public Category Category { get; set; }
         public List<Category> Categories { get; set; }
-        public List<Item> Items { get; set; }
 
-        public CreateCategoryModel(CategoryService categoryService, ItemService itemService)
+        public CreateCategoryModel(CategoryService categoryService)
         {
             this.categoryService = categoryService;
-            this.itemService = itemService;
         }
 
         public IActionResult OnGet()
