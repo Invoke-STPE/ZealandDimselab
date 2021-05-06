@@ -10,17 +10,21 @@ namespace ZealandDimselab.Services
 {
     public class BookingService : GenericService<Booking>
     {
-        private UserService userService;
+        private UserService UserService;
 
         public BookingService(IDbService<Booking> dbService) : base(dbService)
         {
-            
         }
 
         public List<Booking> GetAllBookings()
         {
             return GetAllObjects();
         }
+
+        //public List<Booking> GetAllBookingsTest()
+        //{
+        //    return dbContext;
+        //}
 
         public async Task<Booking> GetBookingByKeyAsync(int id)
         {
@@ -37,19 +41,20 @@ namespace ZealandDimselab.Services
             await DeleteObjectAsync(await GetBookingByKeyAsync(id));
         }
 
-        public async Task UpdateBookingAsync(int id, Booking booking)
+        public async Task UpdateBookingAsync(Booking booking)
         {
-            booking.Id = id;
             await UpdateObjectAsync(booking);
         }
         
         public List<Booking> GetBookingsByEmail(string email)
         {
-            foreach (var user in userService.GetUsersAsync())
+            List<Booking> userBookings = new List<Booking>();
+            foreach (Booking booking in GetAllBookings())
             {
-                if (user.Email == email)
+                if (booking.User.Email.ToLower() == email.ToLower())
                 {
-                    return user.GetUserBookings();
+                    userBookings.Add(booking);
+                    return userBookings;
                 }
             }
             return null;

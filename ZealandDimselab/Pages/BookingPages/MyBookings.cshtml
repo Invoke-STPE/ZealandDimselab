@@ -1,0 +1,97 @@
+﻿@page
+@model ZealandDimselab.Pages.BookingPages.MyBookingsModel
+@{
+}
+
+<h1>My Bookings</h1>
+<table class="table table-bordered table-hover table-striped" width="70%">
+    <col style="width: 5%">
+    <col style="width: 30%">
+    <col style="width: 52%">
+    <col style="width: 13%">
+
+
+    <thead>
+        <tr class="btn-secondary active">
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Booking Id</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Name</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Booking Date</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Return Date</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var booking in Model.Bookings)
+        {
+            <tr class="btn-secondary">
+                <td>
+                    @booking.Id
+                </td>
+                <td>
+                    @booking.User.Name
+                </td>
+                <td>
+                    <details>
+                        <summary>Items booked.</summary>
+                            @foreach (var item in booking.Items)
+                            {
+                                <li>
+                                    @item.ToString() @*Quantenty property?*@
+                                </li>
+                            }
+                    </details>
+                </td>
+                <td>
+                    @booking.BookingDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @booking.ReturnDate.ToString("dd/MM/yyyy")
+                </td>
+                @*<td>
+                        <li class="list-inline-item">
+                            <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>
+                        </li>
+                        @if (HttpContext.User.Identity.Name != null)
+                        {
+                            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                            {
+                                <li class="list-inline-item">
+                                    <a class="btn btn-warning btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Edit/Update" asp-page="EditItem" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="btn btn-danger btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+                                </li>
+                            }
+                        }
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+
+</table>

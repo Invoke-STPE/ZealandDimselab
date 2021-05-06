@@ -36,20 +36,29 @@ namespace ZealandDimselab
             services.AddTransient<IDbService<User>, GenericDbService<User>>();
             services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
             services.AddTransient<ItemDbService, ItemDbService>();
-
+            services.AddTransient<BookingService, BookingService>();
             // DATABASE END //
 
             // SERVICES START //
             services.AddSingleton<UserService, UserService>();
             services.AddSingleton<ItemService, ItemService>();
+            services.AddSingleton<BookingService, BookingService>();
 
             services.AddSingleton<CategoryService, CategoryService>();
             // SERVICES END //
 
+            // SESSION START //
+            services.AddSession(); // Giver mulighed for at gemme i brugerens cache.
+            // SESSION END
 
             // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administrator", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "admin"));
+            });
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
                     {
@@ -59,6 +68,8 @@ namespace ZealandDimselab
                         options.Conventions.AuthorizeFolder("/Items");
                         options.Conventions.AllowAnonymousToPage("/Items/AllItems");
                         options.Conventions.AllowAnonymousToPage("/Items/ItemDetails");
+
+                        //options.Conventions.AuthorizeFolder("/BookingPages");
                     }
                 );
             // AUTHENTICATION END //
@@ -83,6 +94,10 @@ namespace ZealandDimselab
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
+            // SESSION START //
+            app.UseSession(); // Starter automatisk en session med brugeren.
+            // SESSION END // 
 
             app.UseEndpoints(endpoints =>
             {

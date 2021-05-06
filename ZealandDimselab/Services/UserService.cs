@@ -29,7 +29,7 @@ namespace ZealandDimselab.Services
             return await GetObjectByKeyAsync(id);
         }
 
-        private User GetUserByEmail(string email)
+        public User GetUserByEmail(string email)
         {
             return GetUsersAsync().SingleOrDefault(u => u.Email.ToLower() == email.ToLower()); // Checks all users in list "users" if incoming email matches one of them.
         }
@@ -74,7 +74,7 @@ namespace ZealandDimselab.Services
                 new Claim(ClaimTypes.Name, email)
             };
 
-            if (email == "Admin@Dimselab") // This checks if the user attempts to login as an administrator account.
+            if (email.ToLower() == "Admin@Dimselab.dk".ToLower()) // This checks if the user attempts to login as an administrator account.
             {
                 claims.Add(new Claim(ClaimTypes.Role, "admin"));
             }

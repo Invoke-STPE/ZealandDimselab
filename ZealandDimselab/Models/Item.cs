@@ -28,5 +28,11 @@ namespace ZealandDimselab.Models
         {
             return this.Id == item.Id && this.Name == item.Name && this.Description == item.Description;
         }
+
+
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
 }
