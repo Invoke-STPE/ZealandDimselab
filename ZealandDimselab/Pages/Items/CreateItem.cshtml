@@ -14,22 +14,23 @@
                 <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
             </p>
             <col style="width: 5%">
-            <col style="width: 30%">
+            <col style="width: 25%">
             <col style="width: 52%">
-            <col style="width: 13%">
+            <col style="width: 18%">
         }
         else
         {
             <col style="width: 30%">
-            <col style="width: 62%">
-            <col style="width: 8%">
+            <col style="width: 60%">
+            <col style="width: 10%">
         }
     }
     else
     {
         <col style="width: 30%">
-        <col style="width: 62%">
-        <col style="width: 8%">
+        <col style="width: 60%">
+        <col style="width: 10%">
+
     }
 
     <thead>
@@ -90,6 +91,9 @@
                     <ol class="p-0">
                         <li class="list-inline-item">
                             <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-search-plus"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Add To Cart" asp-page="../BookingPages/BookingCart" asp-route-id="@item.Id" asp-page-handler="AddToCart"><i class="fa fa-cart-plus"></i></a>
                         </li>
                         @if (HttpContext.User.Identity.Name != null) // Only shows edit/delete if logged in as admin
                         {
