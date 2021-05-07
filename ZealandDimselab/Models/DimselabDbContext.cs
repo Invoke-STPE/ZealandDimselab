@@ -29,8 +29,8 @@ namespace ZealandDimselab.Models
         {
             if (!options.IsConfigured) // If no options provided by DimselabDbContext constructor, use this:
             {
-                //options.UseSqlServer(@"Server=tcp:dimselab.database.windows.net,1433;Initial Catalog=dimselabDb;Persist Security Info=False;User ID=dimselabadmin;Password=516zVIbTxK5T;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-                options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=DimseLabTest;Trusted_Connection=True");
+                options.UseSqlServer(@"Server=tcp:dimselab.database.windows.net,1433;Initial Catalog=dimselabDb;Persist Security Info=False;User ID=dimselabadmin;Password=516zVIbTxK5T;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                
             }
         }
 

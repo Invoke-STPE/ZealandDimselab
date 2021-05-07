@@ -12,7 +12,7 @@ namespace ZealandDimselab.Models
         [Key]
         public int Id { get; set; }
         [Required] public List<BookingItem> BookingItems { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)] 
         public int UserId { get; set; }
         public User User { get; set; }
         public string Details { get; set; }

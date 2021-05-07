@@ -106,7 +106,6 @@ namespace ZealandDimselab.Pages.BookingPages
                     BookingDate = DateTime.Now.Date,
                     ReturnDate = returnDate.Date,
                     UserId = user.Id,
-                    User = user,
                     BookingItems = new List<BookingItem>()
                 };
 
