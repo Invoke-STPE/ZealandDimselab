@@ -115,7 +115,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 }
                 await bookingService.AddBookingAsync(_booking);
             }
-            return Page();
+            return RedirectToPage("MyBookings");
         }
 
         public IActionResult OnPostClearCart()
