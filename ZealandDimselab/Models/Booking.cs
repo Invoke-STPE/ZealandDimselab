@@ -9,11 +9,12 @@ namespace ZealandDimselab.Models
 {
     public class Booking
     {
-        [Key] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+        [Key]
         public int Id { get; set; }
-        [Required] [DatabaseGenerated(DatabaseGeneratedOption.None)] public List<Item> Items { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.None)] public int UserId { get; set; }
-        [ForeignKey("UserId")] public User User { get; set; }
+        [Required] public List<BookingItem> BookingItems { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)] 
+        public int UserId { get; set; }
+        public User User { get; set; }
         public string Details { get; set; }
         [Required] public DateTime BookingDate { get; set; }
         [Required] public DateTime ReturnDate { get; set; }
@@ -25,9 +26,9 @@ namespace ZealandDimselab.Models
             
         }
 
-        public Booking(List<Item> items, User user, string details, DateTime bookingDate, DateTime returnDate)
+        public Booking(List<BookingItem> items, User user, string details, DateTime bookingDate, DateTime returnDate)
         {
-            Items = items;
+            BookingItems = items;
             User = user;
             Details = details;
             BookingDate = bookingDate;
@@ -35,10 +36,10 @@ namespace ZealandDimselab.Models
 
         }
 
-        public Booking(int id, List<Item> items, User user, string details, DateTime bookingDate, DateTime returnDate)
+        public Booking(int id, List<BookingItem> items, User user, string details, DateTime bookingDate, DateTime returnDate)
         {
             Id = id;
-            Items = items;
+            BookingItems = items;
             User = user;
             Details = details;
             BookingDate = bookingDate;

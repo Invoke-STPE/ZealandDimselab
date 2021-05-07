@@ -13,7 +13,7 @@ namespace ZealandDimselab.Models
         [Required] [StringLength(100)] public string Name { get; set; }
         [Required] [StringLength(100)] public string Email { get; set; }
         [Required] [StringLength(100)] public string Password { get; set; }
-        [Required] public List<Booking> Bookings { get; set; }
+        [Required] public ICollection<Booking> Bookings { get; set; }
 
         public User()
         {
@@ -36,7 +36,7 @@ namespace ZealandDimselab.Models
             Bookings = new List<Booking>();
         }
 
-        public List<Booking> GetUserBookings()
+        public ICollection<Booking> GetUserBookings()
         {
             return Bookings;
         }

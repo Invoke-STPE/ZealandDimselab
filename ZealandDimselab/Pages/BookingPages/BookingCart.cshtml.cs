@@ -91,15 +91,29 @@ namespace ZealandDimselab.Pages.BookingPages
             User user = userService.GetUserByEmail(HttpContext.User.Identity.Name);
             if (user != null)
             {
-                Booking newBooking = new Booking()
+                //Booking newBooking = new Booking()
+                //{
+                //    Items = new List<Item>(),
+                //    UserId =  user.Id,
+                //    Details = details,
+                //    BookingDate = DateTime.Now.Date,
+                //    ReturnDate = returnDate.Date
+                //};
+
+                var _booking = new Booking
                 {
-                    Items = new List<Item>(),
-                    UserId =  user.Id,
                     Details = details,
                     BookingDate = DateTime.Now.Date,
-                    ReturnDate = returnDate.Date
+                    ReturnDate = returnDate.Date,
+                    UserId = user.Id,
+                    BookingItems = new List<BookingItem>()
                 };
-                await bookingService.AddBookingAsync(newBooking);
+
+                foreach (var item in Cart)
+                {
+                    _booking.BookingItems.Add(new BookingItem { ItemId = item.Id }); 
+                }
+                await bookingService.AddBookingAsync(_booking);
             }
             return Page();
         }
