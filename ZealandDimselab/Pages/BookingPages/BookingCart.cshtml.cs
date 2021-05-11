@@ -88,7 +88,7 @@ namespace ZealandDimselab.Pages.BookingPages
         public async Task<IActionResult> OnPostCreate(string details, DateTime returnDate)
         {
             Cart = GetCart();
-            User user = userService.GetUserByEmail(HttpContext.User.Identity.Name);
+            User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
             if (user != null)
             {
                 //Booking newBooking = new Booking()

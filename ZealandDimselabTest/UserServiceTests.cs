@@ -32,7 +32,7 @@ namespace ZealandDimselabTest
             var expectedCount = 5;
 
             // Act
-            var actualCount = userService.GetUsersAsync().ToList().Count;
+            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -47,7 +47,7 @@ namespace ZealandDimselabTest
             await userService.AddUserAsync(user);
 
             // Act
-            var actualCount = userService.GetUsersAsync().ToList().Count;
+            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
            
@@ -61,7 +61,7 @@ namespace ZealandDimselabTest
             User user = new User("Mike", "Mike@gmail.com", "Mike1234");
             // Act
             await userService.AddUserAsync(user);
-            user = userService.GetUserByIdAsync(6);
+            user = await userService.GetUserByIdAsync(6);
             // Assert
             Assert.AreNotEqual(user.Password, passwordIsNot);
         }
@@ -73,7 +73,7 @@ namespace ZealandDimselabTest
             var id = 1;
             await userService.DeleteUserAsync(id);
             // Act
-            int actualCount = userService.GetUsersAsync().ToList().Count;
+            int actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -86,7 +86,7 @@ namespace ZealandDimselabTest
             string expectedEmail = "Oscar@gmail.com";
 
             // Act
-            User actualUser = userService.GetUserByIdAsync(3);
+            User actualUser = await userService.GetUserByIdAsync(3);
 
             // Assert
             Assert.AreEqual(expectedname, actualUser.Name);
@@ -97,7 +97,7 @@ namespace ZealandDimselabTest
         public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
         {
             // Arrange
-            User user = userService.GetUserByIdAsync(3); 
+            User user = await userService .GetUserByIdAsync(3); 
             string expectedName = "Hoscar";
             string expectedEmail = "Hoscar@gmail.com";
 
@@ -105,7 +105,7 @@ namespace ZealandDimselabTest
             user.Name = expectedName;
             user.Email = expectedEmail;
             await userService.UpdateUserAsync(user);
-            User actualUser = userService.GetUserByIdAsync(3);
+            User actualUser = await userService .GetUserByIdAsync(3);
 
             // Assert
 
@@ -114,14 +114,14 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void ValidateLogin_ValidLogin_ReturnsTrue()
+        public async Task ValidateLogin_ValidLogin_ReturnsTrue()
         {
             // Arrange
             string correctEmail = "Steven@gmail.com";
             string correctPassword = "Steven1234";
             bool expectedLoginResult;
             // Act
-            expectedLoginResult = userService.ValidateLogin(correctEmail, correctPassword);
+            expectedLoginResult = await userService.ValidateLogin(correctEmail, correctPassword);
 
             // Assert
 
@@ -130,14 +130,14 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
+        public async Task ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
         {
             // Arrange
             string correctEmail = "Steven@gmail.com";
             string inCorrectPassword = "StevenIncorrect";
             bool expectedLoginResult;
             // Act
-            expectedLoginResult = userService.ValidateLogin(correctEmail, inCorrectPassword);
+            expectedLoginResult = await userService.ValidateLogin(correctEmail, inCorrectPassword);
 
             // Assert
 
@@ -146,14 +146,14 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void ValidateLogin_InvalidEmailLogin_ReturnsFalse()
+        public async Task ValidateLogin_InvalidEmailLogin_ReturnsFalse()
         {
             // Arrange
             string inCorrectEmail = "Steven@outlook.com";
             string correctPassword = "Steven1234";
             bool expectedLoginResult;
             // Act
-            expectedLoginResult = userService.ValidateLogin(inCorrectEmail, correctPassword);
+            expectedLoginResult = await userService.ValidateLogin(inCorrectEmail, correctPassword);
 
             // Assert
 
@@ -206,15 +206,16 @@ namespace ZealandDimselabTest
             private static List<User> _users;
             private readonly PasswordHasher<string> passwordHasher;
             DimselabDbContext dbContext;
-
                 public UserMockData ()
                 {
                 passwordHasher = new PasswordHasher<string>();
-                    var options = new DbContextOptionsBuilder<DimselabDbContext>()
+                var options = new DbContextOptionsBuilder<DimselabDbContext>()
                        .UseInMemoryDatabase(Guid.NewGuid().ToString()).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                        .Options;
-                        dbContext = new DimselabDbContext(options);
+                dbContext = new DimselabDbContext(options);
                 LoadDatabase();
+
+                //dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                 }
 
             public async Task AddObjectAsync(T obj)
@@ -225,15 +226,13 @@ namespace ZealandDimselabTest
 
             public async Task DeleteObjectAsync(T obj)
             {
-                dbContext.Entry<T>(obj).State = EntityState.Detached;
                 dbContext.Set<T>().Remove(obj);
                 await dbContext.SaveChangesAsync();
             }
 
             public async Task<T> GetObjectByKeyAsync(int id)
             {
-
-                return await dbContext.Set<T>().FindAsync(id);
+                    return await dbContext.Set<T>().FindAsync(id);
             }
 
             public async Task<IEnumerable<T>> GetObjectsAsync()
