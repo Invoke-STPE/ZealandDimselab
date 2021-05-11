@@ -9,17 +9,14 @@ namespace ZealandDimselab.Services
     public class ItemService
     {
         private ItemDbService _itemDbService;
-
-        private List<Item> items;
         public ItemService(IDbService<Item> dbService, ItemDbService itemDbService)
         {
             _itemDbService = itemDbService;
-            items = _itemDbService.GetObjectsAsync().Result.ToList();
         }
 
-        public List<Item> GetAllItems()
+        public async Task<IEnumerable<Item>> GetAllItems()
         {
-            return items;
+            return await _itemDbService.GetObjectsAsync();
         }
 
         public async Task<Item> GetItemByIdAsync(int id)
