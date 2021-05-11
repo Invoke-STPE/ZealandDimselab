@@ -74,7 +74,7 @@ namespace ZealandDimselabTest
             await bookingService.AddBookingAsync(booking);
 
             // Act
-            var actualCount = bookingService.GetAllBookings().ToList().Count;
+            var actualCount = bookingService.GetAllBookings().Result.ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
