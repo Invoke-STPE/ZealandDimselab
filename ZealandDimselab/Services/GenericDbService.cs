@@ -7,7 +7,7 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class GenericDbService<T> : IBookingDb<T> where T : class
+    public class GenericDbService<T> : IDbService<T> where T : class
     {
         /// <summary>
         /// Gets all objects of the type from the database

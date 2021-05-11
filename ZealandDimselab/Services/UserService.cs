@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
+using ZealandDimselab.Interfaces;
 
 namespace ZealandDimselab.Services
 {
@@ -15,7 +16,7 @@ namespace ZealandDimselab.Services
         private PasswordHasher<string> _passwordHasher;
         private readonly IDbService<User> dbService;
 
-        public UserService(IBookingDb<User> dbService)
+        public UserService(IDbService<User> dbService)
         {
             this.dbService = dbService;
             _passwordHasher = new PasswordHasher<string>();

@@ -9,9 +9,9 @@ namespace ZealandDimselab.Services
     public class GenericService <T>
     {
         private List<T> _objectList;
-        public IBookingDb<T> DbService { get; set; }
+        public IDbService<T> DbService { get; set; }
 
-        public GenericService(IBookingDb<T> dbService)
+        public GenericService(IDbService<T> dbService)
         {
             DbService = dbService;
             _objectList = dbService.GetObjectsAsync().Result.ToList();

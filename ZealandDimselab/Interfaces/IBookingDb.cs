@@ -7,7 +7,7 @@ using ZealandDimselab.Services;
 
 namespace ZealandDimselab.Interfaces
 {
-    public interface IBookingDb : IBookingDb<Booking>
+    public interface IBookingDb : IDbService<Booking>
     {
         public void TestMethod();
     }

@@ -15,7 +15,7 @@ namespace ZealandDimselabTest
     [TestClass]
     public class UserServiceTests
     {
-        private IBookingDb<User> repository;
+        private IDbService<User> repository;
         private UserService userService;
 
         [TestInitialize]
@@ -201,7 +201,7 @@ namespace ZealandDimselabTest
             Assert.IsNull(claimRole);
         }
 
-        internal class UserMockData<T> : IBookingDb<T> where T : class
+        internal class UserMockData<T> : IDbService<T> where T : class
         {
             private static List<User> _users;
             private readonly PasswordHasher<string> passwordHasher;

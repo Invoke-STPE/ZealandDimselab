@@ -8,7 +8,7 @@ namespace ZealandDimselab.Services
 {
     public class CategoryService: GenericService<Category>
     {
-        public CategoryService(IBookingDb<Category> dbService) : base(dbService)
+        public CategoryService(IDbService<Category> dbService) : base(dbService)
         {
         }
 

@@ -15,7 +15,7 @@ namespace ZealandDimselabTest
     [TestClass]
     public class GenericServiceTest
     {
-        private IBookingDb<Item> _repositoryItem;
+        private IDbService<Item> _repositoryItem;
         private GenericService<Item> _genericService;
         private List<Item> _objectList;
 
@@ -158,7 +158,7 @@ namespace ZealandDimselabTest
         }
 
 
-        internal class MockData<T> : IBookingDb<T> where T : class
+        internal class MockData<T> : IDbService<T> where T : class
         {
             DimselabDbContext dbContext;
 
