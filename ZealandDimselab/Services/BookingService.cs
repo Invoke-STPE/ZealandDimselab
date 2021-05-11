@@ -13,9 +13,9 @@ namespace ZealandDimselab.Services
     {
         private UserService UserService;
         private List<Booking> bookings;
-        private readonly IDbService<Booking> dbService;
+        private readonly BookingDbService dbService;
 
-        public BookingService(IDbService<Booking> dbService)
+        public BookingService(BookingDbService dbService)
         {
             this.dbService = dbService;
             bookings = dbService.GetObjectsAsync().Result.ToList();
