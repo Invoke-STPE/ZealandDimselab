@@ -40,12 +40,12 @@ namespace ZealandDimselab.Services
             await _itemDbService.UpdateObjectAsync(item);
         }
         
-        public IEnumerable<Item> FilterByName(string name)
-        {
-            return from item in GetAllItems()
-                   where item.Name == name
-                   select item;
-        }
+        //public IEnumerable<Item> FilterByName(string name)
+        //{
+        //    return from item in GetAllItems()
+        //           where item.Name == name
+        //           select item;
+        //}
 
         public async Task<List<Item>> GetAllItemsWithCategoriesAsync()
         {
