@@ -19,17 +19,17 @@ namespace ZealandDimselab.Pages.BookingPages
         {
             this.bookingService = bookingService;
         }
-        public IActionResult OnGet()
+        public IActionResult OnGetAsync()
         {
             
             if (HttpContext.User.IsInRole("admin"))
             {
-                Bookings = bookingService.GetAllBookings();
+                Bookings = bookingService.GetAllBookings().Result.ToList();
                 //Bookings = null;
             } else
             {
                 //Bookings = MockData.MockDataBooking.GetBookings();
-                Bookings = bookingService.GetBookingsByEmail(HttpContext.User.Identity.Name);
+                Bookings = bookingService.GetBookingsByEmailAsync(HttpContext.User.Identity.Name).Result;
             }
 
             return Page();
