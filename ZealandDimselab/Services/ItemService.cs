@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
     public class ItemService
     {
-        private ItemDbService _itemDbService;
-        public ItemService(IDbService<Item> dbService, ItemDbService itemDbService)
+        private IItemDb _itemDbService;
+        public ItemService(IItemDb itemDbService)
         {
             _itemDbService = itemDbService;
         }
