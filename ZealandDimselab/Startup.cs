@@ -33,7 +33,7 @@ namespace ZealandDimselab
             // DATABASE START //
             services.AddDbContext<DimselabDbContext>();
             services.AddTransient<IDbService<Item>, GenericDbService<Item>>();
-            services.AddTransient<IDbService<User>, GenericDbService<User>>();
+            services.AddScoped<IDbService<User>, GenericDbService<User>>();
             services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
             services.AddTransient<IDbService<Booking>, GenericDbService<Booking>>();
             services.AddTransient<ItemDbService, ItemDbService>();
@@ -41,7 +41,7 @@ namespace ZealandDimselab
             // DATABASE END //
 
             // SERVICES START //
-            services.AddSingleton<UserService, UserService>();
+            services.AddScoped<UserService, UserService>();
             services.AddSingleton<ItemService, ItemService>();
             services.AddSingleton<BookingService, BookingService>();
 

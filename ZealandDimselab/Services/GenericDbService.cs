@@ -59,8 +59,9 @@ namespace ZealandDimselab.Services
         {
             await using (var context = new DimselabDbContext())
             {
+                
                 context.Set<T>().Remove(obj);
-                await context.SaveChangesAsync();
+                //await context.SaveChangesAsync();
             }
         }
 

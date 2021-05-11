@@ -61,7 +61,7 @@ namespace ZealandDimselabTest
             User user = new User("Mike", "Mike@gmail.com", "Mike1234");
             // Act
             await userService.AddUserAsync(user);
-            user = await userService.GetUserByIdAsync(6);
+            user = userService.GetUserByIdAsync(6);
             // Assert
             Assert.AreNotEqual(user.Password, passwordIsNot);
         }
@@ -86,7 +86,7 @@ namespace ZealandDimselabTest
             string expectedEmail = "Oscar@gmail.com";
 
             // Act
-            User actualUser = await userService.GetUserByIdAsync(3);
+            User actualUser = userService.GetUserByIdAsync(3);
 
             // Assert
             Assert.AreEqual(expectedname, actualUser.Name);
@@ -97,7 +97,7 @@ namespace ZealandDimselabTest
         public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
         {
             // Arrange
-            User user = await userService.GetUserByIdAsync(3); 
+            User user = userService.GetUserByIdAsync(3); 
             string expectedName = "Hoscar";
             string expectedEmail = "Hoscar@gmail.com";
 
@@ -105,7 +105,7 @@ namespace ZealandDimselabTest
             user.Name = expectedName;
             user.Email = expectedEmail;
             await userService.UpdateUserAsync(user);
-            User actualUser = await userService.GetUserByIdAsync(3);
+            User actualUser = userService.GetUserByIdAsync(3);
 
             // Assert
 
@@ -211,7 +211,7 @@ namespace ZealandDimselabTest
                 {
                 passwordHasher = new PasswordHasher<string>();
                     var options = new DbContextOptionsBuilder<DimselabDbContext>()
-                       .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                       .UseInMemoryDatabase(Guid.NewGuid().ToString()).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                        .Options;
                         dbContext = new DimselabDbContext(options);
                 LoadDatabase();
@@ -225,13 +225,14 @@ namespace ZealandDimselabTest
 
             public async Task DeleteObjectAsync(T obj)
             {
-                
+                dbContext.Entry<T>(obj).State = EntityState.Detached;
                 dbContext.Set<T>().Remove(obj);
                 await dbContext.SaveChangesAsync();
             }
 
             public async Task<T> GetObjectByKeyAsync(int id)
             {
+
                 return await dbContext.Set<T>().FindAsync(id);
             }
 
