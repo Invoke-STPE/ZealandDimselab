@@ -7,7 +7,7 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class ItemDbService: GenericDbService<Item>
+    public class ItemDbService: GenericDbService<Item>, IDbService<Item>
     {
         public async Task<Item> GetItemWithCategoriesAsync(int id)
         {
