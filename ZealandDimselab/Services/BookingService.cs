@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
@@ -13,9 +14,9 @@ namespace ZealandDimselab.Services
     {
         private UserService UserService;
         private List<Booking> bookings;
-        private readonly BookingDbService dbService;
+        private readonly IBookingDb dbService;
 
-        public BookingService(BookingDbService dbService)
+        public BookingService(IBookingDb dbService)
         {
             this.dbService = dbService;
             bookings = dbService.GetObjectsAsync().Result.ToList();

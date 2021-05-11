@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZealandDimselab.Services
 {
-    public interface IDbService<T>
+    public interface IBookingDb<T>
     {
         Task<IEnumerable<T>> GetObjectsAsync();
         Task<T> GetObjectByKeyAsync(int id);

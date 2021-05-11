@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
@@ -14,12 +15,12 @@ namespace ZealandDimselabTest
     public class BookingServiceTest
     {
         private BookingService bookingService;
-        private IDbService<Booking> dbService;
+        private BookingMockData dbService;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            dbService = new BookingMockData<Booking>();
+            dbService = new BookingMockData();
             bookingService = new BookingService(dbService);
         }
 
@@ -57,7 +58,7 @@ namespace ZealandDimselabTest
             //// Assert
             //Assert.AreEqual(expectedCount, actualCount);
             ////////////////////////////////////////////////////////////////////////////////////
-            
+
             // Arrange
             var expectedCount = 4;
 
@@ -130,7 +131,7 @@ namespace ZealandDimselabTest
         //}
 
 
-        public class BookingMockData<T> : IDbService<T> where T : class
+        public class BookingMockData : IBookingDb
         {
             private DimselabDbContext dbContext;
 
@@ -143,47 +144,40 @@ namespace ZealandDimselabTest
                 LoadDatabase();
             }
 
-            public async Task<IEnumerable<T>> GetObjectsAsync()
+            public async Task<IEnumerable<Booking>> GetObjectsAsync()
             {
-                //return await dbContext.Set<T>().AsNoTracking().ToListAsync();
-                List<Booking> booking = new List<Booking>();
-                //dbContext.Bookings
-                //    //.Include(b => b.User)
-                //    //.Include(i => i.Items)
-                //    //.Include(bd => bd.BookingDate)
-                //    //.Include(rd => rd.ReturnDate)
-                //    .Include(b => b).ToList();
+                List<Booking> bookings;
 
-                foreach (var Booking in dbContext.Bookings)
-                {
-                    booking.Add(Booking);
-                }
-
-                return (IEnumerable<T>)booking;
+                bookings = await dbContext.Bookings
+                    .Include(u => u.User)
+                    .Include(i => i.BookingItems)
+                    .ThenInclude(bi => bi.Item).ToListAsync();
+                return bookings;
             }
 
-            public async Task AddObjectAsync(T obj)
+            public async Task<Booking> GetObjectByKeyAsync(int id)
             {
-                await dbContext.Set<T>().AddAsync(obj);
+                return await dbContext.Set<Booking>().FindAsync(id);
+            }
+
+            public async Task AddObjectAsync(Booking obj)
+            {
+                await dbContext.Set<Booking>().AddAsync(obj);
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task DeleteObjectAsync(T obj)
+            public async Task DeleteObjectAsync(Booking obj)
             {
-                dbContext.Set<T>().Remove(obj);
+                dbContext.Set<Booking>().Remove(obj);
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task UpdateObjectAsync(T obj)
+            public async Task UpdateObjectAsync(Booking obj)
             {
-                dbContext.Set<T>().Update(obj);
+                dbContext.Set<Booking>().Update(obj);
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task<T> GetObjectByKeyAsync(int id)
-            {
-                return await dbContext.Set<T>().FindAsync(id);
-            }
 
             private async Task LoadDatabase()
             {
@@ -214,6 +208,10 @@ namespace ZealandDimselabTest
                 return bookingItems;
             }
 
+            public void TestMethod()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

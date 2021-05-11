@@ -4,11 +4,12 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class BookingDbService : GenericDbService<Booking>, IDbService<Booking>
+    public class BookingDbService : GenericDbService<Booking>, IBookingDb
     {
 
         public override async Task<IEnumerable<Booking>> GetObjectsAsync()
@@ -16,12 +17,17 @@ namespace ZealandDimselab.Services
             List<Booking> bookings;
             using (var context = new DimselabDbContext())
             {
-                bookings = context.Bookings
+                bookings = await context.Bookings
                     .Include(u => u.User)
                     .Include(i => i.BookingItems)
-                    .ThenInclude(bi => bi.Item).ToList();
+                    .ThenInclude(bi => bi.Item).ToListAsync();
             }
             return bookings;
+        }
+
+        public void TestMethod()
+        {
+            throw new NotImplementedException();
         }
     }
 }

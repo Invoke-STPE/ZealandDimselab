@@ -14,9 +14,9 @@ namespace ZealandDimselab.Services
     {
         private PasswordHasher<string> _passwordHasher;
         private List<User> users;
-        private readonly IDbService<User> dbService;
+        private readonly IBookingDb<User> dbService;
 
-        public UserService(IDbService<User> dbService)
+        public UserService(IBookingDb<User> dbService)
         {
             this.dbService = dbService;
             _passwordHasher = new PasswordHasher<string>();

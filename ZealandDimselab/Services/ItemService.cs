@@ -9,7 +9,7 @@ namespace ZealandDimselab.Services
     public class ItemService
     {
         private ItemDbService _itemDbService;
-        public ItemService(IDbService<Item> dbService, ItemDbService itemDbService)
+        public ItemService(IBookingDb<Item> dbService, ItemDbService itemDbService)
         {
             _itemDbService = itemDbService;
         }
