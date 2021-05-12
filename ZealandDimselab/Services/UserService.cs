@@ -13,7 +13,6 @@ namespace ZealandDimselab.Services
     public class UserService
     {
         private PasswordHasher<string> _passwordHasher;
-        private List<User> users;
         private readonly IDbService<User> dbService;
 
         public UserService(IDbService<User> dbService)
@@ -24,55 +23,44 @@ namespace ZealandDimselab.Services
             // Test user: Oscar Oscar@email.com password
             //User user = new User("Oscar", "Oscar@email.com", "password");
             //AddUserAsync(user);
-            users = dbService.GetObjectsAsync().Result.ToList();
         }
 
-        public List<User> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return users;
+            return await dbService.GetObjectsAsync();
         }
 
-        public User GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            return users.SingleOrDefault(u => u.Id == id);
+            return await dbService.GetObjectByKeyAsync(id);
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
+            var users = await GetUsersAsync();
             return users.SingleOrDefault(u => u.Email == email); // Checks all users in list "users" if incoming email matches one of them.
         }
 
         public async Task AddUserAsync(User user)
         {
             user.Password = _passwordHasher.HashPassword(null, user.Password);
-            users.Add(user);
             await dbService.AddObjectAsync(user);
         }
 
         public async Task DeleteUserAsync(int id)
         {
-            User user = GetUserByIdAsync(id);
-            users.Remove(user);
-            await dbService.DeleteObjectAsync(user);
+            User user = await GetUserByIdAsync(id);
+            await dbService.DeleteObjectAsync(await GetUserByIdAsync(id));
         }
         
         public async Task UpdateUserAsync(User updatedUser)
         {
-            foreach (var user in users)
-            {
-                if (user.Id == updatedUser.Id)
-                {
-                    user.Name = updatedUser.Name;
-                    user.Name = updatedUser.Email;
-                    user.Name = updatedUser.Password;
-                }
-            }
             await dbService.UpdateObjectAsync(updatedUser);
         }
 
-        public bool ValidateLogin(string email, string password)
+        public async Task<bool> ValidateLogin(string email, string password)
         {
-            var user = GetUserByEmail(email);
+            var user = await GetUserByEmail(email);
             if (user != null)
             {
                 if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
