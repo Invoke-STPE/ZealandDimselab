@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ZealandDimselab.Models;
+using ZealandDimselab.Interfaces;
 
 namespace ZealandDimselab.Services
 {
-    public class ItemDbService: GenericDbService<Item>, IDbService<Item>
+    public class ItemDbService: GenericDbService<Item>, IItemDb
     {
         public async Task<Item> GetItemWithCategoriesAsync(int id)
         {

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
@@ -35,8 +36,8 @@ namespace ZealandDimselab
             services.AddTransient<IItemDb, ItemDbService>();
             services.AddScoped<IDbService<User>, GenericDbService<User>>();
             services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
-            services.AddTransient<IDbService<Booking>, GenericDbService<Booking>>();
-            services.AddTransient<BookingService, BookingService>();
+            services.AddTransient<IBookingDb, BookingDbService>();
+            services.AddTransient<IItemDb, ItemDbService>();
             // DATABASE END //
 
             // SERVICES START //

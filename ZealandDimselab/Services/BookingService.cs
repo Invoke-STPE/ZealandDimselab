@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
@@ -12,13 +13,11 @@ namespace ZealandDimselab.Services
     public class BookingService
     {
         private UserService UserService;
-        private List<Booking> bookings;
-        private readonly IDbService<Booking> dbService;
+        private readonly IBookingDb dbService;
 
-        public BookingService(IDbService<Booking> dbService)
+        public BookingService(IBookingDb dbService)
         {
             this.dbService = dbService;
-            bookings = dbService.GetObjectsAsync().Result.ToList();
         }
 
         public async Task<IEnumerable<Booking>> GetAllBookings()
@@ -34,35 +33,22 @@ namespace ZealandDimselab.Services
 
         public async Task<Booking> GetBookingByKeyAsync(int id)
         {
-            return bookings.SingleOrDefault(u => u.Id == id);
+            return await dbService.GetObjectByKeyAsync(id);
         }
 
         public async Task AddBookingAsync(Booking booking)
         {
-            bookings.Add(booking);
             await dbService.AddObjectAsync(booking);
         }
 
         public async Task DeleteBookingAsync(int id)
         {
             Booking booking = await GetBookingByKeyAsync(id);
-            bookings.Remove(booking);
             await dbService.DeleteObjectAsync(booking);
         }
 
         public async Task UpdateBookingAsync(Booking updatedbooking)
         {
-            foreach (var booking in bookings)
-            {
-                if (booking.Id == updatedbooking.Id)
-                {
-                    booking.BookingDate = updatedbooking.BookingDate;
-                    booking.ReturnDate = updatedbooking.ReturnDate;
-                    booking.Details = updatedbooking.Details;
-                    booking.User = updatedbooking.User;
-                    booking.BookingItems = updatedbooking.BookingItems;
-                }
-            }
             await dbService.UpdateObjectAsync(updatedbooking);
         }
         
