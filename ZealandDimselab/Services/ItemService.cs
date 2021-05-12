@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
@@ -12,7 +13,7 @@ namespace ZealandDimselab.Services
         private IItemDb _itemDbService;
         public ItemService(IItemDb itemDbService)
         {
-            _itemDbService = itemDbService;
+            _itemDbService = dbService;
         }
 
         public async Task<IEnumerable<Item>> GetAllItems()
