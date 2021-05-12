@@ -13,7 +13,7 @@ namespace ZealandDimselab.Services
         private IItemDb _itemDbService;
         public ItemService(IItemDb itemDbService)
         {
-            _itemDbService = dbService;
+            _itemDbService = itemDbService;
         }
 
         public async Task<IEnumerable<Item>> GetAllItems()
