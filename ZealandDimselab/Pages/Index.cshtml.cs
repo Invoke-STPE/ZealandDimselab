@@ -22,9 +22,9 @@ namespace ZealandDimselab.Pages
             this.categoryService = categoryService;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Categories = categoryService.GetAllCategories();
+            Categories = await categoryService.GetAllCategoriesAsync();
         }
     }
 }

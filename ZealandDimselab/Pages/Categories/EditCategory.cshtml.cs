@@ -23,7 +23,7 @@ namespace ZealandDimselab.Pages.Categories
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Categories = categoryService.GetAllCategories();
+            Categories = await categoryService.GetAllCategoriesAsync();
             Category = await categoryService.GetCategoryByIdAsync(id);
             return Page();
         }
@@ -32,7 +32,7 @@ namespace ZealandDimselab.Pages.Categories
         {
             if (!ModelState.IsValid)
             {
-                Categories = categoryService.GetAllCategories();
+                Categories = await categoryService.GetAllCategoriesAsync();
                 Category = await categoryService.GetCategoryByIdAsync(id);
                 return Page();
             }
