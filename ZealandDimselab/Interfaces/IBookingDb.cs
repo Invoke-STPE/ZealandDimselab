@@ -9,6 +9,5 @@ namespace ZealandDimselab.Interfaces
 {
     public interface IBookingDb : IDbService<Booking>
     {
-        public void TestMethod();
     }
 }

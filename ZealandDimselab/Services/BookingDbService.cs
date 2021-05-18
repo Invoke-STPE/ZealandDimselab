@@ -24,10 +24,5 @@ namespace ZealandDimselab.Services
             }
             return bookings;
         }
-
-        public void TestMethod()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
