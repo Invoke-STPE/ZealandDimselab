@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
@@ -18,6 +20,7 @@ namespace ZealandDimselab.Pages.Items
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
         [BindProperty] public int CategoryId { get; set; }
+        [BindProperty] public IFormFile FileUpload { get; set; }
 
         public CreateItemModel(ItemService itemService, CategoryService categoryService)
         {
@@ -52,6 +55,7 @@ namespace ZealandDimselab.Pages.Items
                 if (CategoryId == 0) return await OnGetAsync();
                 return await OnGetFilterByCategoryAsync(CategoryId);
             }
+
 
             await itemService.AddItemAsync(Item);
 
