@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
@@ -13,7 +14,7 @@ namespace ZealandDimselab.Services
         /// Gets all objects of the type from the database
         /// </summary>
         /// <returns>Returns all objects in the Set of the given type as List</returns>
-        public async Task<IEnumerable<T>> GetObjectsAsync()
+        public virtual async Task<IEnumerable<T>> GetObjectsAsync()
         {
             await using (var context = new DimselabDbContext())
             {
@@ -26,7 +27,7 @@ namespace ZealandDimselab.Services
         /// </summary>
         /// <param name="key">Key of the object you wish to find</param>
         /// <returns>Object with the matching key</returns>
-        public async Task<T> GetObjectByKeyAsync(int key)
+        public virtual async Task<T> GetObjectByKeyAsync(int key)
         {
             await using (var context = new DimselabDbContext())
             {
@@ -41,7 +42,7 @@ namespace ZealandDimselab.Services
         /// </summary>
         /// <param name="obj">The object you want to add. Has to be the correct type</param>
         /// <returns>async task</returns>
-        public async Task AddObjectAsync(T obj)
+        public virtual async Task AddObjectAsync(T obj)
         {
             await using (var context = new DimselabDbContext())
             {
@@ -55,12 +56,13 @@ namespace ZealandDimselab.Services
         /// </summary>
         /// <param name="obj">The object you want to delete</param>
         /// <returns>async Task</returns>
-        public async Task DeleteObjectAsync(T obj)
+        public virtual async Task DeleteObjectAsync(T obj)
         {
             await using (var context = new DimselabDbContext())
             {
+                
                 context.Set<T>().Remove(obj);
-                await context.SaveChangesAsync();
+                //await context.SaveChangesAsync();
             }
         }
 
@@ -69,7 +71,7 @@ namespace ZealandDimselab.Services
         /// </summary>
         /// <param name="obj">The updated object</param>
         /// <returns>async Task</returns>
-        public async Task UpdateObjectAsync(T obj)
+        public virtual async Task UpdateObjectAsync(T obj)
         {
             await using (var context = new DimselabDbContext())
             {

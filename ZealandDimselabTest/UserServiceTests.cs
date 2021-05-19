@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
@@ -15,13 +16,13 @@ namespace ZealandDimselabTest
     [TestClass]
     public class UserServiceTests
     {
-        private IDbService<User> repository;
+        private IUserDb repository;
         private UserService userService;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            repository = new UserMockData<User>();
+            repository = new UserMockData();
             userService = new UserService(repository);
         }
 
@@ -32,7 +33,7 @@ namespace ZealandDimselabTest
             var expectedCount = 5;
 
             // Act
-            var actualCount = userService.GetUsersAsync().ToList().Count;
+            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -47,7 +48,7 @@ namespace ZealandDimselabTest
             await userService.AddUserAsync(user);
 
             // Act
-            var actualCount = userService.GetUsersAsync().ToList().Count;
+            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
            
@@ -65,6 +66,20 @@ namespace ZealandDimselabTest
             // Assert
             Assert.AreNotEqual(user.Password, passwordIsNot);
         }
+
+        [TestMethod]
+        public async Task AddUserAsync_AddUserEmailAlreadyExists_DoesNotIncrementCount()
+        {
+            // Arrange
+            int expectedCount = 5;
+            string emailInUse = "Steven@gmail.com";
+            User user = new User("Mike", emailInUse, "Mike1234");
+            int actualUserCount;
+            // Act
+            actualUserCount = (await userService.GetUsersAsync()).ToList().Count;
+            // Assert
+            Assert.AreEqual(expectedCount, actualUserCount);
+        }
         [TestMethod]
         public async Task DeleteUserAsync_RemovesUser_DecreasesCount()
         {
@@ -73,7 +88,7 @@ namespace ZealandDimselabTest
             var id = 1;
             await userService.DeleteUserAsync(id);
             // Act
-            int actualCount = userService.GetUsersAsync().ToList().Count;
+            int actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
             // Assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -97,7 +112,7 @@ namespace ZealandDimselabTest
         public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
         {
             // Arrange
-            User user = await userService.GetUserByIdAsync(3); 
+            User user = await userService .GetUserByIdAsync(3); 
             string expectedName = "Hoscar";
             string expectedEmail = "Hoscar@gmail.com";
 
@@ -105,7 +120,7 @@ namespace ZealandDimselabTest
             user.Name = expectedName;
             user.Email = expectedEmail;
             await userService.UpdateUserAsync(user);
-            User actualUser = await userService.GetUserByIdAsync(3);
+            User actualUser = await userService .GetUserByIdAsync(3);
 
             // Assert
 
@@ -114,14 +129,14 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void ValidateLogin_ValidLogin_ReturnsTrue()
+        public async Task ValidateLogin_ValidLogin_ReturnsTrue()
         {
             // Arrange
             string correctEmail = "Steven@gmail.com";
             string correctPassword = "Steven1234";
             bool expectedLoginResult;
             // Act
-            expectedLoginResult = userService.ValidateLogin(correctEmail, correctPassword);
+            expectedLoginResult = await userService.ValidateLogin(correctEmail, correctPassword);
 
             // Assert
 
@@ -130,14 +145,14 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
+        public async Task ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
         {
             // Arrange
             string correctEmail = "Steven@gmail.com";
             string inCorrectPassword = "StevenIncorrect";
             bool expectedLoginResult;
             // Act
-            expectedLoginResult = userService.ValidateLogin(correctEmail, inCorrectPassword);
+            expectedLoginResult = await userService.ValidateLogin(correctEmail, inCorrectPassword);
 
             // Assert
 
@@ -146,14 +161,14 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void ValidateLogin_InvalidEmailLogin_ReturnsFalse()
+        public async Task ValidateLogin_InvalidEmailLogin_ReturnsFalse()
         {
             // Arrange
             string inCorrectEmail = "Steven@outlook.com";
             string correctPassword = "Steven1234";
             bool expectedLoginResult;
             // Act
-            expectedLoginResult = userService.ValidateLogin(inCorrectEmail, correctPassword);
+            expectedLoginResult = await userService.ValidateLogin(inCorrectEmail, correctPassword);
 
             // Assert
 
@@ -201,48 +216,48 @@ namespace ZealandDimselabTest
             Assert.IsNull(claimRole);
         }
 
-        internal class UserMockData<T> : IDbService<T> where T : class
+        internal class UserMockData: IUserDb
         {
             private static List<User> _users;
             private readonly PasswordHasher<string> passwordHasher;
             DimselabDbContext dbContext;
-
                 public UserMockData ()
                 {
                 passwordHasher = new PasswordHasher<string>();
-                    var options = new DbContextOptionsBuilder<DimselabDbContext>()
-                       .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                var options = new DbContextOptionsBuilder<DimselabDbContext>()
+                       .UseInMemoryDatabase(Guid.NewGuid().ToString()).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                        .Options;
-                        dbContext = new DimselabDbContext(options);
+                dbContext = new DimselabDbContext(options);
                 LoadDatabase();
+
+                //dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                 }
 
-            public async Task AddObjectAsync(T obj)
+            public async Task AddObjectAsync(User obj)
             {
-                await dbContext.Set<T>().AddAsync(obj);
+                await dbContext.Set<User>().AddAsync(obj);
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task DeleteObjectAsync(T obj)
+            public async Task DeleteObjectAsync(User obj)
             {
-                
-                dbContext.Set<T>().Remove(obj);
+                dbContext.Set<User>().Remove(obj);
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task<T> GetObjectByKeyAsync(int id)
+            public async Task<User> GetObjectByKeyAsync(int id)
             {
-                return await dbContext.Set<T>().FindAsync(id);
+                    return await dbContext.Set<User>().FindAsync(id);
             }
 
-            public async Task<IEnumerable<T>> GetObjectsAsync()
+            public async Task<IEnumerable<User>> GetObjectsAsync()
             {
-                return await dbContext.Set<T>().AsNoTracking().ToListAsync();
+                return await dbContext.Set<User>().AsNoTracking().ToListAsync();
             }
 
-            public async Task UpdateObjectAsync(T obj)
+            public async Task UpdateObjectAsync(User obj)
             {
-                dbContext.Set<T>().Update(obj);
+                dbContext.Set<User>().Update(obj);
                 await dbContext.SaveChangesAsync();
                 
             }
@@ -266,6 +281,20 @@ namespace ZealandDimselabTest
             private string PasswordEncrypt(string password)
             {
                 return passwordHasher.HashPassword(null, password);
+            }
+
+            public async Task<User> GetUserByEmail(string email)
+            {
+                
+                    return dbContext.Users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower());
+                
+            }
+
+            public async Task<bool> DoesEmailExist(string email)
+            {
+               
+                    return dbContext.Users.Any(u => u.Email.ToLower() == email.ToLower());
+               
             }
         }
     }

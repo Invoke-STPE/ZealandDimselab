@@ -7,15 +7,18 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
+using ZealandDimselab.Interfaces;
 
 namespace ZealandDimselab.Services
 {
-    public class UserService: GenericService<User>
+    public class UserService
     {
         private PasswordHasher<string> _passwordHasher;
+        private readonly IUserDb dbService;
 
-        public UserService(IDbService<User> DbService): base(DbService)
+        public UserService(IUserDb dbService)
         {
+            this.dbService = dbService;
             _passwordHasher = new PasswordHasher<string>();
             // Test user: Admin Admin@Dimselab.dk secret1234 (don't tell anyone)
             // Test user: Oscar Oscar@email.com password
@@ -23,45 +26,50 @@ namespace ZealandDimselab.Services
             //AddUserAsync(user);
         }
 
-        public List<User> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return GetAllObjects();
+            return await dbService.GetObjectsAsync();
         }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            return await GetObjectByKeyAsync(id);
+            return await dbService.GetObjectByKeyAsync(id);
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return GetUsersAsync().SingleOrDefault(u => u.Email.ToLower() == email.ToLower()); // Checks all users in list "users" if incoming email matches one of them.
+            
+            return await dbService.GetUserByEmail(email); // Checks all users in list "users" if incoming email matches one of them.
         }
 
         public async Task AddUserAsync(User user)
         {
             user.Password = _passwordHasher.HashPassword(null, user.Password);
-            await AddObjectAsync(user);
+            await dbService.AddObjectAsync(user);
         }
 
         public async Task DeleteUserAsync(int id)
         {
-            await DeleteObjectAsync(await GetUserByIdAsync(id));
+            User user = await GetUserByIdAsync(id);
+            await dbService.DeleteObjectAsync(await GetUserByIdAsync(id));
         }
         
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User updatedUser)
         {
-            await UpdateObjectAsync(user);
+            await dbService.UpdateObjectAsync(updatedUser);
         }
 
-        public bool ValidateLogin(string email, string password)
+        public async Task<bool> ValidateLogin(string email, string password)
         {
-            var user = GetUserByEmail(email);
-            if (user != null)
+            if (await EmailNotInUse(email) != false)
             {
-                if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
+                var user = await GetUserByEmail(email);
+                if (user != null)
                 {
-                    return true;
+                    if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -85,6 +93,11 @@ namespace ZealandDimselab.Services
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             return claimsIdentity;
+        }
+
+        private async Task<bool> EmailNotInUse(string email)
+        {
+            return await dbService.DoesEmailExist(email);
         }
         
 

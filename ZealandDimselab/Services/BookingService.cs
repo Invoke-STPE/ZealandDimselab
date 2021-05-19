@@ -5,30 +5,27 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class BookingService : GenericService<Booking>
+    public class BookingService
     {
         private UserService UserService;
+        private readonly IBookingDb dbService;
 
-        public BookingService(IDbService<Booking> dbService) : base(dbService)
+        public BookingService(IBookingDb dbService)
         {
+            this.dbService = dbService;
         }
 
-        public List<Booking> GetAllBookings()
+        public async Task<IEnumerable<Booking>> GetAllBookings()
         {
-            List<Booking> bookings;
-            using (var context = new DimselabDbContext())
-            {
-                bookings = context.Bookings
-                    .Include(u => u.User)
-                    .Include(i => i.BookingItems)
-                    .ThenInclude(bi => bi.Item).ToList();
-            }
-            return bookings;
+            await dbService.GetObjectsAsync();
+            return await dbService.GetObjectsAsync();
         }
+
         //public List<Booking> GetAllBookingsTest()
         //{
         //    return dbContext;
@@ -36,28 +33,29 @@ namespace ZealandDimselab.Services
 
         public async Task<Booking> GetBookingByKeyAsync(int id)
         {
-            return await GetObjectByKeyAsync(id);
+            return await dbService.GetObjectByKeyAsync(id);
         }
 
         public async Task AddBookingAsync(Booking booking)
         {
-            await AddObjectAsync(booking);
+            await dbService.AddObjectAsync(booking);
         }
 
         public async Task DeleteBookingAsync(int id)
         {
-            await DeleteObjectAsync(await GetBookingByKeyAsync(id));
+            Booking booking = await GetBookingByKeyAsync(id);
+            await dbService.DeleteObjectAsync(booking);
         }
 
-        public async Task UpdateBookingAsync(Booking booking)
+        public async Task UpdateBookingAsync(Booking updatedbooking)
         {
-            await UpdateObjectAsync(booking);
+            await dbService.UpdateObjectAsync(updatedbooking);
         }
         
-        public List<Booking> GetBookingsByEmail(string email) // TODO Pretty sure this doesn't work
+        public async Task<List<Booking>> GetBookingsByEmailAsync(string email) // TODO Pretty sure this doesn't work
         {
             List<Booking> userBookings = new List<Booking>();
-            foreach (Booking booking in GetAllBookings())
+            foreach (Booking booking in await GetAllBookings())
             {
                 if (booking.User.Email.ToLower() == email.ToLower())
                 {

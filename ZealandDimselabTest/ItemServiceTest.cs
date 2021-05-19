@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
@@ -15,16 +16,19 @@ namespace ZealandDimselabTest
     [TestClass]
     public class ItemServiceTest
     {
-        private IDbService<Item> _repositoryItem;
+        private MockData _repositoryItem;
         private ItemService _itemService;
         private List<Item> _itemList;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _repositoryItem = new MockData<Item>();
-            _itemService= new ItemService(_repositoryItem, new ItemDbService());
-            _itemList = _itemService.GetAllItems();
+            //_repositoryItem = new MockData<Item>();
+            //_itemService = new ItemService(_repositoryItem, new ItemDbService());
+
+            _repositoryItem = new MockData();
+            _itemService = new ItemService(_repositoryItem);
+            _itemList = _itemService.GetAllItems().Result.ToList();
         }
 
         [TestMethod]
@@ -70,18 +74,18 @@ namespace ZealandDimselabTest
         {
             Item newItem = new Item("Test Item 6", "Test Description");
             await _itemService.AddItemAsync(newItem);
-            Item addedItem = _itemService.GetAllItems().Last();
+            Item addedItem = _itemService.GetAllItems().Result.ToList().Last();
 
             Assert.AreEqual(newItem.Name, addedItem.Name);
             Assert.AreEqual(newItem.Description, addedItem.Description);
         }
-        
+
         [TestMethod]
         public async Task DeleteItemAsync_ValidItemId()
         {
-            int expectedCount = _itemService.GetAllItems().Count -1;
+            int expectedCount = _itemService.GetAllItems().Result.ToList().Count - 1;
             await _itemService.DeleteItemAsync(5);
-            int newCount = _itemService.GetAllItems().Count;
+            int newCount = _itemService.GetAllItems().Result.ToList().Count;
 
             Assert.AreEqual(expectedCount, newCount);
 
@@ -95,7 +99,7 @@ namespace ZealandDimselabTest
             Item fourthItem = new Item("Test Item 4", "Test Description") { Id = 4 };
             Assert.IsTrue(fourthItem.Equals(_itemList[3]));
         }
-        
+
         [TestMethod]
         public async Task UpdateItemAsync_ValidItem()
         {
@@ -115,7 +119,7 @@ namespace ZealandDimselabTest
             await _itemService.UpdateItemAsync(0, item);
 
             // Items with an empty key get added to the database
-            Assert.AreEqual(6, _itemService.GetAllItems().Count);
+            Assert.AreEqual(6, _itemService.GetAllItems().Result.ToList().Count);
         }
 
         [TestMethod]
@@ -127,10 +131,10 @@ namespace ZealandDimselabTest
             await _itemService.UpdateItemAsync(-1, item);
 
             // Items with a key that does not exist in the database should throw an exception
-            Assert.AreEqual(6, _itemService.GetAllItems().Count);
+            Assert.AreEqual(6, _itemService.GetAllItems().Result.ToList().Count);
         }
 
-        internal class MockData<T> : IDbService<T> where T : class
+        internal class MockData : IItemDb
         {
             DimselabDbContext dbContext;
 
@@ -143,37 +147,81 @@ namespace ZealandDimselabTest
                 LoadDatabase();
             }
 
-            public async Task AddObjectAsync(T obj)
+            public async Task<Item> GetItemWithCategoriesAsync(int id)
             {
-                await dbContext.Set<T>().AddAsync(obj);
+                Item item;
+
+                using (var context = new DimselabDbContext())
+                {
+                    item = await context.Items
+                        .Include(i => i.Category)
+                        .Where(i => i.Id == id)
+                        .FirstOrDefaultAsync();
+                }
+
+                return item;
+            }
+
+            public async Task<List<Item>> GetAllItemsWithCategoriesAsync()
+            {
+                List<Item> items;
+
+                using (var context = new DimselabDbContext())
+                {
+                    items = await context.Items
+                        .Include(i => i.Category)
+                        .ToListAsync();
+
+
+                }
+
+                return items;
+            }
+
+            public async Task<List<Item>> GetItemsWithCategoryId(int id)
+            {
+                List<Item> items;
+
+                using (var context = new DimselabDbContext())
+                {
+                    items = await context.Items
+                        .Include(i => i.Category)
+                        .Where(i => i.CategoryId == id)
+                        .ToListAsync();
+                }
+
+                return items;
+            }
+
+            public async Task<IEnumerable<Item>> GetObjectsAsync()
+            {
+                return await dbContext.Set<Item>().AsNoTracking().ToListAsync();
+            }
+
+            public async Task<Item> GetObjectByKeyAsync(int id)
+            {
+                return await dbContext.Set<Item>().FindAsync(id);
+            }
+
+            public async Task AddObjectAsync(Item obj)
+            {
+                await dbContext.Set<Item>().AddAsync(obj);
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task DeleteObjectAsync(T obj)
+            public async Task DeleteObjectAsync(Item obj)
             {
-
-                dbContext.Set<T>().Remove(obj);
+                dbContext.Set<Item>().Remove(obj);
                 await dbContext.SaveChangesAsync();
             }
 
-            public async Task<T> GetObjectByKeyAsync(int id)
+            public async Task UpdateObjectAsync(Item obj)
             {
-                return await dbContext.Set<T>().FindAsync(id);
-            }
-
-            public async Task<IEnumerable<T>> GetObjectsAsync()
-            {
-                return await dbContext.Set<T>().AsNoTracking().ToListAsync();
-            }
-
-            public async Task UpdateObjectAsync(T obj)
-            {
-                dbContext.Set<T>().Update(obj);
+                dbContext.Set<Item>().Update(obj);
                 await dbContext.SaveChangesAsync();
-
             }
 
-            public void DropDatabase()
+        public void DropDatabase()
             {
                 dbContext.Database.EnsureDeleted();
             }

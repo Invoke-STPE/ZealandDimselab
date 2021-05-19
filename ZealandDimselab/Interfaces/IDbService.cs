@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ZealandDimselab.Services
+namespace ZealandDimselab.Interfaces
 {
     public interface IDbService<T>
     {

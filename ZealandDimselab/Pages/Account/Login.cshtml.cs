@@ -33,7 +33,7 @@ namespace ZealandDimselab.Pages.Account
         public async Task<IActionResult> OnPostAsync()
         {
 
-            if (_userService.ValidateLogin(Email, Password))
+            if (await _userService.ValidateLogin(Email, Password))
             {
                 var claimsIdentity = _userService.CreateClaimIdentity(Email);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
