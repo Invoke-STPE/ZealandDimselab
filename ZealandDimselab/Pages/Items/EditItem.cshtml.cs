@@ -59,7 +59,7 @@ namespace ZealandDimselab.Pages.Items
                 if (CategoryId == 0) return await OnGetAsync(Item.Id);
                 return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
             }
-            
+
             if (FileUpload != null)
             {
                 var fileName = Item.Id + "." + FileUpload.ContentType.TrimStart('i', 'm', 'a', 'g', 'e', '/');
@@ -71,9 +71,37 @@ namespace ZealandDimselab.Pages.Items
 
                 Item.ImageName = fileName;
             }
+            else
+            {
+                Item.ImageName = (await itemService.GetItemWithCategoriesAsync(Item.Id)).ImageName;
+            }
             
             await itemService.UpdateItemAsync(Item.Id, Item);
-            return RedirectToPage("/Items/Cards/AllItems", "FilterByCategory", new { category = CategoryId });
+            return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });
         }
+
+        //public async Task<IActionResult> OnPostCardsAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        if (CategoryId == 0) return await OnGetAsync(Item.Id);
+        //        return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
+        //    }
+
+        //    await UpdateItemAsync();
+        //    return RedirectToPage("/Items/Cards/AllItems", "FilterByCategory", new { category = CategoryId });
+        //}
+
+        //public async Task<IActionResult> OnPostListAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        if (CategoryId == 0) return await OnGetAsync(Item.Id);
+        //        return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
+        //    }
+
+        //    await UpdateItemAsync();
+        //    return RedirectToPage("/Items/List/AllItems", "FilterByCategory", new { category = CategoryId });
+        //}
     }
 }

@@ -62,7 +62,7 @@ namespace ZealandDimselab.Pages.Items
 
 
             await itemService.DeleteItemAsync(id);
-            return RedirectToPage("/Items/AllItems", "FilterByCategory", new { category = CategoryId });
+            return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });
         }
     
     }

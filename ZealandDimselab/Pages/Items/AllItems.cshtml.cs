@@ -29,7 +29,7 @@ namespace ZealandDimselab.Pages.Items
 
         public async Task<IActionResult> OnGetFilterByCategoryAsync(int category)
         {
-            if (category == 0) return RedirectToPage("AllItems");
+            if (category == 0) return OnGetAsync().Result;
             CategoryId = category;
             Items = await _itemService.GetItemsWithCategoryIdAsync(category);
             return Page();
