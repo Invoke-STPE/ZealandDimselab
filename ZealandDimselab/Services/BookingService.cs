@@ -65,5 +65,12 @@ namespace ZealandDimselab.Services
             }
             return userBookings;
         }
+
+        public async Task ReturnedBooking(int id)
+        {
+            Booking booking = await GetBookingByKeyAsync(id);
+            booking.Returned = true;
+            await dbService.UpdateObjectAsync(booking);
+        }
     }
 }
