@@ -33,9 +33,19 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-page="/Account/Logout">Logout</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/BookingPages/MyBookings">My Bookings</a>
-                            </li>
+                            @if (Context.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-page="/BookingPages/MyBookings">All Bookings</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-page="/BookingPages/MyBookings">My Bookings</a>
+                                </li>
+                            }
+                            
                         }
                         else
                         {
