@@ -13,7 +13,7 @@ namespace ZealandDimselab.Pages.Items
 {
     public class DeleteItemModel : PageModel
     {
-        private ItemService itemService;
+        private readonly ItemService itemService;
         public Item Item { get; set; }
         public List<Item> Items { get; set; }
         [BindProperty] public int CategoryId { get; set; }
@@ -35,7 +35,7 @@ namespace ZealandDimselab.Pages.Items
 
         public async Task<IActionResult> OnGetFilterByCategory(int id, int category)
         {
-            if (category == 0) return RedirectToPage("DeleteItem", new { id = id });
+            if (category == 0) return RedirectToPage("DeleteItem", new { id });
 
             Item = await itemService.GetItemWithCategoriesAsync(id);
             Items = await itemService.GetItemsWithCategoryIdAsync(category);

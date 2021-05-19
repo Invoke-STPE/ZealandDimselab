@@ -15,8 +15,8 @@ namespace ZealandDimselab.Pages.Items
 {
     public class CreateItemModel : PageModel
     {
-        private ItemService itemService;
-        private CategoryService categoryService;
+        private readonly ItemService itemService;
+        private readonly CategoryService categoryService;
         [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }

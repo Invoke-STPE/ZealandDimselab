@@ -12,7 +12,7 @@ namespace ZealandDimselab.Pages.Items
     public class AllItemsModel : PageModel
     {
         public List<Item> Items { get; set; }
-        private ItemService _itemService;
+        private readonly ItemService _itemService;
         public int CategoryId { get; set; }
 
         public AllItemsModel(ItemService itemService)

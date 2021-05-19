@@ -14,8 +14,8 @@ namespace ZealandDimselab.Pages.Items
 {
     public class EditItemModel : PageModel
     {
-        private ItemService itemService;
-        private CategoryService categoryService;
+        private readonly ItemService itemService;
+        private readonly CategoryService categoryService;
         [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
@@ -42,7 +42,7 @@ namespace ZealandDimselab.Pages.Items
 
         public async Task<IActionResult> OnGetFilterByCategoryAsync(int id, int category)
         {
-            if (category == 0) return RedirectToPage("EditItem", new { id = id });
+            if (category == 0) return RedirectToPage("EditItem", new { id });
 
             Items = await itemService.GetItemsWithCategoryIdAsync(category);
             Categories = await categoryService.GetAllCategoriesAsync();
