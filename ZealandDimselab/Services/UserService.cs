@@ -14,9 +14,9 @@ namespace ZealandDimselab.Services
     public class UserService
     {
         private PasswordHasher<string> _passwordHasher;
-        private readonly IDbService<User> dbService;
+        private readonly IUserDb dbService;
 
-        public UserService(IDbService<User> dbService)
+        public UserService(IUserDb dbService)
         {
             this.dbService = dbService;
             _passwordHasher = new PasswordHasher<string>();
@@ -38,8 +38,8 @@ namespace ZealandDimselab.Services
 
         public async Task<User> GetUserByEmail(string email)
         {
-            var users = await GetUsersAsync();
-            return users.SingleOrDefault(u => u.Email == email); // Checks all users in list "users" if incoming email matches one of them.
+            
+            return await dbService.GetUserByEmail(email); // Checks all users in list "users" if incoming email matches one of them.
         }
 
         public async Task AddUserAsync(User user)
@@ -61,12 +61,15 @@ namespace ZealandDimselab.Services
 
         public async Task<bool> ValidateLogin(string email, string password)
         {
-            var user = await GetUserByEmail(email);
-            if (user != null)
+            if (await EmailNotInUse(email) != false)
             {
-                if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
+                var user = await GetUserByEmail(email);
+                if (user != null)
                 {
-                    return true;
+                    if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -90,6 +93,11 @@ namespace ZealandDimselab.Services
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             return claimsIdentity;
+        }
+
+        private async Task<bool> EmailNotInUse(string email)
+        {
+            return await dbService.DoesEmailExist(email);
         }
         
 
