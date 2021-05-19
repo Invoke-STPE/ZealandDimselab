@@ -5,22 +5,32 @@
 
 
 <!-- COPY FROM UNDER THIS LINE -->
+@if (HttpContext.User.Identity.Name != null)
+{
+    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+    {
+        <p>
+            <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
+        </p>
+    }
+}
+
 <div class="card-group">
 
     @foreach (var item in @Model.Items)
     {
-        <div class="card bg-primary" style="min-width: 25%">
+        <div class="card bg-primary" style="min-width: 25%; max-width: 50%">
             <div class="card-header text-center">
                 <p class="card-text text-truncate text-white">@item.Name</p>
             </div>
             <div class="card-body text-center p-2">
                 @if (String.IsNullOrEmpty(item.ImageName))
                 {
-                    <img src="~/images/ItemImages/Placeholder.jpg" style="max-width: 100%; height: auto;" />
+                    <img src="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" style="" />
                 }
                 else
                 {
-                    <img src="~/images/ItemImages/@item.ImageName" alt="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" />
+                    <img src="~/images/ItemImages/@item.ImageName" alt="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" style="" />
                 }
                 <p class="card-text p-0 text-white" style="font-size: 75%">@item.Description</p>
             </div>
@@ -61,7 +71,7 @@
                 <h5 class="modal-title">Editing item "@Model.Item.Name"</h5>
             </div>
 
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
                         <input asp-for="@Model.CategoryId" type="hidden" />
@@ -73,6 +83,17 @@
                         <label asp-for="@Model.Item.Name" class="control-label"></label>
                         <input asp-for="@Model.Item.Name" class="form-control" />
                         <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
+                    </div>
+                    <label>Image</label>
+                    <input id="File1" type="file" asp-for="FileUpload" class="file" style="visibility: hidden; position: absolute;" accept="image/*" />
+                    <div class="input-group my-3">
+                        <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
+                        <div class="input-group-append">
+                            <button type="button" class="browse btn btn-primary">Browse...</button>
+                        </div>
+                    </div>
+                    <div class="w-100">
+                        <img src="https://placehold.it/80x80" id="preview" class="img-thumbnail">
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.Item.Description" class="control-label"></label>
@@ -111,6 +132,7 @@
 
 @section Scripts
 {
+    <script src="~/js/browse.js"></script>
     <script src="~/js/showTooltips.js"></script>
     <script src="~/js/showModal.js"></script>
 }

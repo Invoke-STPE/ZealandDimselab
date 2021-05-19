@@ -49,7 +49,7 @@ namespace ZealandDimselab
             // SERVICES END //
 
             // SESSION START //
-            services.AddSession(); // Giver mulighed for at gemme i brugerens cache.
+            services.AddSession(); // Adds the ability to save into the users cache
             // SESSION END
 
             // AUTHENTICATION START //
@@ -69,6 +69,9 @@ namespace ZealandDimselab
                         options.Conventions.AuthorizeFolder("/Items");
                         options.Conventions.AllowAnonymousToPage("/Items/AllItems");
                         options.Conventions.AllowAnonymousToPage("/Items/ItemDetails");
+                        options.Conventions.AllowAnonymousToPage("/Items/Cards/AllItems");
+                        options.Conventions.AllowAnonymousToPage("/Items/Cards/ItemDetails");
+
 
                         //options.Conventions.AuthorizeFolder("/BookingPages");
                     }

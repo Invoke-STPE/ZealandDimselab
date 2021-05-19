@@ -17,3 +17,17 @@ $('input[type="file"]').change(function (e) {
 
 // Code source: https://learncodeweb.com/snippets/browse-button-in-bootstrap-4-with-select-image-preview/
 
+//<div class="form-group">
+//    <label>Image</label>
+//    <!--source: https://learncodeweb.com/snippets/browse-button-in-bootstrap-4-with-select-image-preview/ -->
+//<input asp-for="FileUpload" type="file" name="img[]" class="file" style="visibility: hidden; position: absolute;" accept="image/*">
+//    <div class="input-group my-3">
+//    <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
+//    <div class="input-group-append">
+//    <button type="button" class="browse btn btn-primary">Browse...</button>
+//    </div>
+//    </div>
+//    <div class="w-100">
+//    <img src="https://placehold.it/80x80" id="preview" class="img-thumbnail">
+//    </div>
+//    </div>

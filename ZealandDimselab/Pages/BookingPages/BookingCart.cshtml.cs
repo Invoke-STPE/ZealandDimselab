@@ -68,7 +68,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 //}
                 SetCart(Cart);
             }
-            return RedirectToPage("BookingCart");
+            return Page();
         }
 
         /// <summary>

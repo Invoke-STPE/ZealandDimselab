@@ -1,5 +1,5 @@
 ﻿@page
-@model ZealandDimselab.Pages.Items.CreateItemModel
+@model ZealandDimselab.Pages.Items.DeleteItemModel
 @{
 }
 
@@ -116,67 +116,34 @@
 </table>
 
 <!-- COPY FROM ABOVE THIS LINE -->
+
 <!-- MODAL START-->
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
+
+
             <div class="modal-header">
-                <h5 class="modal-title">Creating new item</h5>
+                <h5 class="modal-title">Are you sure you want to delete "@Model.Item.Name"</h5>
             </div>
 
-            <form method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div class="form-group">
+            <div class="modal-body">
+                <p><b>Description:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Description</p>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+                <div class="col-2">
+                    <a type="button" class="btn btn-danger" asp-page="AllItems" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId">No</a>
+                </div>
+                <div class="col-2">
+                    <form method="post">
                         <input asp-for="@Model.CategoryId" type="hidden" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.Name" class="control-label"></label>
-                        <input asp-for="@Model.Item.Name" class="form-control" />
-                        <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
-                    </div>
-
-                    <label>Image</label>
-                    <input id="File1" type="file" asp-for="FileUpload" class="file" style="visibility: hidden; position: absolute;" accept="image/*" />
-                    <div class="input-group my-3">
-                        <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
-                        <div class="input-group-append">
-                            <button type="button" class="browse btn btn-primary">Browse...</button>
-                        </div>
-                    </div>
-                    <div class="w-100">
-                        <img src="https://placehold.it/80x80" id="preview" class="img-thumbnail">
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.Description" class="control-label"></label>
-                        <textarea asp-for="@Model.Item.Description" class="form-control" rows="8" id="textarea"></textarea>
-                        <span asp-validation-for="@Model.Item.Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Item.CategoryId" class="control-label"></label>
-                        <select class="form-control" asp-for="@Model.Item.CategoryId">
-                            @foreach (var category in @Model.Categories)
-                            {
-                                <option value="@category.CategoryId">@category.CategoryName</option>
-                            }
-                        </select>
-                    </div>
-
+                        <input id="Delete Item" type="submit" value="Yes" class="btn btn-success" />
+                    </form>
                 </div>
-
-                <div class="modal-footer justify-content-center">
-                    <div class="col-2">
-                        <a type="button" class="btn btn-danger" asp-page="AllItems" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId">Cancel</a>
-                    </div>
-                    <div class="col-2">
-                        <form method="post">
-                            <input type="submit" value="Create" class="btn btn-success" />
-                        </form>
-                    </div>
-                </div>
-            </form>
-
+            </div>
         </div>
     </div>
 </div>
@@ -185,7 +152,6 @@
 
 @section Scripts
 {
-    <script src="~/js/browse.js"></script>
     <script src="~/js/showTooltips.js"></script>
     <script src="~/js/showModal.js"></script>
 }
