@@ -1,7 +1,8 @@
 ﻿@page
-@model ZealandDimselab.Pages.Items.AllItemsModel
+@model ZealandDimselab.Pages.Items.ItemDetailsModel
 @{
 }
+
 
 <!-- COPY FROM UNDER THIS LINE -->
 <table class="table table-bordered table-hover table-striped" width="70%">
@@ -29,38 +30,38 @@
         <col style="width: 30%">
         <col style="width: 60%">
         <col style="width: 10%">
-        
+
     }
-    
+
     <thead>
-    <tr class="btn-secondary active">
-        @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
-        {
-            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+        <tr class="btn-secondary active">
+            @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
             {
-                <th>
-                    <div class="d-flex justify-content-between p-0">
-                        <div><h5>Id</h5></div>
-                    </div>
-                </th>
+                if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                {
+                    <th>
+                        <div class="d-flex justify-content-between p-0">
+                            <div><h5>Id</h5></div>
+                        </div>
+                    </th>
+                }
             }
-        }
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Name</h5></div>
-            </div>
-        </th>
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Description</h5></div>
-            </div>
-        </th>
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Actions</h5></div>
-            </div>
-        </th>
-    </tr>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Name</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
+                </div>
+            </th>
+        </tr>
     </thead>
 
     <tbody>
@@ -83,7 +84,7 @@
                     @item.Description
                     @if (item.Category != null)
                     {
-                    <p>Category:  @item.Category.CategoryName</p>
+                        <p>Category:  @item.Category.CategoryName</p>
                     }
                 </td>
                 <td>
@@ -115,6 +116,40 @@
 </table>
 
 <!-- COPY FROM ABOVE THIS LINE -->
+
+<!-- MODAL START -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.Item.Name</h5>
+            </div>
+
+            <div class="modal-body">
+                @if (String.IsNullOrEmpty(@Model.Item.ImageName))
+                {
+                    <img src="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" style="" />
+                }
+                else
+                {
+                    <img src="~/images/ItemImages/@Model.Item.ImageName" alt="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" style="" />
+                }
+                <p><b>Description:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Description</p>
+
+                <p><b>Category:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Category.CategoryName</p>
+
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger" style="width: 10rem" asp-page="Allitems" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL END -->
+
 
 @section Scripts
 {

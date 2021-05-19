@@ -4,12 +4,12 @@
     ViewData["Title"] = "Home page";
 }
 
-<a type="button" class="btn btn-primary btn-block" asp-page="/Items/AllItems">All Items</a>
+<a type="button" class="btn btn-primary btn-block" asp-page="/Items/Cards/AllItems">All Items</a>
 
 @foreach (var category in @Model.Categories)
 {
 <div style="white-space: nowrap; margin-top: 8px;">
-    <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Items/AllItems" asp-page-handler="FilterByCategory" asp-route-category="@category.CategoryId">@category.CategoryName</a>
+    <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Items/Cards/AllItems" asp-page-handler="FilterByCategory" asp-route-category="@category.CategoryId">@category.CategoryName</a>
 
     @if (HttpContext.User.Identity.Name != null)
     {

@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 
@@ -18,11 +21,15 @@ namespace ZealandDimselab.Pages.Items
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
         [BindProperty] public int CategoryId { get; set; }
+        [BindProperty] public IFormFile FileUpload { get; set; }
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CreateItemModel(ItemService itemService, CategoryService categoryService)
+        public CreateItemModel(ItemService itemService, CategoryService categoryService, IWebHostEnvironment whe)
         {
             this.itemService = itemService;
             this.categoryService = categoryService;
+            _webHostEnvironment = whe;
+
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -47,6 +54,7 @@ namespace ZealandDimselab.Pages.Items
 
         public async Task<IActionResult> OnPostAsync()
         {
+            
             if (!ModelState.IsValid)
             {
                 if (CategoryId == 0) return await OnGetAsync();
@@ -54,6 +62,21 @@ namespace ZealandDimselab.Pages.Items
             }
 
             await itemService.AddItemAsync(Item);
+            Item item = (await itemService.GetAllItems()).Last();
+
+            if (FileUpload != null)
+            {
+                var fileName = item.Id + "." + FileUpload.ContentType.TrimStart('i','m','a','g','e','/');
+                var fileUpload = Path.Combine(_webHostEnvironment.WebRootPath, "images/ItemImages", fileName);
+                using (var Fs = new FileStream(fileUpload, FileMode.Create))
+                {
+                    await FileUpload.CopyToAsync(Fs);
+                }
+
+                item.ImageName = fileName;
+            }
+
+            await itemService.UpdateItemAsync(item.Id, item);
 
             if (CategoryId == 0) return RedirectToPage("AllItems");
             if (Item.CategoryId != CategoryId)
