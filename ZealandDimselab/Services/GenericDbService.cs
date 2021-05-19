@@ -62,7 +62,7 @@ namespace ZealandDimselab.Services
             {
                 
                 context.Set<T>().Remove(obj);
-                //await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
         }
 
