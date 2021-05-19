@@ -38,6 +38,7 @@ namespace ZealandDimselab
             services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
             services.AddTransient<IBookingDb, BookingDbService>();
             services.AddTransient<IItemDb, ItemDbService>();
+            services.AddTransient<IUserDb, UserDbService>();
             // DATABASE END //
 
             // SERVICES START //
