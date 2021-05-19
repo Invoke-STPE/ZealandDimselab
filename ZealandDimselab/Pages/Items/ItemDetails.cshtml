@@ -58,6 +58,11 @@
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
+                    <div><h5>Quantity</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
                     <div><h5>Actions</h5></div>
                 </div>
             </th>
@@ -86,6 +91,9 @@
                     {
                         <p>Category:  @item.Category.CategoryName</p>
                     }
+                </td>
+                <td>
+                    @item.Quantity
                 </td>
                 <td>
                     <ol class="p-0">
@@ -129,6 +137,9 @@
             <div class="modal-body">
                 <p><b>Description:</b></p>
                 <p style="white-space: pre-line">@Model.Item.Description</p>
+
+                <p><b>Quantity:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Quantity</p>
 
                 <p><b>Category:</b></p>
                 <p style="white-space: pre-line">@Model.Item.Category.CategoryName</p>
