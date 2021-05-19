@@ -24,7 +24,7 @@ namespace ZealandDimselab.Pages.BookingPages
             
             if (HttpContext.User.IsInRole("admin"))
             {
-                Bookings = bookingService.GetAllBookings().Result.ToList();
+                Bookings = bookingService.GetAllBookingsAsync().Result.ToList();
                 //Bookings = null;
             } else
             {

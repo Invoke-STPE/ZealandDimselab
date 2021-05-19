@@ -20,7 +20,7 @@ namespace ZealandDimselab.Services
             this.dbService = dbService;
         }
 
-        public async Task<IEnumerable<Booking>> GetAllBookings()
+        public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
         {
             await dbService.GetObjectsAsync();
             return await dbService.GetObjectsAsync();
@@ -55,7 +55,7 @@ namespace ZealandDimselab.Services
         public async Task<List<Booking>> GetBookingsByEmailAsync(string email) // TODO Pretty sure this doesn't work
         {
             List<Booking> userBookings = new List<Booking>();
-            foreach (Booking booking in await GetAllBookings())
+            foreach (Booking booking in await GetAllBookingsAsync())
             {
                 if (booking.User.Email.ToLower() == email.ToLower())
                 {
