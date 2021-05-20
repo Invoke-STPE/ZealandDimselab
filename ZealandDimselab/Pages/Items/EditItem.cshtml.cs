@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
@@ -11,17 +14,20 @@ namespace ZealandDimselab.Pages.Items
 {
     public class EditItemModel : PageModel
     {
-        private ItemService itemService;
-        private CategoryService categoryService;
+        private readonly ItemService itemService;
+        private readonly CategoryService categoryService;
         [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
         [BindProperty] public int CategoryId { get; set; }
+        [BindProperty] public IFormFile FileUpload { get; set; }
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EditItemModel(ItemService itemService, CategoryService categoryService)
+        public EditItemModel(ItemService itemService, CategoryService categoryService, IWebHostEnvironment whe)
         {
             this.itemService = itemService;
             this.categoryService = categoryService;
+            _webHostEnvironment = whe;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -36,7 +42,7 @@ namespace ZealandDimselab.Pages.Items
 
         public async Task<IActionResult> OnGetFilterByCategoryAsync(int id, int category)
         {
-            if (category == 0) return RedirectToPage("EditItem", new { id = id });
+            if (category == 0) return RedirectToPage("EditItem", new { id });
 
             Items = await itemService.GetItemsWithCategoryIdAsync(category);
             Categories = await categoryService.GetAllCategoriesAsync();
@@ -54,8 +60,48 @@ namespace ZealandDimselab.Pages.Items
                 return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
             }
 
+            if (FileUpload != null)
+            {
+                var fileName = Item.Id + "." + FileUpload.ContentType.TrimStart('i', 'm', 'a', 'g', 'e', '/');
+                var fileUpload = Path.Combine(_webHostEnvironment.WebRootPath, "images/ItemImages", fileName);
+                using (var Fs = new FileStream(fileUpload, FileMode.Create))
+                {
+                    await FileUpload.CopyToAsync(Fs);
+                }
+
+                Item.ImageName = fileName;
+            }
+            else
+            {
+                Item.ImageName = (await itemService.GetItemWithCategoriesAsync(Item.Id)).ImageName;
+            }
+            
             await itemService.UpdateItemAsync(Item.Id, Item);
-            return RedirectToPage("/Items/AllItems", "FilterByCategory", new { category = CategoryId });
+            return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });
         }
+
+        //public async Task<IActionResult> OnPostCardsAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        if (CategoryId == 0) return await OnGetAsync(Item.Id);
+        //        return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
+        //    }
+
+        //    await UpdateItemAsync();
+        //    return RedirectToPage("/Items/Cards/AllItems", "FilterByCategory", new { category = CategoryId });
+        //}
+
+        //public async Task<IActionResult> OnPostListAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        if (CategoryId == 0) return await OnGetAsync(Item.Id);
+        //        return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
+        //    }
+
+        //    await UpdateItemAsync();
+        //    return RedirectToPage("/Items/List/AllItems", "FilterByCategory", new { category = CategoryId });
+        //}
     }
 }
