@@ -23,8 +23,7 @@ namespace ZealandDimselab.Services
             // Test user: Admin Admin@Dimselab.dk secret1234 (don't tell anyone)
             // Test user: Oscar Oscar@email.com password
             //User user = new User("Oscar", "Osca2324@edu.easj.dk");
-            //User user = new User("Admin", "Admin@Dimselab.dk", "secret1234");
-            //AddUserAsync(user);
+            
         }
 
         public async Task<IEnumerable<User>> GetUsersAsync()

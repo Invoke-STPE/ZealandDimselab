@@ -39,7 +39,7 @@
                         <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId" asp-route-returnUrl="Items/Cards/AllItems"><i class="fa fa-search-plus fa-fw"></i></a>
                     </li>
                     <li class="list-inline-item p-0" style="margin-right: 0">
-                        <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Add To Cart" asp-page="/BookingPages/BookingCart" asp-route-id="@item.Id" asp-page-handler="AddToCart"><i class="fa fa-cart-plus fa-fw"></i></a>
+                        <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Add To Cart" asp-page="AllItems" asp-route-id="@item.Id" asp-page-handler="AddToCart"><i class="fa fa-cart-plus fa-fw"></i></a>
                     </li>
                     @if (HttpContext.User.Identity.Name != null) // Only shows edit/delete if logged in as admin
                     {

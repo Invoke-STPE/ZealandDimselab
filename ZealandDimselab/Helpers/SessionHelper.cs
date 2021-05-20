@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Helpers
 {
@@ -34,6 +35,18 @@ namespace ZealandDimselab.Helpers
         {
             var value = session.GetString(key);
             return value == null ? default(T) : JsonSerializer.Deserialize<T>(value);
+        }
+
+        public static int Exists(List<Item> cart, int id)
+        {
+            for (int i = 0; i < cart.Count; i++)
+            {
+                if (cart[i].Id == id)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }
