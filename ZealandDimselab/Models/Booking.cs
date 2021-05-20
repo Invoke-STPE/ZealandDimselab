@@ -23,7 +23,7 @@ namespace ZealandDimselab.Models
 
         public Booking()
         {
-            
+            BookingItems = new List<BookingItem>();
         }
 
         public Booking(List<BookingItem> items, User user, string details, DateTime bookingDate, DateTime returnDate)
@@ -33,6 +33,7 @@ namespace ZealandDimselab.Models
             Details = details;
             BookingDate = bookingDate;
             ReturnDate = returnDate;
+            BookingItems = new List<BookingItem>();
 
         }
 
@@ -44,6 +45,7 @@ namespace ZealandDimselab.Models
             Details = details;
             BookingDate = bookingDate;
             ReturnDate = returnDate;
+            BookingItems = new List<BookingItem>();
 
         }
 

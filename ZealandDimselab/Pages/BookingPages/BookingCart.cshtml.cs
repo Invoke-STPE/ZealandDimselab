@@ -20,7 +20,9 @@ namespace ZealandDimselab.Pages.BookingPages
         private readonly BookingService bookingService;
 
         [BindProperty]
-        public List<Item> CheckoutItems { get; set; }
+        public Booking Booking { get; set; }
+        [BindProperty]
+        public string Email { get; set; }
 
         public BookingCartModel(UserService userService, BookingService bookingService, ItemService itemService)
         {
@@ -85,35 +87,20 @@ namespace ZealandDimselab.Pages.BookingPages
             return RedirectToPage("BookingCart");
         }
 
-        public async Task<IActionResult> OnPostCreate(string details, DateTime returnDate)
+        public async Task<IActionResult> OnPostCreate()
         {
             Cart = GetCart();
-            User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
+            User user = await userService.GetUserByEmail(Email);
             if (user != null)
             {
-                //Booking newBooking = new Booking()
-                //{
-                //    Items = new List<Item>(),
-                //    UserId =  user.Id,
-                //    Details = details,
-                //    BookingDate = DateTime.Now.Date,
-                //    ReturnDate = returnDate.Date
-                //};
-
-                var _booking = new Booking
-                {
-                    Details = details,
-                    BookingDate = DateTime.Now.Date,
-                    ReturnDate = returnDate.Date,
-                    UserId = user.Id,
-                    BookingItems = new List<BookingItem>()
-                };
-
-                foreach (var item in Cart)
-                {
-                    _booking.BookingItems.Add(new BookingItem { ItemId = item.Id }); 
-                }
-                await bookingService.AddBookingAsync(_booking);
+                Booking booking = CreateBooking(Email, user);
+                await bookingService.AddBookingAsync(booking);
+            } else
+            {
+                await userService.AddUserAsync(new User() { Email = Email });
+                user = await userService.GetUserByEmail(Email);
+                Booking booking = CreateBooking(Email, user);
+                await bookingService.AddBookingAsync(booking);
             }
             return RedirectToPage("MyBookings");
         }
@@ -153,6 +140,19 @@ namespace ZealandDimselab.Pages.BookingPages
         private void SetCart(List<Item> cart)
         {
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+        }
+
+        private Booking CreateBooking(string email, User user)
+        {
+            Cart = GetCart();
+            Booking.BookingDate = DateTime.Now.Date;
+            Booking.UserId = user.Id;
+            
+            foreach (var item in Cart)
+            {
+                Booking.BookingItems.Add(new BookingItem { ItemId = item.Id });
+            }
+            return Booking;
         }
     }
 }

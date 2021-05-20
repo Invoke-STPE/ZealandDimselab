@@ -51,7 +51,7 @@ namespace ZealandDimselab.Services
         {
             await dbService.UpdateObjectAsync(updatedbooking);
         }
-        
+
         public async Task<List<Booking>> GetBookingsByEmailAsync(string email) // TODO Pretty sure this doesn't work
         {
             List<Booking> userBookings = new List<Booking>();
@@ -60,7 +60,7 @@ namespace ZealandDimselab.Services
                 if (booking.User.Email.ToLower() == email.ToLower())
                 {
                     userBookings.Add(booking);
-                    
+
                 }
             }
             return userBookings;

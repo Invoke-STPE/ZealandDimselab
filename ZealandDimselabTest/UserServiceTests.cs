@@ -1,301 +1,288 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using ZealandDimselab.Interfaces;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+﻿//using Microsoft.AspNetCore.Identity;
+//using Microsoft.EntityFrameworkCore;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Security.Claims;
+//using System.Text;
+//using System.Threading.Tasks;
+//using ZealandDimselab.Interfaces;
+//using ZealandDimselab.Models;
+//using ZealandDimselab.Services;
 
-namespace ZealandDimselabTest
-{
-    [TestClass]
-    public class UserServiceTests
-    {
-        private IUserDb repository;
-        private UserService userService;
+//namespace ZealandDimselabTest
+//{
+//    [TestClass]
+//    public class UserServiceTests
+//    {
+//        private IUserDb repository;
+//        private UserService userService;
 
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            repository = new UserMockData();
-            userService = new UserService(repository);
-        }
+//        [TestInitialize]
+//        public void InitializeTest()
+//        {
+//            repository = new UserMockData();
+//            userService = new UserService(repository);
+//        }
 
-        [TestMethod]
-        public void GetUsers_Default_ReturnsAllUsers()
-        {
-            // Arrange
-            var expectedCount = 5;
+//        [TestMethod]
+//        public void GetUsers_Default_ReturnsAllUsers()
+//        {
+//            // Arrange
+//            var expectedCount = 5;
 
-            // Act
-            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
+//            // Act
+//            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
-            // Assert
-            Assert.AreEqual(expectedCount, actualCount);
-        }
+//            // Assert
+//            Assert.AreEqual(expectedCount, actualCount);
+//        }
 
-        [TestMethod]
-        public async Task AddUserAsync_AddUser_IncrementCount()
-        {
-            // Arrange
-            var expectedCount = 6;
-            User user = new User("Mike", "Mike@gmail.com", "Mike1234");
-            await userService.AddUserAsync(user);
+//        [TestMethod]
+//        public async Task AddUserAsync_AddUser_IncrementCount()
+//        {
+//            // Arrange
+//            var expectedCount = 6;
+//            User user = new User("Mike", "Mike@gmail.com", "Mike1234");
+//            await userService.AddUserAsync(user);
 
-            // Act
-            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
-            // Assert
-            Assert.AreEqual(expectedCount, actualCount);
+//            // Act
+//            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
+//            // Assert
+//            Assert.AreEqual(expectedCount, actualCount);
            
-        }
-        [TestMethod]
-        public async Task AddUserAsync_AddUser_HashesPassword()
-        {
-            // Arrange
-            PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
-            string passwordIsNot = "Mike1234";
-            User user = new User("Mike", "Mike@gmail.com", "Mike1234");
-            // Act
-            await userService.AddUserAsync(user);
-            user = await userService.GetUserByIdAsync(6);
-            // Assert
-            Assert.AreNotEqual(user.Password, passwordIsNot);
-        }
+//        }
 
-        [TestMethod]
-        public async Task AddUserAsync_AddUserEmailAlreadyExists_DoesNotIncrementCount()
-        {
-            // Arrange
-            int expectedCount = 5;
-            string emailInUse = "Steven@gmail.com";
-            User user = new User("Mike", emailInUse, "Mike1234");
-            int actualUserCount;
-            // Act
-            actualUserCount = (await userService.GetUsersAsync()).ToList().Count;
-            // Assert
-            Assert.AreEqual(expectedCount, actualUserCount);
-        }
-        [TestMethod]
-        public async Task DeleteUserAsync_RemovesUser_DecreasesCount()
-        {
-            // Arrange
-            var expectedCount = 4;
-            var id = 1;
-            await userService.DeleteUserAsync(id);
-            // Act
-            int actualCount = userService.GetUsersAsync().Result.ToList().Count;
+//        [TestMethod]
+//        public async Task AddUserAsync_AddUserEmailAlreadyExists_DoesNotIncrementCount()
+//        {
+//            // Arrange
+//            int expectedCount = 5;
+//            string emailInUse = "Steven@gmail.com";
+//            User user = new User("Mike", emailInUse, "Mike1234");
+//            int actualUserCount;
+//            // Act
+//            actualUserCount = (await userService.GetUsersAsync()).ToList().Count;
+//            // Assert
+//            Assert.AreEqual(expectedCount, actualUserCount);
+//        }
+//        [TestMethod]
+//        public async Task DeleteUserAsync_RemovesUser_DecreasesCount()
+//        {
+//            // Arrange
+//            var expectedCount = 4;
+//            var id = 1;
+//            await userService.DeleteUserAsync(id);
+//            // Act
+//            int actualCount = userService.GetUsersAsync().Result.ToList().Count;
 
-            // Assert
-            Assert.AreEqual(expectedCount, actualCount);
+//            // Assert
+//            Assert.AreEqual(expectedCount, actualCount);
 
-        }
-        [TestMethod]
-        public async Task GetUserByIdAsync_ValidId_ReturnsUserObject()
-        {
-            string expectedname = "Oscar";
-            string expectedEmail = "Oscar@gmail.com";
+//        }
+//        [TestMethod]
+//        public async Task GetUserByIdAsync_ValidId_ReturnsUserObject()
+//        {
+//            string expectedname = "Oscar";
+//            string expectedEmail = "Oscar@gmail.com";
 
-            // Act
-            User actualUser = await userService.GetUserByIdAsync(3);
+//            // Act
+//            User actualUser = await userService.GetUserByIdAsync(3);
 
-            // Assert
-            Assert.AreEqual(expectedname, actualUser.Name);
-            Assert.AreEqual(expectedEmail, actualUser.Email);
-        }
+//            // Assert
+//            Assert.AreEqual(expectedname, actualUser.Name);
+//            Assert.AreEqual(expectedEmail, actualUser.Email);
+//        }
 
-        [TestMethod]
-        public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
-        {
-            // Arrange
-            User user = await userService .GetUserByIdAsync(3); 
-            string expectedName = "Hoscar";
-            string expectedEmail = "Hoscar@gmail.com";
+//        [TestMethod]
+//        public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
+//        {
+//            // Arrange
+//            User user = await userService .GetUserByIdAsync(3); 
+//            string expectedName = "Hoscar";
+//            string expectedEmail = "Hoscar@gmail.com";
 
-            // Act
-            user.Name = expectedName;
-            user.Email = expectedEmail;
-            await userService.UpdateUserAsync(user);
-            User actualUser = await userService .GetUserByIdAsync(3);
+//            // Act
+//            user.Name = expectedName;
+//            user.Email = expectedEmail;
+//            await userService.UpdateUserAsync(user);
+//            User actualUser = await userService .GetUserByIdAsync(3);
 
-            // Assert
+//            // Assert
 
-            Assert.AreEqual(expectedEmail, actualUser.Email);
-            Assert.AreEqual(expectedName, actualUser.Name);
-        }
+//            Assert.AreEqual(expectedEmail, actualUser.Email);
+//            Assert.AreEqual(expectedName, actualUser.Name);
+//        }
 
-        [TestMethod]
-        public async Task ValidateLogin_ValidLogin_ReturnsTrue()
-        {
-            // Arrange
-            string correctEmail = "Steven@gmail.com";
-            string correctPassword = "Steven1234";
-            bool expectedLoginResult;
-            // Act
-            expectedLoginResult = await userService.ValidateLogin(correctEmail, correctPassword);
+//        [TestMethod]
+//        public async Task ValidateLogin_ValidLogin_ReturnsTrue()
+//        {
+//            // Arrange
+//            string correctEmail = "Steven@gmail.com";
+//            string correctPassword = "Steven1234";
+//            bool expectedLoginResult;
+//            // Act
+//            expectedLoginResult = await userService.ValidateLogin(correctEmail, correctPassword);
 
-            // Assert
+//            // Assert
 
-            Assert.IsTrue(expectedLoginResult);
+//            Assert.IsTrue(expectedLoginResult);
 
-        }
+//        }
 
-        [TestMethod]
-        public async Task ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
-        {
-            // Arrange
-            string correctEmail = "Steven@gmail.com";
-            string inCorrectPassword = "StevenIncorrect";
-            bool expectedLoginResult;
-            // Act
-            expectedLoginResult = await userService.ValidateLogin(correctEmail, inCorrectPassword);
+//        [TestMethod]
+//        public async Task ValidateLogin_InvalidPasswordLogin_ReturnsFalse()
+//        {
+//            // Arrange
+//            string correctEmail = "Steven@gmail.com";
+//            string inCorrectPassword = "StevenIncorrect";
+//            bool expectedLoginResult;
+//            // Act
+//            expectedLoginResult = await userService.ValidateLogin(correctEmail, inCorrectPassword);
 
-            // Assert
+//            // Assert
 
-            Assert.IsFalse(expectedLoginResult);
+//            Assert.IsFalse(expectedLoginResult);
 
-        }
+//        }
 
-        [TestMethod]
-        public async Task ValidateLogin_InvalidEmailLogin_ReturnsFalse()
-        {
-            // Arrange
-            string inCorrectEmail = "Steven@outlook.com";
-            string correctPassword = "Steven1234";
-            bool expectedLoginResult;
-            // Act
-            expectedLoginResult = await userService.ValidateLogin(inCorrectEmail, correctPassword);
+//        [TestMethod]
+//        public async Task ValidateLogin_InvalidEmailLogin_ReturnsFalse()
+//        {
+//            // Arrange
+//            string inCorrectEmail = "Steven@outlook.com";
+//            string correctPassword = "Steven1234";
+//            bool expectedLoginResult;
+//            // Act
+//            expectedLoginResult = await userService.ValidateLogin(inCorrectEmail, correctPassword);
 
-            // Assert
+//            // Assert
 
-            Assert.IsFalse(expectedLoginResult);
+//            Assert.IsFalse(expectedLoginResult);
 
-        }
+//        }
 
-        [TestMethod]
-        public void CreateClaim_ValidEmail_ReturnsClaimIdentity()
-        {
-            // Arrange
-            string expectedClaimName = "Steven@outlook.com";
-            // Act
-            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(expectedClaimName);
+//        [TestMethod]
+//        public void CreateClaim_ValidEmail_ReturnsClaimIdentity()
+//        {
+//            // Arrange
+//            string expectedClaimName = "Steven@outlook.com";
+//            // Act
+//            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(expectedClaimName);
 
-            // Assert
+//            // Assert
 
-            Assert.AreEqual(expectedClaimName, actualClaimIdentity.Name);
+//            Assert.AreEqual(expectedClaimName, actualClaimIdentity.Name);
 
-        }
+//        }
 
-        [TestMethod]
-        public void CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
-        {
-            // Arrange
-            string expectedRole = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role: admin"; // Why does it append schemas? Is it for intergration with AD?
-            string email = "Admin@Dimselab.dk";
-            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
-            // Act
-            string actualRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin").ToString();
+//        [TestMethod]
+//        public void CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
+//        {
+//            // Arrange
+//            string expectedRole = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role: admin"; // Why does it append schemas? Is it for intergration with AD?
+//            string email = "Admin@Dimselab.dk";
+//            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+//            // Act
+//            string actualRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin").ToString();
 
-            // Assert
-            Assert.AreEqual(expectedRole, actualRole);
-        }
+//            // Assert
+//            Assert.AreEqual(expectedRole, actualRole);
+//        }
 
-        [TestMethod]
-        public void CreateClaim_LoginAsUser_DoesNotAddAdminRoleToClaim()
-        {
-            // Arrange
-            string email = "Steven@gmail.com";
-            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
-            // Act
-            Claim claimRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin");
-            // Assert
-            Assert.IsNull(claimRole);
-        }
+//        [TestMethod]
+//        public void CreateClaim_LoginAsUser_DoesNotAddAdminRoleToClaim()
+//        {
+//            // Arrange
+//            string email = "Steven@gmail.com";
+//            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+//            // Act
+//            Claim claimRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin");
+//            // Assert
+//            Assert.IsNull(claimRole);
+//        }
 
-        internal class UserMockData: IUserDb
-        {
-            private static List<User> _users;
-            private readonly PasswordHasher<string> passwordHasher;
-            DimselabDbContext dbContext;
-                public UserMockData ()
-                {
-                passwordHasher = new PasswordHasher<string>();
-                var options = new DbContextOptionsBuilder<DimselabDbContext>()
-                       .UseInMemoryDatabase(Guid.NewGuid().ToString()).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                       .Options;
-                dbContext = new DimselabDbContext(options);
-                LoadDatabase();
+//        internal class UserMockData: IUserDb
+//        {
+//            private static List<User> _users;
+//            private readonly PasswordHasher<string> passwordHasher;
+//            DimselabDbContext dbContext;
+//                public UserMockData ()
+//                {
+//                passwordHasher = new PasswordHasher<string>();
+//                var options = new DbContextOptionsBuilder<DimselabDbContext>()
+//                       .UseInMemoryDatabase(Guid.NewGuid().ToString()).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+//                       .Options;
+//                dbContext = new DimselabDbContext(options);
+//                LoadDatabase();
 
-                //dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-                }
+//                //dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+//                }
 
-            public async Task AddObjectAsync(User obj)
-            {
-                await dbContext.Set<User>().AddAsync(obj);
-                await dbContext.SaveChangesAsync();
-            }
+//            public async Task AddObjectAsync(User obj)
+//            {
+//                await dbContext.Set<User>().AddAsync(obj);
+//                await dbContext.SaveChangesAsync();
+//            }
 
-            public async Task DeleteObjectAsync(User obj)
-            {
-                dbContext.Set<User>().Remove(obj);
-                await dbContext.SaveChangesAsync();
-            }
+//            public async Task DeleteObjectAsync(User obj)
+//            {
+//                dbContext.Set<User>().Remove(obj);
+//                await dbContext.SaveChangesAsync();
+//            }
 
-            public async Task<User> GetObjectByKeyAsync(int id)
-            {
-                    return await dbContext.Set<User>().FindAsync(id);
-            }
+//            public async Task<User> GetObjectByKeyAsync(int id)
+//            {
+//                    return await dbContext.Set<User>().FindAsync(id);
+//            }
 
-            public async Task<IEnumerable<User>> GetObjectsAsync()
-            {
-                return await dbContext.Set<User>().AsNoTracking().ToListAsync();
-            }
+//            public async Task<IEnumerable<User>> GetObjectsAsync()
+//            {
+//                return await dbContext.Set<User>().AsNoTracking().ToListAsync();
+//            }
 
-            public async Task UpdateObjectAsync(User obj)
-            {
-                dbContext.Set<User>().Update(obj);
-                await dbContext.SaveChangesAsync();
+//            public async Task UpdateObjectAsync(User obj)
+//            {
+//                dbContext.Set<User>().Update(obj);
+//                await dbContext.SaveChangesAsync();
                 
-            }
+//            }
 
-            public void DropDatabase()
-            {
-                dbContext.Database.EnsureDeleted();
-            }
+//            public void DropDatabase()
+//            {
+//                dbContext.Database.EnsureDeleted();
+//            }
 
-            private void LoadDatabase()
-            {
-                dbContext.Users.Add(new User("Steven", "Steven@gmail.com", PasswordEncrypt("Steven1234")));
-                dbContext.Users.Add(new User("Mikkel", "Mikkel@gmail.com", PasswordEncrypt("Mikkel1234")));
-                dbContext.Users.Add(new User("Oscar", "Oscar@gmail.com", PasswordEncrypt("Oscar1234")));
-                dbContext.Users.Add(new User("Christopher", "Christopher@gmail.com", PasswordEncrypt("Christopher1234")));
-                dbContext.Users.Add(new User("Admin", "Admin@Dimselab", PasswordEncrypt("Admin1234")));
+//            private void LoadDatabase()
+//            {
+//                dbContext.Users.Add(new User("Steven", "Steven@gmail.com", PasswordEncrypt("Steven1234")));
+//                dbContext.Users.Add(new User("Mikkel", "Mikkel@gmail.com", PasswordEncrypt("Mikkel1234")));
+//                dbContext.Users.Add(new User("Oscar", "Oscar@gmail.com", PasswordEncrypt("Oscar1234")));
+//                dbContext.Users.Add(new User("Christopher", "Christopher@gmail.com", PasswordEncrypt("Christopher1234")));
+//                dbContext.Users.Add(new User("Admin", "Admin@Dimselab", PasswordEncrypt("Admin1234")));
 
-                dbContext.SaveChangesAsync();
-            }
+//                dbContext.SaveChangesAsync();
+//            }
 
-            private string PasswordEncrypt(string password)
-            {
-                return passwordHasher.HashPassword(null, password);
-            }
+//            private string PasswordEncrypt(string password)
+//            {
+//                return passwordHasher.HashPassword(null, password);
+//            }
 
-            public async Task<User> GetUserByEmail(string email)
-            {
+//            public async Task<User> GetUserByEmail(string email)
+//            {
                 
-                    return dbContext.Users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower());
+//                    return dbContext.Users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower());
                 
-            }
+//            }
 
-            public async Task<bool> DoesEmailExist(string email)
-            {
+//            public async Task<bool> DoesEmailExist(string email)
+//            {
                
-                    return dbContext.Users.Any(u => u.Email.ToLower() == email.ToLower());
+//                    return dbContext.Users.Any(u => u.Email.ToLower() == email.ToLower());
                
-            }
-        }
-    }
-}
+//            }
+//        }
+//    }
+//}

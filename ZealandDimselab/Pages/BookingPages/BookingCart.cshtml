@@ -57,17 +57,15 @@
     </table>
     <div class="form-group">
         <label class="control-label">Additional comments.</label>
-        <textarea rows="3" value="details" class="form-control" name="details"></textarea>
+        <textarea rows="3" asp-for="Booking.Details" class="form-control"></textarea>
     </div>
     <div class="form-group">
         <label class="control-label">Return date</label>
-        <input type="date" name="returnDate" class="form-control" />
+        <input asp-for="Booking.ReturnDate" class="form-control" />
     </div>
     <div class="form-group">
-        @foreach (var item in Model.Cart)
-        {
-            <input type="hidden" asp-for="CheckoutItems" />
-        }
+        <label class="control-label">Zealand edu.easj.dk Mail</label>
+        <input asp-for="Email"  class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-primary btn-lg" asp-page="BookingCart" asp-page-handler="Create">Confirm</button>
