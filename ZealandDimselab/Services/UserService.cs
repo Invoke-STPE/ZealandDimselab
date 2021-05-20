@@ -13,7 +13,7 @@ namespace ZealandDimselab.Services
 {
     public class UserService
     {
-        private PasswordHasher<string> _passwordHasher;
+        private readonly PasswordHasher<string> _passwordHasher;
         private readonly IUserDb dbService;
 
         public UserService(IUserDb dbService)
@@ -50,7 +50,6 @@ namespace ZealandDimselab.Services
 
         public async Task DeleteUserAsync(int id)
         {
-            User user = await GetUserByIdAsync(id);
             await dbService.DeleteObjectAsync(await GetUserByIdAsync(id));
         }
         
