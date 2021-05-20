@@ -65,6 +65,22 @@ namespace ZealandDimselab.Services
             return userBookings;
         }
 
+
+        public async Task<List<BookedItem>> GetAllBookedItemsAsync()
+        {
+            var bookedItems = new List<BookedItem>();
+
+            foreach (var booking in await GetAllBookings())
+            {
+                foreach (var item in booking.BookingItems)
+                {
+                    bookedItems.Add(new BookedItem(item.Item, booking.BookingDate, booking.ReturnDate, booking.User));
+                }
+            }
+
+            return bookedItems;
+        }
+
         public async Task ReturnedBooking(int id)
         {
             Booking booking = await GetBookingByKeyAsync(id);
@@ -78,6 +94,7 @@ namespace ZealandDimselab.Services
                 booking.Returned = false;
                 await dbService.UpdateObjectAsync(booking);
             }
+
         }
     }
 }
