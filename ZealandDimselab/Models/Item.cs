@@ -14,6 +14,21 @@ namespace ZealandDimselab.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+        [Required] public int Quantity { get; set; }
+        [Required] public int Stock { get; set; }
+        private int _bookingQuantity;
+        [NotMapped]
+        public int BookingQuantity
+        {
+            get { return _bookingQuantity; }
+            set
+            {
+                if (value <= Stock)
+                {
+                    _bookingQuantity = value;
+                }
+            }
+        }
 
         public ICollection<BookingItem> BookingItems { get; set; }
 

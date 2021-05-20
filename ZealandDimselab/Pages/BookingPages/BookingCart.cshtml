@@ -43,7 +43,9 @@
                     <td>PlaceHolder</td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
-                    <td>Placeholder</td>
+                    <td>
+                        <input type="number" name="quantities" value="@item.BookingQuantity" min="1" style="width: 50px;"/>
+                    </td>
                     <td>
                         <button type="submit" class="btn btn-primary btn-lg" asp-page-handler="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i></button>
                     </td>

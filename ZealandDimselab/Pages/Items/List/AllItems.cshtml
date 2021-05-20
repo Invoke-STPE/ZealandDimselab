@@ -33,56 +33,61 @@
     }
     
     <thead>
-    <tr class="btn-secondary active">
-        @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
-        {
-            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+        <tr class="btn-secondary active">
+            @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
             {
-                <th>
-                    <div class="d-flex justify-content-between p-0">
-                        <div><h5>Id</h5></div>
-                    </div>
-                </th>
+                if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                {
+                    <th>
+                        <div class="d-flex justify-content-between p-0">
+                            <div><h5>Id</h5></div>
+                        </div>
+                    </th>
+                }
             }
-        }
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Name</h5></div>
-            </div>
-        </th>
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Description</h5></div>
-            </div>
-        </th>
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Actions</h5></div>
-            </div>
-        </th>
-    </tr>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Name</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>In Stock/Total Quantity</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
+                </div>
+            </th>
+        </tr>
     </thead>
 
     <tbody>
         @foreach (var item in Model.Items)
         {
-            <tr class="btn-secondary">
-                @if (HttpContext.User.Identity.Name != null)
+        <tr class="btn-secondary">
+            @if (HttpContext.User.Identity.Name != null)
+            {
+                if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
                 {
-                    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
-                    {
-                        <td>
-                            @item.Id
-                        </td>
-                    }
+                    <td>
+                        @item.Id
+                    </td>
                 }
-                <td>
-                    @item.Name
-                </td>
-                <td>
-                    @item.Description
-                    @if (item.Category != null)
-                    {
+            }
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Description
+                @if (item.Category != null)
+                {
                     <p>Category:  @item.Category.CategoryName</p>
                     }
                 </td>
