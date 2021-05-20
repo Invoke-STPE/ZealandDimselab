@@ -12,7 +12,6 @@ namespace ZealandDimselab.Services
 {
     public class BookingService
     {
-        private UserService UserService;
         private readonly IBookingDb dbService;
 
         public BookingService(IBookingDb dbService)
@@ -25,11 +24,6 @@ namespace ZealandDimselab.Services
             await dbService.GetObjectsAsync();
             return await dbService.GetObjectsAsync();
         }
-
-        //public List<Booking> GetAllBookingsTest()
-        //{
-        //    return dbContext;
-        //}
 
         public async Task<Booking> GetBookingByKeyAsync(int id)
         {
@@ -47,9 +41,9 @@ namespace ZealandDimselab.Services
             await dbService.DeleteObjectAsync(booking);
         }
 
-        public async Task UpdateBookingAsync(Booking updatedbooking)
+        public async Task UpdateBookingAsync(Booking updatedBooking)
         {
-            await dbService.UpdateObjectAsync(updatedbooking);
+            await dbService.UpdateObjectAsync(updatedBooking);
         }
         
         public async Task<List<Booking>> GetBookingsByEmailAsync(string email) // TODO Pretty sure this doesn't work

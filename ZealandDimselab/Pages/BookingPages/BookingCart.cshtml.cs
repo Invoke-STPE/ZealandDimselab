@@ -85,17 +85,6 @@ namespace ZealandDimselab.Pages.BookingPages
             return RedirectToPage("BookingCart");
         }
 
-        //public IActionResult OnPostUpdate(int[] quantities)
-        //{
-        //    Cart = GetCart();
-        //    for (var i = 0; i < Cart.Count; i++)
-        //    {
-        //        Cart[i].BookingQuantity = quantities[i];
-        //    }
-        //    SetCart(Cart);
-        //    return RedirectToPage("BookingCart");
-        //}
-
         public async Task<IActionResult> OnPostCreate(string details, DateTime returnDate, int[] quantities)
         {
             Cart = GetCart();
@@ -108,14 +97,6 @@ namespace ZealandDimselab.Pages.BookingPages
             User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
             if (user != null)
             {
-                //Booking newBooking = new Booking()
-                //{
-                //    Items = new List<Item>(),
-                //    UserId =  user.Id,
-                //    Details = details,
-                //    BookingDate = DateTime.Now.Date,
-                //    ReturnDate = returnDate.Date
-                //};
 
                 var _booking = new Booking
                 {
