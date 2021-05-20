@@ -65,5 +65,20 @@ namespace ZealandDimselab.Services
             }
             return userBookings;
         }
+
+        public async Task<List<BookedItem>> GetAllBookedItemsAsync()
+        {
+            var bookedItems = new List<BookedItem>();
+
+            foreach (var booking in await GetAllBookings())
+            {
+                foreach (var item in booking.BookingItems)
+                {
+                    bookedItems.Add(new BookedItem(item.Item, booking.BookingDate, booking.ReturnDate, booking.User));
+                }
+            }
+
+            return bookedItems;
+        }
     }
 }

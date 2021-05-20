@@ -1,0 +1,78 @@
+﻿@page
+@model ZealandDimselab.Pages.BookingPages.LoanedItemsModel
+@{
+}
+
+<table class="table table-bordered table-hover table-striped" width="100%">
+    <col style="width: 8%">
+    <col style="width: 34%">
+    <col style="width: 20%">
+    <col style="width: 14%">
+    <col style="width: 14%">
+    <col style="width: 10%">
+
+    <thead>
+        <tr>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5></h5>ID</div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5></h5>Item Name</div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5></h5>Booked By</div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5></h5>Booking Date</div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5></h5>Return Date</div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5></h5>Status</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.BookedItems)
+        {
+        <tr class="btn-secondary">
+            <td>
+                @item.Item.Id
+            </td>
+            <td>
+                @item.Item.Name
+            </td>
+            <td>
+                @item.User.Name
+            </td>
+            <td>
+                @item.BookingDate.Day/@item.BookingDate.Month/@item.BookingDate.Year
+            </td>
+            <td>
+                @item.ReturnDate.Day/@item.ReturnDate.Month/@item.ReturnDate.Year
+            </td>
+            <td>
+                placeholder
+            </td>
+
+
+        </tr>
+        }
+
+    </tbody>
+
+</table>
