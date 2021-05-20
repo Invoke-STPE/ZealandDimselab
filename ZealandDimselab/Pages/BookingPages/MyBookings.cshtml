@@ -1,4 +1,5 @@
 ﻿@page
+@using ZealandDimselab.Models
 @model ZealandDimselab.Pages.BookingPages.MyBookingsModel
 @{
 }
@@ -6,9 +7,16 @@
 <h1>My Bookings</h1>
 <table class="table table-bordered table-hover table-striped" width="70%">
     <col style="width: 5%">
-    <col style="width: 30%">
-    <col style="width: 52%">
-    <col style="width: 13%">
+    <col style="width: 8%">
+    <col style="width: 26%">
+    <col style="width: 7%">
+    <col style="width: 7%">
+    <col style="width: 7%">
+    <col style="width: 1%">
+    @if (HttpContext.User.IsInRole("admin"))
+    {
+        <col style="width: 13%">
+    }
 
 
     <thead>
@@ -20,7 +28,7 @@
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5>Name</h5></div>
+                    <div><h5>User</h5></div>
                 </div>
             </th>
             <th>
@@ -38,6 +46,19 @@
                     <div><h5>Return Date</h5></div>
                 </div>
             </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Has been returned?</h5></div>
+                </div>
+            </th>
+            @if (HttpContext.User.IsInRole("admin"))
+            {
+                <th>
+                    <div class="d-flex justify-content-between p-0">
+                        <div><h5>Status</h5></div>
+                    </div>
+                </th>
+            }
         </tr>
     </thead>
 
@@ -56,9 +77,9 @@
                         <summary>Items booked.</summary>
                         @foreach (var item in booking.BookingItems)
                         {
-                        <li>
-                            @item.Item.ToString()    @*Quantenty property?*@
-                        </li>
+                            <li>
+                                @item.Item.ToString()    @*Quantenty property?*@
+                            </li>
                         }
 
                     </details>
@@ -69,6 +90,25 @@
                 <td>
                     @booking.ReturnDate.ToString("dd/MM/yyyy")
                 </td>
+                <td>
+                    @if(booking.Returned)
+                        {<i>Returned</i>}
+                    else
+                    {
+                        {<i>Not returned</i>}
+                    }
+                </td>
+
+                @if (HttpContext.User.IsInRole("admin"))
+                {
+                    <th>
+                        <li class="list-inline-item">
+                            <a class="btn btn-outline-success " type="button" data-toggle="tooltip" data-placement="top" title="ItemReturned" asp-page="MyBookings" asp-route-id="@booking.Id" asp-page-handler="ConfirmReturn"><i class="fa fa-check-square"></i></a>
+                        </li>
+                    </th>
+                }
+
+
                 @*<td>
                         <li class="list-inline-item">
                             <a class="btn btn-info btn-sm " type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id"><i class="fa fa-search-plus"></i></a>

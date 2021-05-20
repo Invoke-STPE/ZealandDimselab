@@ -106,7 +106,8 @@ namespace ZealandDimselab.Pages.BookingPages
                     BookingDate = DateTime.Now.Date,
                     ReturnDate = returnDate.Date,
                     UserId = user.Id,
-                    BookingItems = new List<BookingItem>()
+                    BookingItems = new List<BookingItem>(), 
+                    Returned = false
                 };
 
                 foreach (var item in Cart)

@@ -60,10 +60,24 @@ namespace ZealandDimselab.Services
                 if (booking.User.Email.ToLower() == email.ToLower())
                 {
                     userBookings.Add(booking);
-                    
                 }
             }
             return userBookings;
+        }
+
+        public async Task ReturnedBooking(int id)
+        {
+            Booking booking = await GetBookingByKeyAsync(id);
+            if (booking.Returned == false)
+            {
+                booking.Returned = true;
+                await dbService.UpdateObjectAsync(booking);
+            }
+            else
+            {
+                booking.Returned = false;
+                await dbService.UpdateObjectAsync(booking);
+            }
         }
     }
 }
