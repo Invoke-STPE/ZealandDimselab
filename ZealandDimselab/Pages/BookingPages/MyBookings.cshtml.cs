@@ -22,7 +22,7 @@ namespace ZealandDimselab.Pages.BookingPages
         public async Task<IActionResult> OnGetAsync()
         {
 
-                Bookings = bookingService.GetAllBookingsAsync().Result.ToList();
+                Bookings = (await bookingService.GetAllBookingsAsync()).ToList();
 
             return Page();
 

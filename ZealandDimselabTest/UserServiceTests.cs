@@ -51,7 +51,7 @@
 //            var actualCount = userService.GetUsersAsync().Result.ToList().Count;
 //            // Assert
 //            Assert.AreEqual(expectedCount, actualCount);
-           
+
 //        }
 
 //        [TestMethod]
@@ -99,7 +99,7 @@
 //        public async Task UpdateUserAsync_UpdateExsitingUser_ReturnsUpdatedObject()
 //        {
 //            // Arrange
-//            User user = await userService .GetUserByIdAsync(3); 
+//            User user = await userService.GetUserByIdAsync(3);
 //            string expectedName = "Hoscar";
 //            string expectedEmail = "Hoscar@gmail.com";
 
@@ -107,7 +107,7 @@
 //            user.Name = expectedName;
 //            user.Email = expectedEmail;
 //            await userService.UpdateUserAsync(user);
-//            User actualUser = await userService .GetUserByIdAsync(3);
+//            User actualUser = await userService.GetUserByIdAsync(3);
 
 //            // Assert
 
@@ -203,13 +203,13 @@
 //            Assert.IsNull(claimRole);
 //        }
 
-//        internal class UserMockData: IUserDb
+//        internal class UserMockData : IUserDb
 //        {
 //            private static List<User> _users;
 //            private readonly PasswordHasher<string> passwordHasher;
 //            DimselabDbContext dbContext;
-//                public UserMockData ()
-//                {
+//            public UserMockData()
+//            {
 //                passwordHasher = new PasswordHasher<string>();
 //                var options = new DbContextOptionsBuilder<DimselabDbContext>()
 //                       .UseInMemoryDatabase(Guid.NewGuid().ToString()).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
@@ -218,7 +218,7 @@
 //                LoadDatabase();
 
 //                //dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-//                }
+//            }
 
 //            public async Task AddObjectAsync(User obj)
 //            {
@@ -234,7 +234,7 @@
 
 //            public async Task<User> GetObjectByKeyAsync(int id)
 //            {
-//                    return await dbContext.Set<User>().FindAsync(id);
+//                return await dbContext.Set<User>().FindAsync(id);
 //            }
 
 //            public async Task<IEnumerable<User>> GetObjectsAsync()
@@ -246,7 +246,7 @@
 //            {
 //                dbContext.Set<User>().Update(obj);
 //                await dbContext.SaveChangesAsync();
-                
+
 //            }
 
 //            public void DropDatabase()
@@ -272,16 +272,16 @@
 
 //            public async Task<User> GetUserByEmail(string email)
 //            {
-                
-//                    return dbContext.Users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower());
-                
+
+//                return dbContext.Users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower());
+
 //            }
 
 //            public async Task<bool> DoesEmailExist(string email)
 //            {
-               
-//                    return dbContext.Users.Any(u => u.Email.ToLower() == email.ToLower());
-               
+
+//                return dbContext.Users.Any(u => u.Email.ToLower() == email.ToLower());
+
 //            }
 //        }
 //    }
