@@ -75,33 +75,11 @@ namespace ZealandDimselab.Pages.Items
             {
                 Item.ImageName = (await itemService.GetItemWithCategoriesAsync(Item.Id)).ImageName;
             }
-            
+
+            Item.Stock = Item.Quantity;
+
             await itemService.UpdateItemAsync(Item.Id, Item);
             return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });
         }
-
-        //public async Task<IActionResult> OnPostCardsAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        if (CategoryId == 0) return await OnGetAsync(Item.Id);
-        //        return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
-        //    }
-
-        //    await UpdateItemAsync();
-        //    return RedirectToPage("/Items/Cards/AllItems", "FilterByCategory", new { category = CategoryId });
-        //}
-
-        //public async Task<IActionResult> OnPostListAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        if (CategoryId == 0) return await OnGetAsync(Item.Id);
-        //        return await OnGetFilterByCategoryAsync(Item.Id, CategoryId);
-        //    }
-
-        //    await UpdateItemAsync();
-        //    return RedirectToPage("/Items/List/AllItems", "FilterByCategory", new { category = CategoryId });
-        //}
     }
 }

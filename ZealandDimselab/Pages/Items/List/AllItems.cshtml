@@ -29,9 +29,9 @@
         <col style="width: 30%">
         <col style="width: 60%">
         <col style="width: 10%">
-        
+
     }
-    
+
     <thead>
         <tr class="btn-secondary active">
             @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
@@ -71,25 +71,28 @@
     <tbody>
         @foreach (var item in Model.Items)
         {
-        <tr class="btn-secondary">
-            @if (HttpContext.User.Identity.Name != null)
-            {
-                if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+            <tr class="btn-secondary">
+                @if (HttpContext.User.Identity.Name != null)
                 {
-                    <td>
-                        @item.Id
-                    </td>
-                }
-            }
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.Description
-                @if (item.Category != null)
-                {
-                    <p>Category:  @item.Category.CategoryName</p>
+                    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                    {
+                        <td>
+                            @item.Id
+                        </td>
                     }
+                }
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description
+                    @if (item.Category != null)
+                    {
+                        <p>Category:  @item.Category.CategoryName</p>
+                    }
+                </td>
+                <td>
+                    <p>@item.Stock/@item.Quantity</p>
                 </td>
                 <td>
                     <ol class="p-0">
