@@ -24,5 +24,16 @@ namespace ZealandDimselab.Pages.BookingPages
         {
             BookedItems = await _bookingService.GetAllBookedItemsAsync();
         }
+
+        public async Task OnGetSortByIdAsync()
+        {
+            BookedItems = await _bookingService.GetAllBookedItemsAsync();
+            BookedItems.Sort();
+        }
+
+        public async Task OnGetSortByIdDescendingAsync()
+        {
+
+        }
     }
 }
