@@ -10,8 +10,8 @@ using ZealandDimselab.Models;
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    [Migration("20210520180817_Huh")]
-    partial class Huh
+    [Migration("20210521075739_removedpropuser3")]
+    partial class removedpropuser3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -122,10 +122,6 @@ namespace ZealandDimselab.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Name")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 

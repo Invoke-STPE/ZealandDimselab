@@ -49,8 +49,14 @@ namespace ZealandDimselab.Services
             //user.Password = _passwordHasher.HashPassword(null, user.Password);
             string[] subs = user.Email.Split("@");
 
-                user.Role = AssignRoleToUser(subs);
-                await dbService.AddObjectAsync(user);
+            if (subs[1].ToLower() == "edu.easj.dk")
+            {
+                if (!(await EmailInUseAsync(user.Email)))
+                {
+                    user.Role = AssignRoleToUser(subs);
+                    await dbService.AddObjectAsync(user);
+                }
+            }
         }
 
         public async Task DeleteUserAsync(int id)
@@ -115,8 +121,6 @@ namespace ZealandDimselab.Services
         private string AssignRoleToUser(string[] emailSubs)
         {
             string role = string.Empty;
-            if (emailSubs[1].ToLower().Contains("edu.easj.dk".ToLower())) // Check for edu.easj.dk email
-            {
                 switch (emailSubs[0].Length)
                 {
                     case (8):
@@ -126,10 +130,8 @@ namespace ZealandDimselab.Services
                         role = "teacher";
                         break;
                     default:
-                        role = null;
                         break;
                 }
-            }
             return role;
         }
 
