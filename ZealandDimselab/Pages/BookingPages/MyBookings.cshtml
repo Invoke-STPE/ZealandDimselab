@@ -13,11 +13,11 @@
 <table class="table table-bordered table-hover table-striped" width="70%">
     <col style="width: 5%">
     <col style="width: 8%">
-    <col style="width: 26%">
-    <col style="width: 7%">
-    <col style="width: 7%">
-    <col style="width: 7%">
-    <col style="width: 1%">
+    <col style="width: 17%">
+    <col style="width: 30%">
+    <col style="width: 15%">
+    <col style="width: 15%">
+    <col style="width: 16%">
     @if (HttpContext.User.IsInRole("admin"))
     {
         <col style="width: 13%">
@@ -28,12 +28,12 @@
         <tr class="btn-secondary active">
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5>Booking Id</h5></div>
+                    <div><h5>Id</h5></div>
                 </div>
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5>Email</h5></div>
+                    <div><h5>Booked By</h5></div>
                 </div>
             </th>
             <th>
@@ -53,14 +53,14 @@
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5>Has been returned?</h5></div>
+                    <div><h5>Status</h5></div>
                 </div>
             </th>
             @if (HttpContext.User.IsInRole("admin"))
             {
                 <th>
                     <div class="d-flex justify-content-between p-0">
-                        <div><h5>Status</h5></div>
+                        <div><h5>Toggle Status</h5></div>
                     </div>
                 </th>
             }

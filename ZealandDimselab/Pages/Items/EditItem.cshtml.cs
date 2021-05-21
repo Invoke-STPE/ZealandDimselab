@@ -16,6 +16,7 @@ namespace ZealandDimselab.Pages.Items
     {
         private readonly ItemService itemService;
         private readonly CategoryService categoryService;
+        private readonly BookingService _bookingService;
         [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
@@ -23,10 +24,11 @@ namespace ZealandDimselab.Pages.Items
         [BindProperty] public IFormFile FileUpload { get; set; }
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EditItemModel(ItemService itemService, CategoryService categoryService, IWebHostEnvironment whe)
+        public EditItemModel(ItemService itemService, CategoryService categoryService, BookingService bookingService, IWebHostEnvironment whe)
         {
             this.itemService = itemService;
             this.categoryService = categoryService;
+            _bookingService = bookingService;
             _webHostEnvironment = whe;
         }
 
@@ -76,7 +78,16 @@ namespace ZealandDimselab.Pages.Items
                 Item.ImageName = (await itemService.GetItemWithCategoriesAsync(Item.Id)).ImageName;
             }
 
-            Item.Stock = Item.Quantity;
+            var bookedItems = await _bookingService.GetAllBookedItemsAsync();
+            int matchingId = 0;
+            foreach (var bookedItem in bookedItems)
+            {
+                if (bookedItem.Item.Id == Item.Id && String.Equals(bookedItem.Status, "Not Returned"))
+                {
+                    matchingId += bookedItem.Quantity;
+                }
+            }
+            Item.Stock = Item.Quantity - matchingId;
 
             await itemService.UpdateItemAsync(Item.Id, Item);
             return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });

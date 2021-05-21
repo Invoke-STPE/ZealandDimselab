@@ -4,43 +4,135 @@
 }
 
 <table class="table table-bordered table-hover table-striped" width="100%">
-    <col style="width: 8%">
-    <col style="width: 34%">
-    <col style="width: 20%">
-    <col style="width: 14%">
-    <col style="width: 14%">
+    <col style="width: 6%">
+    <col style="width: 39%">
     <col style="width: 10%">
+    <col style="width: 15%">
+    <col style="width: 10%">
+    <col style="width: 10%">
+    <col style="width: 20%">
+
+
 
     <thead>
         <tr>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5></h5>ID</div>
+                    <div>
+                        <h5>
+                            Id
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByIdAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByIdDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
                 </div>
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5></h5>Item Name</div>
+                    <div>
+                        <h5>
+                            Item Name
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByItemNameAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByItemNameDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
                 </div>
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5></h5>Booked By</div>
+                    <div>
+                        <h5>
+                            Quantity
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByQuantityAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByQuantityDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
                 </div>
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5></h5>Booking Date</div>
+                    <div>
+                        <h5>
+                            Booked By
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByUserNameAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByUserNameDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
                 </div>
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5></h5>Return Date</div>
+                    <div>
+                        <h5>
+                            Booking Date
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByBookingDateAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByBookingDateDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
                 </div>
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5></h5>Status</div>
+                    <div>
+                        <h5>
+                            Return Date
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByReturnDateAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByReturnDateDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Status
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByStatusAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByStatusDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
                 </div>
             </th>
         </tr>
@@ -70,8 +162,7 @@
             </td>
 
 
-        </tr>
-        }
+</tr>}
 
     </tbody>
 

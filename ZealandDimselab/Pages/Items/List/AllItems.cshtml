@@ -12,9 +12,10 @@
             <p>
                 <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
             </p>
-            <col style="width: 5%">
-            <col style="width: 25%">
-            <col style="width: 52%">
+            <col style="width: 8%">
+            <col style="width: 15%">
+            <col style="width: 45%">
+            <col style="width: 14%">
             <col style="width: 18%">
         }
         else
@@ -22,6 +23,7 @@
             <col style="width: 30%">
             <col style="width: 60%">
             <col style="width: 10%">
+            <col style="width: 18%">
         }
     }
     else
@@ -29,7 +31,7 @@
         <col style="width: 30%">
         <col style="width: 60%">
         <col style="width: 10%">
-
+        <col style="width: 18%">
     }
 
     <thead>
@@ -57,7 +59,8 @@
             </th>
             <th>
                 <div class="d-flex justify-content-between p-0">
-                    <div><h5>In Stock/Total Quantity</h5></div>
+                    <div><h5 style="padding-bottom: 0">In Stock/ </h5>
+                        <h5>Total Quantity</h5></div>
                 </div>
             </th>
             <th>

@@ -13,10 +13,12 @@ namespace ZealandDimselab.Services
     public class BookingService
     {
         private readonly IBookingDb dbService;
+        private ItemService _itemService;
 
-        public BookingService(IBookingDb dbService)
+        public BookingService(IBookingDb dbService, ItemService itemService)
         {
             this.dbService = dbService;
+            _itemService = itemService;
         }
 
         public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
@@ -68,7 +70,7 @@ namespace ZealandDimselab.Services
             {
                 foreach (var item in booking.BookingItems)
                 {
-                    bookedItems.Add(new BookedItem(item.Item, booking.BookingDate, booking.ReturnDate, booking.User));
+                    bookedItems.Add(new BookedItem(item.Item, booking.BookingDate, booking.ReturnDate, booking.User, booking.Returned, item.Quantity));
                 }
             }
 
@@ -81,11 +83,23 @@ namespace ZealandDimselab.Services
             if (booking.Returned == false)
             {
                 booking.Returned = true;
+                foreach (var bookingItem in booking.BookingItems)
+                {
+                    Item item = await _itemService.GetItemByIdAsync(bookingItem.ItemId);
+                    item.Stock = item.Stock + bookingItem.Quantity;
+                    await _itemService.UpdateItemAsync(item.Id, item);
+                }
                 await dbService.UpdateObjectAsync(booking);
             }
             else
             {
                 booking.Returned = false;
+                foreach (var bookingItem in booking.BookingItems)
+                {
+                    Item item = await _itemService.GetItemByIdAsync(bookingItem.ItemId);
+                    item.Stock = item.Stock - bookingItem.Quantity;
+                    await _itemService.UpdateItemAsync(item.Id, item);
+                }
                 await dbService.UpdateObjectAsync(booking);
             }
 
