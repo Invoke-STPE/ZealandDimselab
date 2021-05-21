@@ -24,5 +24,19 @@ namespace ZealandDimselab.Services
             }
             return bookings;
         }
+
+        public override async Task<Booking> GetObjectByKeyAsync(int id)
+        {
+            Booking booking = new Booking();
+            using (var context = new DimselabDbContext())
+            {
+                booking = await context.Bookings
+                    .Include(u => u.User)
+                    .Include(i => i.BookingItems)
+                    .Where(b => b.Id == id).FirstOrDefaultAsync();
+            }
+
+            return booking;
+        }
     }
 }
