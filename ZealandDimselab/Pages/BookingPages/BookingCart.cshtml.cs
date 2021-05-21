@@ -8,6 +8,9 @@ using ZealandDimselab.Helpers;
 using ZealandDimselab.Models;
 using ZealandDimselab.MockData;
 using ZealandDimselab.Services;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ZealandDimselab.Pages.BookingPages
 {
@@ -90,18 +93,9 @@ namespace ZealandDimselab.Pages.BookingPages
         public async Task<IActionResult> OnPostCreate()
         {
             Cart = GetCart();
-            User user = await userService.GetUserByEmail(Email);
-            if (user != null)
-            {
-                Booking booking = CreateBooking(Email, user);
-                await bookingService.AddBookingAsync(booking);
-            } else
-            {
-                await userService.AddUserAsync(new User() { Email = Email });
-                user = await userService.GetUserByEmail(Email);
-                Booking booking = CreateBooking(Email, user);
-                await bookingService.AddBookingAsync(booking);
-            }
+            User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
+            Booking booking = CreateBooking(HttpContext.User.Identity.Name, user);
+            await bookingService.AddBookingAsync(booking);
             return RedirectToPage("MyBookings");
         }
 
@@ -110,7 +104,21 @@ namespace ZealandDimselab.Pages.BookingPages
             SetCart(new List<Item>());
             return RedirectToPage("BookingCart");
         }
-
+        public async Task<IActionResult> OnPostEmailSubmitted(string email)
+        {
+            ClaimsIdentity claimsIdentity;
+            if (await userService.EmailInUseAsync(email))
+            {
+                claimsIdentity = userService.CreateClaimIdentity(email);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            } else
+            {
+                await userService.AddUserAsync(new User() { Email = email });
+                claimsIdentity = userService.CreateClaimIdentity(email);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            }
+            return RedirectToPage("BookingCart");
+        }
         /// <summary>
         /// Check if an item in a cart exists.
         /// </summary>

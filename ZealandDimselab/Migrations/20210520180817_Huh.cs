@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ZealandDimselab.Migrations
 {
-    public partial class ChristofferUpdate : Migration
+    public partial class Huh : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -23,7 +23,9 @@ namespace ZealandDimselab.Services
             // Test user: Admin Admin@Dimselab.dk secret1234 (don't tell anyone)
             // Test user: Oscar Oscar@email.com password
             //User user = new User("Oscar", "Osca2324@edu.easj.dk");
-            
+            //User user = new User("Admin", "Admin@Dimselab.dk", "secret1234");
+            //AddUserAsync(user);
+
         }
 
         public async Task<IEnumerable<User>> GetUsersAsync()
@@ -46,11 +48,9 @@ namespace ZealandDimselab.Services
         {
             //user.Password = _passwordHasher.HashPassword(null, user.Password);
             string[] subs = user.Email.Split("@");
-            if (subs[0].Length == 8 && subs[1].Contains("edu.easj.dk"))
-            {
-                user.Role = "student";
+
+                user.Role = AssignRoleToUser(subs);
                 await dbService.AddObjectAsync(user);
-            }
         }
 
         public async Task DeleteUserAsync(int id)
@@ -87,6 +87,7 @@ namespace ZealandDimselab.Services
 
         public ClaimsIdentity CreateClaimIdentity(string email)
         {
+            User user = GetUserByEmail(email).Result;
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, email)
@@ -99,6 +100,8 @@ namespace ZealandDimselab.Services
             {
                 claims.Add(new Claim(ClaimTypes.Role, "admin"));
             }
+
+            claims.Add(new Claim(ClaimTypes.Role, user.Role));
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             return claimsIdentity;
@@ -107,6 +110,27 @@ namespace ZealandDimselab.Services
         public async Task<bool> EmailInUseAsync(string email)
         {
             return await dbService.DoesEmailExist(email);
+        }
+
+        private string AssignRoleToUser(string[] emailSubs)
+        {
+            string role = string.Empty;
+            if (emailSubs[1].ToLower().Contains("edu.easj.dk".ToLower())) // Check for edu.easj.dk email
+            {
+                switch (emailSubs[0].Length)
+                {
+                    case (8):
+                        role = "student";
+                        break;
+                    case (4):
+                        role = "teacher";
+                        break;
+                    default:
+                        role = null;
+                        break;
+                }
+            }
+            return role;
         }
 
     }

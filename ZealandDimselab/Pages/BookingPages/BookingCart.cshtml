@@ -5,22 +5,10 @@
 
 @if (!HttpContext.User.Identity.IsAuthenticated)
 {
-    @*<div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Product Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body"></div>
-            </div>
-        </div>
-    </div>*@
-    @await Component.InvokeAsync("Modal");
 
+    @await Component.InvokeAsync("Modal");
 }
+
 <h1>
     Cart
 </h1>
@@ -81,11 +69,6 @@
         <label class="control-label">Return date</label>
         <input asp-for="Booking.ReturnDate" class="form-control" />
     </div>
-    <div class="form-group">
-        <label class="control-label">Zealand edu.easj.dk Mail</label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-
     <button type="submit" class="btn btn-primary btn-lg" asp-page="BookingCart" asp-page-handler="Create">Confirm</button>
     <button type="submit" class="btn btn-danger btn-lg" asp-page="BookingCart" asp-page-handler="ClearCart">Clear Cart</button>
 </form>

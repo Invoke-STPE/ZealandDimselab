@@ -10,8 +10,8 @@ using ZealandDimselab.Models;
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    [Migration("20210520070859_ChristofferUpdate")]
-    partial class ChristofferUpdate
+    [Migration("20210520180817_Huh")]
+    partial class Huh
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
