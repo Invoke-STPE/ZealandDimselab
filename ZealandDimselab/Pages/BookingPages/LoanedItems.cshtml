@@ -6,12 +6,13 @@
 <table class="table table-bordered table-hover table-striped" width="100%">
     <col style="width: 6%">
     <col style="width: 39%">
-    <col style="width: 20%">
-    <col style="width: 10%">
     <col style="width: 10%">
     <col style="width: 15%">
-    
-   
+    <col style="width: 10%">
+    <col style="width: 10%">
+    <col style="width: 20%">
+
+
 
     <thead>
         <tr>
@@ -140,33 +141,32 @@
     <tbody>
         @foreach (var item in Model.BookedItems)
         {
-        <tr class="btn-secondary">
-            <td>
-                @item.Item.Id
-            </td>
-            <td>
-                @item.Item.Name
-            </td>
-            <td>
-                @item.Quantity
-            </td>
-            <td>
-                @item.User.Name
-            </td>
-            <td>
-                @item.BookingDate.Day/@item.BookingDate.Month/@item.BookingDate.Year
-            </td>
-            <td>
-                @item.ReturnDate.Day/@item.ReturnDate.Month/@item.ReturnDate.Year
-            </td>
-            <td>
-                @item.Status
-            </td>
+<tr class="btn-secondary">
+    <td>
+        @item.Item.Id
+    </td>
+    <td>
+        @item.Item.Name
+    </td>
+    <td>
+        @item.Quantity
+    </td>
+    <td>
+        @item.User.Name
+    </td>
+    <td>
+        @item.BookingDate.Day/@item.BookingDate.Month/@item.BookingDate.Year
+    </td>
+    <td>
+        @item.ReturnDate.Day/@item.ReturnDate.Month/@item.ReturnDate.Year
+    </td>
+    <td>
+        @item.Status
+    </td>
 
 
-        </tr>
-        }
+</tr>}
 
     </tbody>
-    
+
 </table>
