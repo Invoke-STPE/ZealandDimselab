@@ -27,5 +27,14 @@ namespace ZealandDimselab.Pages.BookingPages
             return Page();
 
         }
+
+        public async Task<IActionResult> OnGetConfirmReturnAsync(int id)
+        {
+            if (HttpContext.User.IsInRole("admin"))
+            {
+                await bookingService.ReturnedBooking(id);
+            }
+            return RedirectToPage("MyBookings");
+        }
     }
 }

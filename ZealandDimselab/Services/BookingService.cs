@@ -12,7 +12,6 @@ namespace ZealandDimselab.Services
 {
     public class BookingService
     {
-        private UserService UserService;
         private readonly IBookingDb dbService;
 
         public BookingService(IBookingDb dbService)
@@ -25,11 +24,6 @@ namespace ZealandDimselab.Services
             await dbService.GetObjectsAsync();
             return await dbService.GetObjectsAsync();
         }
-
-        //public List<Booking> GetAllBookingsTest()
-        //{
-        //    return dbContext;
-        //}
 
         public async Task<Booking> GetBookingByKeyAsync(int id)
         {
@@ -47,9 +41,9 @@ namespace ZealandDimselab.Services
             await dbService.DeleteObjectAsync(booking);
         }
 
-        public async Task UpdateBookingAsync(Booking updatedbooking)
+        public async Task UpdateBookingAsync(Booking updatedBooking)
         {
-            await dbService.UpdateObjectAsync(updatedbooking);
+            await dbService.UpdateObjectAsync(updatedBooking);
         }
 
         public async Task<List<Booking>> GetBookingsByEmailAsync(string email) // TODO Pretty sure this doesn't work
@@ -60,10 +54,41 @@ namespace ZealandDimselab.Services
                 if (booking.User.Email.ToLower() == email.ToLower())
                 {
                     userBookings.Add(booking);
-
                 }
             }
             return userBookings;
+        }
+
+
+        public async Task<List<BookedItem>> GetAllBookedItemsAsync()
+        {
+            var bookedItems = new List<BookedItem>();
+
+            foreach (var booking in await GetAllBookings())
+            {
+                foreach (var item in booking.BookingItems)
+                {
+                    bookedItems.Add(new BookedItem(item.Item, booking.BookingDate, booking.ReturnDate, booking.User));
+                }
+            }
+
+            return bookedItems;
+        }
+
+        public async Task ReturnedBooking(int id)
+        {
+            Booking booking = await GetBookingByKeyAsync(id);
+            if (booking.Returned == false)
+            {
+                booking.Returned = true;
+                await dbService.UpdateObjectAsync(booking);
+            }
+            else
+            {
+                booking.Returned = false;
+                await dbService.UpdateObjectAsync(booking);
+            }
+
         }
     }
 }

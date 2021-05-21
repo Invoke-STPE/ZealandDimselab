@@ -90,12 +90,36 @@ namespace ZealandDimselab.Pages.BookingPages
             return RedirectToPage("BookingCart");
         }
 
-        public async Task<IActionResult> OnPostCreate()
+        public async Task<IActionResult> OnPostCreate(string details, DateTime returnDate, int[] quantities)
         {
             Cart = GetCart();
+            for (var i = 0; i < Cart.Count; i++)
+            {
+                Cart[i].BookingQuantity = quantities[i];
+            }
+            SetCart(Cart);
+
             User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
-            Booking booking = CreateBooking(HttpContext.User.Identity.Name, user);
-            await bookingService.AddBookingAsync(booking);
+            if (user != null)
+            {
+
+                var _booking = new Booking
+                {
+                    Details = details,
+                    BookingDate = DateTime.Now.Date,
+                    ReturnDate = returnDate.Date,
+                    UserId = user.Id,
+                    BookingItems = new List<BookingItem>(), 
+                    Returned = false
+                };
+
+                foreach (var item in Cart)
+                {
+                    _booking.BookingItems.Add(new BookingItem { ItemId = item.Id, Quantity = item.BookingQuantity });
+                    await itemService.ItemStockUpdateAsync(item, item.BookingQuantity);
+                }
+                await bookingService.AddBookingAsync(_booking);
+            }
             return RedirectToPage("MyBookings");
         }
 

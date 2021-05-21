@@ -18,6 +18,7 @@ namespace ZealandDimselab.Models
         public string Details { get; set; }
         [Required] public DateTime BookingDate { get; set; }
         [Required] public DateTime ReturnDate { get; set; }
+        public bool Returned { get; set; }
 
 
 
@@ -26,7 +27,7 @@ namespace ZealandDimselab.Models
             BookingItems = new List<BookingItem>();
         }
 
-        public Booking(List<BookingItem> items, User user, string details, DateTime bookingDate, DateTime returnDate)
+        public Booking(List<BookingItem> items, User user, string details, DateTime bookingDate, DateTime returnDate, bool returned)
         {
             BookingItems = items;
             User = user;
@@ -34,7 +35,7 @@ namespace ZealandDimselab.Models
             BookingDate = bookingDate;
             ReturnDate = returnDate;
             BookingItems = new List<BookingItem>();
-
+            Returned = returned;
         }
 
         public Booking(int id, List<BookingItem> items, User user, string details, DateTime bookingDate, DateTime returnDate)

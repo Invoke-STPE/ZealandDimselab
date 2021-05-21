@@ -28,6 +28,7 @@ namespace ZealandDimselab.Services
 
         public async Task AddItemAsync(Item item)
         {
+            item.Stock = item.Quantity;
             await _itemDbService.AddObjectAsync(item);
         }
 
@@ -39,6 +40,12 @@ namespace ZealandDimselab.Services
         public async Task UpdateItemAsync(int id, Item item)
         {
             item.Id = id;
+            await _itemDbService.UpdateObjectAsync(item);
+        }
+
+        public async Task ItemStockUpdateAsync(Item item, int bookedQuantity)
+        {
+            item.Stock = item.Stock - bookedQuantity;
             await _itemDbService.UpdateObjectAsync(item);
         }
         

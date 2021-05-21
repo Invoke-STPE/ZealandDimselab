@@ -29,38 +29,43 @@
         <col style="width: 30%">
         <col style="width: 60%">
         <col style="width: 10%">
-        
+
     }
-    
+
     <thead>
-    <tr class="btn-secondary active">
-        @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
-        {
-            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+        <tr class="btn-secondary active">
+            @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
             {
-                <th>
-                    <div class="d-flex justify-content-between p-0">
-                        <div><h5>Id</h5></div>
-                    </div>
-                </th>
+                if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                {
+                    <th>
+                        <div class="d-flex justify-content-between p-0">
+                            <div><h5>Id</h5></div>
+                        </div>
+                    </th>
+                }
             }
-        }
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Name</h5></div>
-            </div>
-        </th>
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Description</h5></div>
-            </div>
-        </th>
-        <th>
-            <div class="d-flex justify-content-between p-0">
-                <div><h5>Actions</h5></div>
-            </div>
-        </th>
-    </tr>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Name</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>In Stock/Total Quantity</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
+                </div>
+            </th>
+        </tr>
     </thead>
 
     <tbody>
@@ -83,8 +88,11 @@
                     @item.Description
                     @if (item.Category != null)
                     {
-                    <p>Category:  @item.Category.CategoryName</p>
+                        <p>Category:  @item.Category.CategoryName</p>
                     }
+                </td>
+                <td>
+                    <p>@item.Stock/@item.Quantity</p>
                 </td>
                 <td>
                     <ol class="p-0">
