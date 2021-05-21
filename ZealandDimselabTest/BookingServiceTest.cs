@@ -37,7 +37,7 @@ namespace ZealandDimselabTest
         {
             var expectedCount = (await bookingService.GetAllBookingsAsync()).ToList().Count + 1;
             User user = new User("Mike", "Mike@gmail.com", "hejMedDig");
-            Booking booking = new Booking(bookingItems, user, "Booking Details", DateTime.Now.Date, DateTime.Now.Date.AddDays(2));
+            Booking booking = new Booking(bookingItems, user, "Booking Details", DateTime.Now.Date, DateTime.Now.Date.AddDays(2), false);
             await bookingService.AddBookingAsync(booking);
 
             // Act
@@ -56,7 +56,7 @@ namespace ZealandDimselabTest
             List<BookingItem> bookingItems = new List<BookingItem>();
             User user = new User("Mikkel", "meilig@.com", "1234");
 
-            Booking booking = new Booking(bookingItems, user, "Details", DateTime.Now, DateTime.Now);
+            Booking booking = new Booking(bookingItems, user, "Details", DateTime.Now, DateTime.Now, false);
             await bookingService.AddBookingAsync(booking);
 
             // Act
@@ -87,7 +87,7 @@ namespace ZealandDimselabTest
         [TestMethod]
         public async Task GetBookingByIdAsync_ValidId_ReturnsBookingObject()
         {
-            Booking expectedBooking = new Booking(bookingItems, new User("Simon", "smelly@.com", "1234"), "skal bruges i morgen", DateTime.Now, DateTime.Now);
+            Booking expectedBooking = new Booking(bookingItems, new User("Simon", "smelly@.com", "1234"), "skal bruges i morgen", DateTime.Now, DateTime.Now, false);
             bookingService.AddBookingAsync(expectedBooking);
             // Act
             Booking actualBooking = await bookingService.GetBookingByKeyAsync(4);
@@ -169,9 +169,9 @@ namespace ZealandDimselabTest
                 List<BookingItem> bookingItems3 = CreateBookingItems(item3);
 
 
-                dbContext.Bookings.Add(new Booking(bookingItems1, new User("Simon", "smelly@.com", "1234"), "skal bruges i morgen", DateTime.Now, DateTime.Now));
-                dbContext.Bookings.Add(new Booking(bookingItems2, new User("Mikkel", "meilig@.com", "1234"), "Details", DateTime.Now, DateTime.Now));
-                dbContext.Bookings.Add(new Booking(bookingItems3, new User("Oscar", "oscar@.com", "1234"), "Details", DateTime.Now, DateTime.Now));
+                dbContext.Bookings.Add(new Booking(bookingItems1, new User("Simon", "smelly@.com", "1234"), "skal bruges i morgen", DateTime.Now, DateTime.Now, false));
+                dbContext.Bookings.Add(new Booking(bookingItems2, new User("Mikkel", "meilig@.com", "1234"), "Details", DateTime.Now, DateTime.Now, false));
+                dbContext.Bookings.Add(new Booking(bookingItems3, new User("Oscar", "oscar@.com", "1234"), "Details", DateTime.Now, DateTime.Now, false));
 
                 await dbContext.SaveChangesAsync();
             }

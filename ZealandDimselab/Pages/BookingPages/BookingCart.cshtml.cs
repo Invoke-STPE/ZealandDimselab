@@ -128,7 +128,7 @@ namespace ZealandDimselab.Pages.BookingPages
             SetCart(new List<Item>());
             return RedirectToPage("BookingCart");
         }
-        public async Task<IActionResult> OnPostEmailSubmitted(string email)
+        public async Task<IActionResult> OnPostEmailSubmitted(string email, string url)
         {
             ClaimsIdentity claimsIdentity;
             if (await userService.EmailInUseAsync(email))
@@ -141,7 +141,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 claimsIdentity = userService.CreateClaimIdentity(email);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             }
-            return RedirectToPage("BookingCart");
+            return RedirectToPage(url);
         }
         /// <summary>
         /// Check if an item in a cart exists.

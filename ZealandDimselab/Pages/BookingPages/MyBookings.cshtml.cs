@@ -18,11 +18,18 @@ namespace ZealandDimselab.Pages.BookingPages
         public MyBookingsModel(BookingService bookingService)
         {
             this.bookingService = bookingService;
+            Bookings = new List<Booking>();
         }
         public async Task<IActionResult> OnGetAsync()
         {
-
+            if (HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("teacher"))
+            {
                 Bookings = (await bookingService.GetAllBookingsAsync()).ToList();
+            } else if (HttpContext.User.IsInRole("student"))
+            {
+                Bookings = (await bookingService.GetBookingsByEmailAsync(HttpContext.User.Identity.Name)).ToList();
+            }
+         
 
             return Page();
 

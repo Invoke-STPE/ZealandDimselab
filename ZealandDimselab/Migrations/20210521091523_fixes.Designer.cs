@@ -10,8 +10,8 @@ using ZealandDimselab.Models;
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    [Migration("20210521075739_removedpropuser3")]
-    partial class removedpropuser3
+    [Migration("20210521091523_fixes")]
+    partial class fixes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,9 @@ namespace ZealandDimselab.Migrations
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Returned")
+                        .HasColumnType("bit");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -53,6 +56,9 @@ namespace ZealandDimselab.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("BookingId", "ItemId");
@@ -105,6 +111,12 @@ namespace ZealandDimselab.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

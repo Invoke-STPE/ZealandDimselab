@@ -64,7 +64,7 @@ namespace ZealandDimselab.Services
         {
             var bookedItems = new List<BookedItem>();
 
-            foreach (var booking in await GetAllBookings())
+            foreach (var booking in await GetAllBookingsAsync())
             {
                 foreach (var item in booking.BookingItems)
                 {

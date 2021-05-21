@@ -4,6 +4,11 @@
 @{
 }
 
+
+@if (!HttpContext.User.Identity.IsAuthenticated)
+{
+    @await Component.InvokeAsync("Modal");
+}
 <h1>Bookings</h1>
 <table class="table table-bordered table-hover table-striped" width="70%">
     <col style="width: 5%">
@@ -91,8 +96,8 @@
                     @booking.ReturnDate.ToString("dd/MM/yyyy")
                 </td>
                 <td>
-                    @if(booking.Returned)
-                        {<i>Returned</i>}
+                    @if (booking.Returned)
+                    {<i>Returned</i>}
                     else
                     {
                         {<i>Not returned</i>}

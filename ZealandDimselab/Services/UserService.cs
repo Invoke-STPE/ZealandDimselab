@@ -56,7 +56,7 @@ namespace ZealandDimselab.Services
                     user.Role = AssignRoleToUser(subs);
                     await dbService.AddObjectAsync(user);
                 }
-            }
+            } else { await dbService.AddObjectAsync(user); }
         }
 
         public async Task DeleteUserAsync(int id)

@@ -45,12 +45,7 @@
                                     <a class="nav-link" asp-area="" asp-page="/BookingPages/LoanedItems">Loaned Items</a>
                                 </li>
                             }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-page="/BookingPages/MyBookings">My Bookings</a>
-                                </li>
-                            }
+
 
                         }
                         else
@@ -58,15 +53,19 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-page="/Account/Login">Login</a>
                             </li>
-   
-                        }
 
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link" asp-area="" asp-page="/BookingPages/BookingCart">
-                            <i class="fa" style="font-size:24px">&#xf07a;</i>
-                            <span class='badge badge-warning' id='lblCartCount'>@await Component.InvokeAsync("Cart") </span>
-                        </a>
-                    </li>
+
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/BookingPages/MyBookings">Bookings</a>
+                        </li>
+
+                        <li class="nav-item ml-auto">
+                            <a class="nav-link" asp-area="" asp-page="/BookingPages/BookingCart">
+                                <i class="fa" style="font-size:24px">&#xf07a;</i>
+                                <span class='badge badge-warning' id='lblCartCount'>@await Component.InvokeAsync("Cart") </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
