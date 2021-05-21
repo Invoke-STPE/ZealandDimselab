@@ -49,6 +49,18 @@ namespace ZealandDimselab.Pages.BookingPages
             BookedItems = unsortedList.OrderByDescending(bookedItem => bookedItem.Item.Name).ToList();
         }
 
+        public async Task OnGetSortByQuantityAscendingAsync()
+        {
+            List<BookedItem> unsortedList = (await _bookingService.GetAllBookedItemsAsync());
+            BookedItems = unsortedList.OrderBy(bookedItem => bookedItem.Quantity).ToList();
+        }
+
+        public async Task OnGetSortByQuantityDescendingAsync()
+        {
+            List<BookedItem> unsortedList = (await _bookingService.GetAllBookedItemsAsync());
+            BookedItems = unsortedList.OrderByDescending(bookedItem => bookedItem.Quantity).ToList();
+        }
+
         public async Task OnGetSortByUserNameAscendingAsync()
         {
             List<BookedItem> unsortedList = (await _bookingService.GetAllBookedItemsAsync());

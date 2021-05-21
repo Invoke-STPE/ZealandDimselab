@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZealandDimselab.Models
 {
-    public class BookedItem: IComparable
+    public class BookedItem
     {
         public Item Item { get; set; }
         public DateTime BookingDate { get; set; }
