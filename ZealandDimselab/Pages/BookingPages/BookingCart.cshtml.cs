@@ -91,8 +91,8 @@ namespace ZealandDimselab.Pages.BookingPages
             for (var i = 0; i < Cart.Count; i++)
             {
                 Cart[i].BookingQuantity = quantities[i];
+                SetCart(Cart);
             }
-            SetCart(Cart);
 
             User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
             if (user != null)
