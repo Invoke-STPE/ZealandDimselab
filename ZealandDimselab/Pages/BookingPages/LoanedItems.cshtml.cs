@@ -64,13 +64,13 @@ namespace ZealandDimselab.Pages.BookingPages
         public async Task OnGetSortByUserNameAscendingAsync()
         {
             List<BookedItem> unsortedList = (await _bookingService.GetAllBookedItemsAsync());
-            BookedItems = unsortedList.OrderBy(bookedItem => bookedItem.User.Name).ToList();
+            BookedItems = unsortedList.OrderBy(bookedItem => bookedItem.User.Email).ToList();
         }
 
         public async Task OnGetSortByUserNameDescendingAsync()
         {
             List<BookedItem> unsortedList = (await _bookingService.GetAllBookedItemsAsync());
-            BookedItems = unsortedList.OrderByDescending(bookedItem => bookedItem.User.Name).ToList();
+            BookedItems = unsortedList.OrderByDescending(bookedItem => bookedItem.User.Email).ToList();
         }
 
         public async Task OnGetSortByBookingDateAscendingAsync()
