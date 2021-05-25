@@ -74,7 +74,11 @@ namespace ZealandDimselab
                         //options.Conventions.AllowAnonymousToPage("/Items/Cards/ItemDetails");
 
 
-                        //options.Conventions.AuthorizeFolder("/BookingPages");
+                        options.Conventions.AuthorizeFolder("/BookingPages");
+                        options.Conventions.AllowAnonymousToPage("/BookingPages/BookingCart");
+                        options.Conventions.AllowAnonymousToPage("/BookingPages/MyBookings");
+
+
                     }
                 );
             // AUTHENTICATION END //

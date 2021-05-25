@@ -107,5 +107,30 @@ namespace ZealandDimselab.Pages.BookingPages
             List<BookedItem> unsortedList = (await _bookingService.GetAllBookedItemsAsync());
             BookedItems = unsortedList.OrderByDescending(bookedItem => bookedItem.Status).ToList();
         }
+
+        public async Task OnGetFilterByItemId(int id)
+        {
+
+        }
+
+        public async Task OnGetFilterByQuantity(int min, int max)
+        {
+
+        }
+
+        public async Task OnGetFilterByItemNameAsync(string name)
+        {
+
+        }
+
+        public async Task OnGetFilterByBookedByAsync(string name)
+        {
+
+        }
+
+        public async Task OnGetFilterByStatus(string status)
+        {
+
+        }
     }
 }

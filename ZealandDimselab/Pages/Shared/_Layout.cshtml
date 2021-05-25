@@ -33,9 +33,7 @@
 
                         @if (Context.User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Account/Logout">Logout</a>
-                            </li>
+
                             @if (Context.User.Identity.Name.Equals("Admin@Dimselab.dk"))
                             {
                                 <li class="nav-item">
@@ -45,7 +43,6 @@
                                     <a class="nav-link" asp-area="" asp-page="/BookingPages/LoanedItems">Loaned Items</a>
                                 </li>
                             }
-
 
                         }
                         else
