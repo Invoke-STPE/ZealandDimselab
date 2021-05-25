@@ -71,7 +71,7 @@ namespace ZealandDimselab.Services
             {
                 foreach (var item in booking.BookingItems)
                 {
-                    bookedItems.Add(new BookedItem(item.Item, booking.BookingDate, booking.ReturnDate, booking.User, booking.Returned, item.Quantity));
+                    bookedItems.Add(new BookedItem(item.Item, booking.BookingDate, booking.ReturnDate, booking.Id, booking.User, booking.Returned, item.Quantity));
                 }
             }
 

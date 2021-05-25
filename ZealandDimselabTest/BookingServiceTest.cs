@@ -22,7 +22,7 @@ namespace ZealandDimselabTest
         public void InitializeTest()
         {
             dbService = new BookingMockData();
-            bookingService = new BookingService(dbService);
+            bookingService = new BookingService(dbService, new ItemDbService());
 
 
             bookingItems = new List<BookingItem>()
