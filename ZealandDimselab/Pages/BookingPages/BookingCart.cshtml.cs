@@ -90,7 +90,7 @@ namespace ZealandDimselab.Pages.BookingPages
             return RedirectToPage("BookingCart");
         }
 
-        public async Task<IActionResult> OnPostCreate(string details, DateTime returnDate, int[] quantities)
+        public async Task<IActionResult> OnPostCreate(string details, int[] quantities)
         {
             if (!ModelState.IsValid)
             {
@@ -112,7 +112,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 {
                     Details = details,
                     BookingDate = DateTime.Now.Date,
-                    ReturnDate = returnDate.Date,
+                    ReturnDate = Booking.ReturnDate,
                     UserId = user.Id,
                     BookingItems = new List<BookingItem>(), 
                     Returned = false
