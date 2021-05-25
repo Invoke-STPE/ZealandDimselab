@@ -76,11 +76,11 @@ namespace ZealandDimselab.Services
                 var user = await GetUserByEmail(email);
                 if (user != null)
                 {
-                    //if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
-                    //{
-                    //    return true;
-                    //}
-                    return true;
+                    if (PasswordVerification(user.Password, password) == PasswordVerificationResult.Success) // Checks if password matches password.
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
 

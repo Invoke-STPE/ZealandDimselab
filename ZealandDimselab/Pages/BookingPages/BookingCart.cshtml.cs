@@ -174,6 +174,7 @@ namespace ZealandDimselab.Pages.BookingPages
         {
             return SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
         }
+
         private void SetCart(List<Item> cart)
         {
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);

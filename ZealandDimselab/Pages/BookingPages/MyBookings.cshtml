@@ -13,9 +13,9 @@
 <table class="table table-bordered table-hover table-striped" width="70%">
     <col style="width: 5%">
     <col style="width: 8%">
-    <col style="width: 17%">
-    <col style="width: 30%">
-    <col style="width: 15%">
+    <col style="width: 55%">
+    <col style="width: 12%">
+    <col style="width: 12%">
     <col style="width: 15%">
     <col style="width: 16%">
     @if (HttpContext.User.IsInRole("admin"))
@@ -83,7 +83,7 @@
                         @foreach (var item in booking.BookingItems)
                         {
                             <li>
-                                @item.Item.ToString() @item.Quantity   @*Quantity property?*@
+                                @item.Item.ToString() x @item.Quantity   @*Quantity property?*@
                             </li>
                         }
 
