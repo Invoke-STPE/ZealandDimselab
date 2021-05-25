@@ -83,7 +83,11 @@
                 }
                 <p style="margin-bottom: 0"><b>Description:</b></p>
                 <p style="white-space: pre-line">@Model.Item.Description</p>
-                <p style="margin-bottom: 0"class="p-0"><b>Category:</b></p>
+
+                <p style="margin-bottom: 0"><b>Stock/Quantity:</b></p>
+                <p style="white-space: pre-line">@Model.Item.Stock/@Model.Item.Quantity</p>
+
+                <p style="margin-bottom: 0" class="p-0"><b>Category:</b></p>
                 <p style="margin-bottom: 0; white-space: pre-line">@Model.Item.Category.CategoryName</p>
 
             </div>
