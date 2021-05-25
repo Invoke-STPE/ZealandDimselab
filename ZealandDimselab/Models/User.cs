@@ -10,19 +10,25 @@ namespace ZealandDimselab.Models
     public class User
     {
         [Key] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int Id { get; set; }
-        [Required] [StringLength(100)] public string Name { get; set; }
         [Required] [StringLength(100)] public string Email { get; set; }
-        [Required] [StringLength(100)] public string Password { get; set; }
+        [StringLength(100)] public string Password { get; set; }
+        [StringLength(20)] public string Role { get; set; }
         [Required] public ICollection<Booking> Bookings { get; set; }
 
         public User()
         {
 
         }
-        public User(string name, string email, string password)
+        public User(string email)
         {
-            Name = name;
             Email = email;
+            Bookings = new List<Booking>();
+        }
+
+        public User(string email, string role, string password = null)
+        {
+            Email = email;
+            Role = role;
             Password = password;
             Bookings = new List<Booking>();
         }
@@ -30,7 +36,6 @@ namespace ZealandDimselab.Models
         public User(int id, string name, string email, string password)
         {
             Id = id;
-            Name = name;
             Email = email;
             Password = password;
             Bookings = new List<Booking>();

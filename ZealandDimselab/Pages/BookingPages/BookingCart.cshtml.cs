@@ -8,6 +8,9 @@ using ZealandDimselab.Helpers;
 using ZealandDimselab.Models;
 using ZealandDimselab.MockData;
 using ZealandDimselab.Services;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ZealandDimselab.Pages.BookingPages
 {
@@ -20,7 +23,9 @@ namespace ZealandDimselab.Pages.BookingPages
         private readonly BookingService bookingService;
 
         [BindProperty]
-        public List<Item> CheckoutItems { get; set; }
+        public Booking Booking { get; set; }
+        [BindProperty]
+        public string Email { get; set; }
 
         public BookingCartModel(UserService userService, BookingService bookingService, ItemService itemService)
         {
@@ -123,7 +128,21 @@ namespace ZealandDimselab.Pages.BookingPages
             SetCart(new List<Item>());
             return RedirectToPage("BookingCart");
         }
-
+        public async Task<IActionResult> OnPostEmailSubmitted(string email, string url)
+        {
+            ClaimsIdentity claimsIdentity;
+            if (await userService.EmailInUseAsync(email))
+            {
+                claimsIdentity = userService.CreateClaimIdentity(email);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            } else
+            {
+                await userService.AddUserAsync(new User() { Email = email });
+                claimsIdentity = userService.CreateClaimIdentity(email);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            }
+            return RedirectToPage(url);
+        }
         /// <summary>
         /// Check if an item in a cart exists.
         /// </summary>
@@ -153,6 +172,19 @@ namespace ZealandDimselab.Pages.BookingPages
         private void SetCart(List<Item> cart)
         {
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+        }
+
+        private Booking CreateBooking(string email, User user)
+        {
+            Cart = GetCart();
+            Booking.BookingDate = DateTime.Now.Date;
+            Booking.UserId = user.Id;
+            
+            foreach (var item in Cart)
+            {
+                Booking.BookingItems.Add(new BookingItem { ItemId = item.Id });
+            }
+            return Booking;
         }
     }
 }

@@ -141,28 +141,25 @@
     <tbody>
         @foreach (var item in Model.BookedItems)
         {
-<tr class="btn-secondary">
-    <td>
-        @item.Item.Id
-    </td>
-    <td>
-        @item.Item.Name
-    </td>
-    <td>
-        @item.Quantity
-    </td>
-    <td>
-        @item.User.Name
-    </td>
-    <td>
-        @item.BookingDate.Day/@item.BookingDate.Month/@item.BookingDate.Year
-    </td>
-    <td>
-        @item.ReturnDate.Day/@item.ReturnDate.Month/@item.ReturnDate.Year
-    </td>
-    <td>
-        @item.Status
-    </td>
+        <tr class="btn-secondary">
+            <td>
+                @item.Item.Id
+            </td>
+            <td>
+                @item.Item.Name
+            </td>
+            <td>
+                @item.User.Email
+            </td>
+            <td>
+                @item.BookingDate.Day/@item.BookingDate.Month/@item.BookingDate.Year
+            </td>
+            <td>
+                @item.ReturnDate.Day/@item.ReturnDate.Month/@item.ReturnDate.Year
+            </td>
+            <td>
+                placeholder
+            </td>
 
 
 </tr>}

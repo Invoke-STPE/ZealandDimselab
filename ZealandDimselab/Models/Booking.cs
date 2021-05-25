@@ -24,7 +24,7 @@ namespace ZealandDimselab.Models
 
         public Booking()
         {
-            
+            BookingItems = new List<BookingItem>();
         }
 
         public Booking(List<BookingItem> items, User user, string details, DateTime bookingDate, DateTime returnDate, bool returned)
@@ -34,6 +34,7 @@ namespace ZealandDimselab.Models
             Details = details;
             BookingDate = bookingDate;
             ReturnDate = returnDate;
+            BookingItems = new List<BookingItem>();
             Returned = returned;
         }
 
@@ -45,6 +46,7 @@ namespace ZealandDimselab.Models
             Details = details;
             BookingDate = bookingDate;
             ReturnDate = returnDate;
+            BookingItems = new List<BookingItem>();
 
         }
 
@@ -52,6 +54,22 @@ namespace ZealandDimselab.Models
         {
             observer.OnNext(this);
             return null;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is Booking))
+            {
+                return false;
+            }
+            return (this.Id == ((Booking)obj).Id);
+                //&& (this.Details == ((Booking)obj).Details)
+                //&& (this.BookingDate == ((Booking)obj).BookingDate)
+                //&& (this.ReturnDate == ((Booking)obj).ReturnDate)
+                //&& (this.ReturnDate == ((Booking)obj).ReturnDate);
         }
     }
 }
