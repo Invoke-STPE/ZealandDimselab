@@ -13,12 +13,13 @@ namespace ZealandDimselab.Services
     public class BookingService
     {
         private readonly IBookingDb dbService;
-        private ItemService _itemService;
+        private IItemDb _itemService;
 
-        public BookingService(IBookingDb dbService, ItemService itemService)
+        public BookingService(IBookingDb dbService, IItemDb itemService)
         {
             this.dbService = dbService;
             _itemService = itemService;
+            
         }
 
         public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
@@ -85,9 +86,11 @@ namespace ZealandDimselab.Services
                 booking.Returned = true;
                 foreach (var bookingItem in booking.BookingItems)
                 {
-                    Item item = await _itemService.GetItemByIdAsync(bookingItem.ItemId);
+                    //Item item = await _itemService.GetItemByIdAsync(bookingItem.ItemId);
+                    Item item = await _itemService.GetObjectByKeyAsync(bookingItem.ItemId);
                     item.Stock = item.Stock + bookingItem.Quantity;
-                    await _itemService.UpdateItemAsync(item.Id, item);
+                    //await _itemService.UpdateItemAsync(item.Id, item);
+                    await _itemService.UpdateObjectAsync(item);
                 }
                 await dbService.UpdateObjectAsync(booking);
             }
@@ -96,9 +99,11 @@ namespace ZealandDimselab.Services
                 booking.Returned = false;
                 foreach (var bookingItem in booking.BookingItems)
                 {
-                    Item item = await _itemService.GetItemByIdAsync(bookingItem.ItemId);
+                    //Item item = await _itemService.GetItemByIdAsync(bookingItem.ItemId);
+                    Item item = await _itemService.GetObjectByKeyAsync(bookingItem.ItemId);
                     item.Stock = item.Stock - bookingItem.Quantity;
-                    await _itemService.UpdateItemAsync(item.Id, item);
+                    //await _itemService.UpdateItemAsync(item.Id, item);
+                    await _itemService.UpdateObjectAsync(item);
                 }
                 await dbService.UpdateObjectAsync(booking);
             }

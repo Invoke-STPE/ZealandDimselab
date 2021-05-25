@@ -92,6 +92,11 @@ namespace ZealandDimselab.Pages.BookingPages
 
         public async Task<IActionResult> OnPostCreate(string details, DateTime returnDate, int[] quantities)
         {
+            if (!ModelState.IsValid)
+            {
+                Cart = GetCart();
+                return Page();
+            }
             Cart = GetCart();
             for (var i = 0; i < Cart.Count; i++)
             {
