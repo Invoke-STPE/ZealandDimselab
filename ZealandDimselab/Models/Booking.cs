@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using ZealandDimselab.Validations;
 
 namespace ZealandDimselab.Models
 {
@@ -17,7 +18,7 @@ namespace ZealandDimselab.Models
         public User User { get; set; }
         public string Details { get; set; }
         [Required] public DateTime BookingDate { get; set; }
-        [Required] public DateTime ReturnDate { get; set; }
+        [Required, ValidDateTimeValidation] public DateTime ReturnDate { get; set; }
         public bool Returned { get; set; }
 
 

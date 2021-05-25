@@ -70,6 +70,7 @@
     <div class="form-group">
         <label class="control-label">Return date</label>
         <input asp-for="Booking.ReturnDate" class="form-control" />
+        <span asp-validation-for="Booking.ReturnDate" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary btn-lg" asp-page="BookingCart" asp-page-handler="Create">Confirm</button>
     <button type="submit" class="btn btn-danger btn-lg" asp-page="BookingCart" asp-page-handler="ClearCart">Clear Cart</button>
