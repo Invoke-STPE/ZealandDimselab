@@ -6,7 +6,7 @@
 <!-- COPY FROM UNDER THIS LINE -->
 @if (HttpContext.User.Identity.Name != null)
 {
-    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+    if (HttpContext.User.IsInRole("admin"))
     {
         <p>
             <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
@@ -49,7 +49,7 @@
                         </li>
                         @if (HttpContext.User.Identity.Name != null) // Only shows edit/delete if logged in as admin
                         {
-                            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                            if (HttpContext.User.IsInRole("admin"))
                             {
                                 <li class="list-inline-item p-0" style="margin-right: 0">
                                     <a class="btn btn-warning btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Edit" asp-page="EditItem" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-edit fa-fw"></i></a>
