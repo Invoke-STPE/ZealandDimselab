@@ -97,9 +97,17 @@ namespace ZealandDimselab.Pages.BookingPages
                 Cart = GetCart();
                 return Page();
             }
+
             Cart = GetCart();
+
             for (var i = 0; i < Cart.Count; i++)
             {
+                if ((await itemService.GetItemByIdAsync(Cart[i].Id)).Stock < quantities[i])
+                {
+                    ViewData["error"] = "Quantity cannot exceed item stock.";
+                    Cart = GetCart();
+                    return Page();
+                }
                 Cart[i].BookingQuantity = quantities[i];
                 SetCart(Cart);
             }
@@ -121,7 +129,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 foreach (var item in Cart)
                 {
                     _booking.BookingItems.Add(new BookingItem { ItemId = item.Id, Quantity = item.BookingQuantity });
-                    await itemService.ItemStockUpdateAsync(item, item.BookingQuantity);
+                    await itemService.ItemStockUpdateAsync((await itemService.GetItemByIdAsync(item.Id)), item.BookingQuantity);
                 }
                 await bookingService.AddBookingAsync(_booking);
             }

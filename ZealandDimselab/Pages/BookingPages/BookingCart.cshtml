@@ -12,6 +12,13 @@
 <h1>
     Cart
 </h1>
+
+@*Error message if trying to book more than stock*@
+@if (ViewData["error"] != null)
+{
+    <h5 class="text-danger">@ViewData["error"].ToString()</h5>
+}
+
 <form method="post">
     <table class="table table-bordered table-hover table-striped" width="70%">
         <tr class="btn-secondary active">
@@ -46,11 +53,20 @@
             {
                 <tr class="btn-secondary">
                     @*<td>@item.Id</td>*@
-                    <td>PlaceHolder</td>
+                    <td>
+                        @if (String.IsNullOrEmpty(item.ImageName))
+                        {
+                            <img src="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" style="" />
+                        }
+                        else
+                        {
+                            <img src="~/images/ItemImages/@item.ImageName" alt="Image not found" class="img-fluid w-100" style="" />
+                        }
+                    </td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
                     <td>
-                        <input type="number" name="quantities" value="@item.BookingQuantity" min="1" style="width: 50px;"/>
+                        <input type="number" name="quantities" value="@item.BookingQuantity" min="1" style="width: 50px;" />
                     </td>
                     <td>
                         <button type="submit" class="btn btn-primary btn-lg" asp-page-handler="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i></button>
