@@ -1,4 +1,5 @@
 ﻿@using ZealandDimselab.Helpers;
+@using Microsoft.AspNetCore.Http
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,10 +26,10 @@
                             <a class="nav-link" asp-area="" asp-page="/Index">Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Items/List/AllItems">All Items</a>
+                            <a class="nav-link" asp-area="" asp-page="/Items/Cards/AllItems">All Items</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Items/Cards/AllItems">Cards</a>
+                            <a class="nav-link" asp-area="" asp-page="/Items/List/AllItems">Item List</a>
                         </li>
 
                         @if (Context.User.Identity.IsAuthenticated)
@@ -42,27 +43,28 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="" asp-page="/BookingPages/LoanedItems">Loaned Items</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-page="/Account/Logout">Log out</a>
-                                </li>
                             }
-
                         }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Account/Login">Login</a>
-                            </li>
-
-
-                        }
-
+                        
                         <li class="nav-item ml-auto">
                             <a class="nav-link" asp-area="" asp-page="/BookingPages/BookingCart">
                                 <i class="fa" style="font-size:24px">&#xf07a;</i>
                                 <span class='badge badge-warning' id='lblCartCount'>@await Component.InvokeAsync("Cart") </span>
                             </a>
                         </li>
+                        
+                        @if (Context.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Account/Logout">Log out</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Account/Login">Log in</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
