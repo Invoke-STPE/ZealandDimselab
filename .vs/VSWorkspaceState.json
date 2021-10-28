@@ -2,11 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\ZealandDimselab",
-    "\\ZealandDimselab\\Pages",
-    "\\ZealandDimselab\\Pages\\Account",
-    "\\ZealandDimselab\\Pages\\Items",
-    "\\ZealandDimselab\\Services"
+    "\\ZealandDimselab\\wwwroot",
+    "\\ZealandDimselab\\wwwroot\\js"
   ],
-  "SelectedNode": "\\ZealandDimselab\\Pages\\Account\\Logout.cshtml.cs",
+  "SelectedNode": "\\ZealandDimselab\\wwwroot\\js\\showModal.js",
   "PreviewInSolutionExplorer": false
 }
