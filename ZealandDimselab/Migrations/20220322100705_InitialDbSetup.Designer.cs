@@ -10,8 +10,8 @@ using ZealandDimselab.Models;
 namespace ZealandDimselab.Migrations
 {
     [DbContext(typeof(DimselabDbContext))]
-    [Migration("20210626133424_Setup")]
-    partial class Setup
+    [Migration("20220322100705_InitialDbSetup")]
+    partial class InitialDbSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
