@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ZealandDimselab.Migrations
 {
-    public partial class Setup : Migration
+    public partial class InitialDbSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
