@@ -7,7 +7,7 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Models
 {
-    public class DimselabDbContext : DbContext
+    public class DimselabDbContext : DbContext, IDimselabDbContext
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Item> Items { get; set; }
@@ -17,10 +17,10 @@ namespace ZealandDimselab.Models
 
         public DimselabDbContext()
         {
-            
+
         }
 
-        
+
         public DimselabDbContext(DbContextOptions<DimselabDbContext> options) : base(options)
         {
 

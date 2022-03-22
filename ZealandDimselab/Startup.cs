@@ -38,7 +38,7 @@ namespace ZealandDimselab
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             services.AddTransient<IItemDb, ItemDbService>();
-            services.AddScoped<IDbService<User>, GenericDbService<User>>();
+            services.AddTransient<IDbService<User>, GenericDbService<User>>();
             services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
             services.AddTransient<IBookingDb, BookingDbService>();
             services.AddTransient<IItemDb, ItemDbService>();
@@ -46,11 +46,11 @@ namespace ZealandDimselab
             // DATABASE END //
 
             // SERVICES START //
-            services.AddScoped<UserService, UserService>();
-            services.AddSingleton<ItemService, ItemService>();
-            services.AddSingleton<BookingService, BookingService>();
+            services.AddTransient<UserService, UserService>();
+            services.AddTransient<ItemService, ItemService>();
+            services.AddTransient<BookingService, BookingService>();
 
-            services.AddSingleton<CategoryService, CategoryService>();
+            services.AddTransient<CategoryService, CategoryService>();
             // SERVICES END //
 
             // SESSION START //

@@ -11,30 +11,30 @@ namespace ZealandDimselab.Services
 {
     public class BookingDbService : GenericDbService<Booking>, IBookingDb
     {
+        public BookingDbService(DimselabDbContext context) : base(context)
+        {
+        }
 
         public override async Task<IEnumerable<Booking>> GetObjectsAsync()
         {
             List<Booking> bookings;
-            using (var context = new DimselabDbContext())
-            {
-                bookings = await context.Bookings
+            
+                bookings = await _context.Bookings
                     .Include(u => u.User)
                     .Include(i => i.BookingItems)
                     .ThenInclude(bi => bi.Item).ToListAsync();
-            }
+            
             return bookings;
         }
 
         public override async Task<Booking> GetObjectByKeyAsync(int id)
         {
             Booking booking = new Booking();
-            using (var context = new DimselabDbContext())
-            {
-                booking = await context.Bookings
+           
+                booking = await _context.Bookings
                     .Include(u => u.User)
                     .Include(i => i.BookingItems)
                     .Where(b => b.Id == id).FirstOrDefaultAsync();
-            }
 
             return booking;
         }

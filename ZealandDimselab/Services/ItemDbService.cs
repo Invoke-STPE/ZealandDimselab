@@ -10,17 +10,17 @@ namespace ZealandDimselab.Services
 {
     public class ItemDbService: GenericDbService<Item>, IItemDb
     {
+        public ItemDbService(DimselabDbContext context) : base(context)
+        {
+        }
+
         public async Task<Item> GetItemWithCategoriesAsync(int id)
         {
             Item item;
-
-            using (var context = new DimselabDbContext())
-            {
-                item = await context.Items
+                item = await _context.Items
                     .Include(i => i.Category)
                     .Where(i => i.Id == id)
                     .FirstOrDefaultAsync();
-            }
 
             return item;
         }
@@ -29,15 +29,9 @@ namespace ZealandDimselab.Services
         {
             List<Item> items;
 
-            using (var context = new DimselabDbContext())
-            {
-                items = await context.Items
+                items = await _context.Items
                     .Include(i => i.Category)
                     .ToListAsync();
-
-
-            }
-
             return items;
         }
 
@@ -45,14 +39,11 @@ namespace ZealandDimselab.Services
         {
             List<Item> items;
 
-            using (var context = new DimselabDbContext())
-            {
-                items = await context.Items
+          
+                items = await _context.Items
                     .Include(i => i.Category)
                     .Where(i => i.CategoryId == id)
                     .ToListAsync();
-            }
-
             return items;
         }
 

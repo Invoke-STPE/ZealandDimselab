@@ -10,16 +10,21 @@ namespace ZealandDimselab.Services
 {
     public class GenericDbService<T> : IDbService<T> where T : class
     {
+        protected readonly DimselabDbContext _context;
+
+        public GenericDbService(DimselabDbContext context)
+        {
+            _context = context;
+        }
         /// <summary>
         /// Gets all objects of the type from the database
         /// </summary>
         /// <returns>Returns all objects in the Set of the given type as List</returns>
         public virtual async Task<IEnumerable<T>> GetObjectsAsync()
         {
-            await using (var context = new DimselabDbContext())
-            {
-                return await context.Set<T>().AsNoTracking().ToListAsync();
-            }
+           
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
+            
         }
 
         /// <summary>
@@ -29,10 +34,9 @@ namespace ZealandDimselab.Services
         /// <returns>Object with the matching key</returns>
         public virtual async Task<T> GetObjectByKeyAsync(int key)
         {
-            await using (var context = new DimselabDbContext())
-            {
-                return await context.Set<T>().FindAsync(key);
-            }
+          
+            return await _context.Set<T>().FindAsync(key);
+            
         }
 
 
@@ -44,11 +48,10 @@ namespace ZealandDimselab.Services
         /// <returns>async task</returns>
         public virtual async Task AddObjectAsync(T obj)
         {
-            await using (var context = new DimselabDbContext())
-            {
-                await context.Set<T>().AddAsync(obj);
-                await context.SaveChangesAsync();
-            }
+          
+            await _context.Set<T>().AddAsync(obj);
+            await CommitChangesAsync();
+            
         }
 
         /// <summary>
@@ -58,12 +61,11 @@ namespace ZealandDimselab.Services
         /// <returns>async Task</returns>
         public virtual async Task DeleteObjectAsync(T obj)
         {
-            await using (var context = new DimselabDbContext())
-            {
-                
-                context.Set<T>().Remove(obj);
-                await context.SaveChangesAsync();
-            }
+   
+            _context.Set<T>().Remove(obj);
+            await CommitChangesAsync();
+
+
         }
 
         /// <summary>
@@ -73,11 +75,16 @@ namespace ZealandDimselab.Services
         /// <returns>async Task</returns>
         public virtual async Task UpdateObjectAsync(T obj)
         {
-            await using (var context = new DimselabDbContext())
-            {
-                context.Set<T>().Update(obj);
-                await context.SaveChangesAsync();
-            }
+       
+            _context.Set<T>().Update(obj);
+            await CommitChangesAsync();
+
+
+        }
+
+        protected async Task CommitChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

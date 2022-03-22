@@ -12,5 +12,6 @@ namespace ZealandDimselab.Interfaces
         Task AddObjectAsync(T obj);
         Task DeleteObjectAsync(T obj);
         Task UpdateObjectAsync(T obj);
+
     }
 }

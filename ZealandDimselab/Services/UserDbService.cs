@@ -9,20 +9,18 @@ namespace ZealandDimselab.Services
 {
     public class UserDbService : GenericDbService<User>, IUserDb
     {
+        public UserDbService(DimselabDbContext context) : base(context)
+        {
+        }
+
         public async Task<bool> DoesEmailExist(string email)
         {
-            await using (var context = new DimselabDbContext())
-            {
-                return context.Users.Any(u => u.Email.ToLower() == email.ToLower());
-            }
+                return _context.Users.Any(u => u.Email.ToLower() == email.ToLower());
         }
 
         public async Task<User> GetUserByEmail(string email)
         {
-            await using (var context = new DimselabDbContext())
-            {
-                return context.Users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower());
-            }
+                return _context.Users.SingleOrDefault(u => u.Email.ToLower() == email.ToLower());
         }
     }
 }
