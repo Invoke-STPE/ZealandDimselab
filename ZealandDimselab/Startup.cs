@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZealandDimselab.Helpers;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
@@ -33,26 +34,13 @@ namespace ZealandDimselab
             services.AddRazorPages();
 
 
-            // DATABASE START //
             services.AddDbContext<DimselabDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            services.AddTransient<IItemRepository, ItemRepository>();
-            services.AddTransient<IGenericRepository<User>, GenericRepository<User>>();
-            services.AddTransient<IGenericRepository<Category>, GenericRepository<Category>>();
-            services.AddTransient<IBookingRepository, BookingRepository>();
-            services.AddTransient<IItemRepository, ItemRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            // DATABASE END //
 
-            // SERVICES START //
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IItemService, ItemService>();
-            services.AddTransient<IBookingService, BookingService>();
-
-            services.AddTransient<ICategoryService, CategoryService>();
-            // SERVICES END //
+            services.AddDIInfo(); // This is an extenstion of the ServiceCollection class, it grathers all my dependensies.
+           
 
             // SESSION START //
             services.AddSession(); // Adds the ability to save into the users cache
