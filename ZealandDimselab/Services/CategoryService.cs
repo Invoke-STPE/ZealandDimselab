@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZealandDimselab.Services.Interfaces;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
-        private readonly IDbService<Category> dbService;
-        public CategoryService(IDbService<Category> dbService)
+        private readonly IGenericRepository<Category> dbService;
+        public CategoryService(IGenericRepository<Category> dbService)
         {
             this.dbService = dbService;
         }

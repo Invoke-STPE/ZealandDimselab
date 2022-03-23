@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
+using ZealandDimselab.Services;
 
 namespace ZealandDimselab.Interfaces
 {
-    public interface IUserDb : IDbService<User>
+    public interface IBookingRepository : IGenericRepository<Booking>
     {
-        public Task<User> GetUserByEmail(string email);
-        public Task<bool> DoesEmailExist(string email);
     }
 }

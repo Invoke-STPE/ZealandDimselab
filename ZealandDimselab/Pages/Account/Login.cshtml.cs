@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         [BindProperty]
         public string Email { get; set; }
 
@@ -25,7 +25,7 @@ namespace ZealandDimselab.Pages.Account
 
         public string Message { get; set; }
 
-        public LoginModel(UserService userService)
+        public LoginModel(IUserService userService)
         {
             _userService = userService;
         }

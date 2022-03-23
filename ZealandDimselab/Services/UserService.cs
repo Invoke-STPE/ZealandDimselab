@@ -7,16 +7,17 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
+using ZealandDimselab.Services.Interfaces;
 using ZealandDimselab.Interfaces;
 
 namespace ZealandDimselab.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly PasswordHasher<string> _passwordHasher;
-        private readonly IUserDb dbService;
+        private readonly IUserRepository dbService;
 
-        public UserService(IUserDb dbService)
+        public UserService(IUserRepository dbService)
         {
             this.dbService = dbService;
             _passwordHasher = new PasswordHasher<string>();
@@ -40,7 +41,7 @@ namespace ZealandDimselab.Services
 
         public async Task<User> GetUserByEmail(string email)
         {
-            
+
             return await dbService.GetUserByEmail(email); // Checks all users in list "users" if incoming email matches one of them.
         }
 
@@ -56,14 +57,15 @@ namespace ZealandDimselab.Services
                     user.Role = AssignRoleToUser(subs);
                     await dbService.AddObjectAsync(user);
                 }
-            } else { await dbService.AddObjectAsync(user); }
+            }
+            else { await dbService.AddObjectAsync(user); }
         }
 
         public async Task DeleteUserAsync(int id)
         {
             await dbService.DeleteObjectAsync(await GetUserByIdAsync(id));
         }
-        
+
         public async Task UpdateUserAsync(User updatedUser)
         {
             await dbService.UpdateObjectAsync(updatedUser);
@@ -121,17 +123,17 @@ namespace ZealandDimselab.Services
         private string AssignRoleToUser(string[] emailSubs)
         {
             string role = string.Empty;
-                switch (emailSubs[0].Length)
-                {
-                    case (8):
-                        role = "student";
-                        break;
-                    case (4):
-                        role = "teacher";
-                        break;
-                    default:
-                        break;
-                }
+            switch (emailSubs[0].Length)
+            {
+                case (8):
+                    role = "student";
+                    break;
+                case (4):
+                    role = "teacher";
+                    break;
+                default:
+                    break;
+            }
             return role;
         }
 

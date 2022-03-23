@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages
 {
@@ -14,9 +14,9 @@ namespace ZealandDimselab.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         public List<Category> Categories { get; set; }
-        private CategoryService categoryService;
+        private ICategoryService categoryService;
 
-        public IndexModel(ILogger<IndexModel> logger, CategoryService categoryService)
+        public IndexModel(ILogger<IndexModel> logger, ICategoryService categoryService)
         {
             _logger = logger;
             this.categoryService = categoryService;

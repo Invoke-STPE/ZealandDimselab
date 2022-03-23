@@ -5,21 +5,22 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
+using ZealandDimselab.Services.Interfaces;
+using ZealandDimselab.Interfaces;
 
 namespace ZealandDimselab.Services
 {
-    public class BookingService
+    public class BookingService : IBookingService
     {
-        private readonly IBookingDb dbService;
-        private IItemDb _itemService;
+        private readonly IBookingRepository dbService;
+        private IItemRepository _itemService;
 
-        public BookingService(IBookingDb dbService, IItemDb itemService)
+        public BookingService(IBookingRepository dbService, IItemRepository itemService)
         {
             this.dbService = dbService;
             _itemService = itemService;
-            
+
         }
 
         public async Task<IEnumerable<Booking>> GetAllBookingsAsync()

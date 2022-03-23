@@ -56,21 +56,23 @@ namespace ZealandDimselab.Models
             observer.OnNext(this);
             return null;
         }
+
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            if (!(obj is Booking))
-            {
-                return false;
-            }
-            return (this.Id == ((Booking)obj).Id);
-                //&& (this.Details == ((Booking)obj).Details)
-                //&& (this.BookingDate == ((Booking)obj).BookingDate)
-                //&& (this.ReturnDate == ((Booking)obj).ReturnDate)
-                //&& (this.ReturnDate == ((Booking)obj).ReturnDate);
+            return obj is Booking booking &&
+                   Id == booking.Id &&
+                   EqualityComparer<List<BookingItem>>.Default.Equals(BookingItems, booking.BookingItems) &&
+                   UserId == booking.UserId &&
+                   EqualityComparer<User>.Default.Equals(User, booking.User) &&
+                   Details == booking.Details &&
+                   BookingDate == booking.BookingDate &&
+                   ReturnDate == booking.ReturnDate &&
+                   Returned == booking.Returned;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, BookingItems, UserId, User, Details, BookingDate, ReturnDate, Returned);
         }
     }
 }

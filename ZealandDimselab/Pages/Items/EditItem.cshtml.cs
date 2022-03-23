@@ -8,15 +8,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.Items
 {
     public class EditItemModel : PageModel
     {
-        private readonly ItemService itemService;
-        private readonly CategoryService categoryService;
-        private readonly BookingService _bookingService;
+        private readonly IItemService itemService;
+        private readonly ICategoryService categoryService;
+        private readonly IBookingService _bookingService;
         [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
@@ -24,7 +24,7 @@ namespace ZealandDimselab.Pages.Items
         [BindProperty] public IFormFile FileUpload { get; set; }
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EditItemModel(ItemService itemService, CategoryService categoryService, BookingService bookingService, IWebHostEnvironment whe)
+        public EditItemModel(IItemService itemService, ICategoryService categoryService, IBookingService bookingService, IWebHostEnvironment whe)
         {
             this.itemService = itemService;
             this.categoryService = categoryService;

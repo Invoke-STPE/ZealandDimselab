@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselabTest
 {
@@ -17,7 +18,7 @@ namespace ZealandDimselabTest
     public class ItemServiceTest
     {
         private MockData _repositoryItem;
-        private ItemService _itemService;
+        private IItemService _itemService;
         private List<Item> _itemList;
 
         [TestInitialize]
@@ -134,7 +135,7 @@ namespace ZealandDimselabTest
             Assert.AreEqual(6, _itemService.GetAllItems().Result.ToList().Count);
         }
 
-        internal class MockData : IItemDb
+        internal class MockData : IItemRepository
         {
             DimselabDbContext dbContext;
 

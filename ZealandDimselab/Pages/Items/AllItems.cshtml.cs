@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 using ZealandDimselab.Helpers;
 
 namespace ZealandDimselab.Pages.Items
@@ -13,11 +13,11 @@ namespace ZealandDimselab.Pages.Items
     public class AllItemsModel : PageModel
     {
         public List<Item> Items { get; set; }
-        private readonly ItemService _itemService;
+        private readonly IItemService _itemService;
         public int CategoryId { get; set; }
         public List<Item> Cart { get; set; }
 
-        public AllItemsModel(ItemService itemService)
+        public AllItemsModel(IItemService itemService)
         {
             _itemService = itemService;
         }

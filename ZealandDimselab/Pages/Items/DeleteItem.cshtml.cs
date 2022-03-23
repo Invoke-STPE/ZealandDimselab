@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.Items
 {
     public class DeleteItemModel : PageModel
     {
-        private readonly ItemService itemService;
+        private readonly IItemService itemService;
         public Item Item { get; set; }
         public List<Item> Items { get; set; }
         [BindProperty] public int CategoryId { get; set; }
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public DeleteItemModel(ItemService itemService, IWebHostEnvironment webHostEnvironment)
+        public DeleteItemModel(IItemService itemService, IWebHostEnvironment webHostEnvironment)
         {
             this.itemService = itemService;
             _webHostEnvironment = webHostEnvironment;

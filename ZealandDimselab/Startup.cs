@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZealandDimselab.Helpers;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab
 {
@@ -32,26 +34,13 @@ namespace ZealandDimselab
             services.AddRazorPages();
 
 
-            // DATABASE START //
             services.AddDbContext<DimselabDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            services.AddTransient<IItemDb, ItemDbService>();
-            services.AddScoped<IDbService<User>, GenericDbService<User>>();
-            services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
-            services.AddTransient<IBookingDb, BookingDbService>();
-            services.AddTransient<IItemDb, ItemDbService>();
-            services.AddTransient<IUserDb, UserDbService>();
-            // DATABASE END //
 
-            // SERVICES START //
-            services.AddScoped<UserService, UserService>();
-            services.AddSingleton<ItemService, ItemService>();
-            services.AddSingleton<BookingService, BookingService>();
-
-            services.AddSingleton<CategoryService, CategoryService>();
-            // SERVICES END //
+            services.AddDIInfo(); // This is an extenstion of the ServiceCollection class, it grathers all my dependensies.
+           
 
             // SESSION START //
             services.AddSession(); // Adds the ability to save into the users cache

@@ -17,10 +17,10 @@ namespace ZealandDimselab.Models
 
         public DimselabDbContext()
         {
-            
+
         }
 
-        
+
         public DimselabDbContext(DbContextOptions<DimselabDbContext> options) : base(options)
         {
 

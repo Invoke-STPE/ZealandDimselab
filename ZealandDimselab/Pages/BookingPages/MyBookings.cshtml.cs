@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.BookingPages
 {
     public class MyBookingsModel : PageModel
     {
-        private readonly BookingService bookingService;
+        private readonly IBookingService bookingService;
 
         public List<Booking> Bookings { get; set; }
 
-        public MyBookingsModel(BookingService bookingService)
+        public MyBookingsModel(IBookingService bookingService)
         {
             this.bookingService = bookingService;
             Bookings = new List<Booking>();
