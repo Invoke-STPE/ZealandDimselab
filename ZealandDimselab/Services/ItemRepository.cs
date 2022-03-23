@@ -8,9 +8,9 @@ using ZealandDimselab.Interfaces;
 
 namespace ZealandDimselab.Services
 {
-    public class ItemDbService: GenericDbService<Item>, IItemDb
+    public class ItemRepository: GenericRepository<Item>, IItemRepository
     {
-        public ItemDbService(DimselabDbContext context) : base(context)
+        public ItemRepository(DimselabDbContext context) : base(context)
         {
         }
 

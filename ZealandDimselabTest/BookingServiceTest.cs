@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
+using ZealandDimselab.Services.Interfaces;
 using ZealandDimselab.Services;
 
 namespace ZealandDimselabTest
@@ -14,7 +15,7 @@ namespace ZealandDimselabTest
     [TestClass]
     public class BookingServiceTest
     {
-        private BookingService bookingService;
+        private IBookingService bookingService;
         private BookingMockData dbService;
         List<BookingItem> bookingItems;
 
@@ -110,7 +111,7 @@ namespace ZealandDimselabTest
         //}
 
 
-        public class BookingMockData : IBookingDb
+        public class BookingMockData : IBookingRepository
         {
             private DimselabDbContext dbContext;
 
@@ -192,7 +193,7 @@ namespace ZealandDimselabTest
                 throw new NotImplementedException();
             }
         }
-        internal class MockItemData : IItemDb
+        internal class MockItemData : IItemRepository
         {
             DimselabDbContext dbContext;
 

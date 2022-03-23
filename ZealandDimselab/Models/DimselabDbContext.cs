@@ -7,7 +7,7 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Models
 {
-    public class DimselabDbContext : DbContext, IDimselabDbContext
+    public class DimselabDbContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Item> Items { get; set; }

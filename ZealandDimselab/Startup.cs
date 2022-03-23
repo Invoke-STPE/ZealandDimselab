@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab
 {
@@ -37,20 +38,20 @@ namespace ZealandDimselab
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            services.AddTransient<IItemDb, ItemDbService>();
-            services.AddTransient<IDbService<User>, GenericDbService<User>>();
-            services.AddTransient<IDbService<Category>, GenericDbService<Category>>();
-            services.AddTransient<IBookingDb, BookingDbService>();
-            services.AddTransient<IItemDb, ItemDbService>();
-            services.AddTransient<IUserDb, UserDbService>();
+            services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<IGenericRepository<User>, GenericRepository<User>>();
+            services.AddTransient<IGenericRepository<Category>, GenericRepository<Category>>();
+            services.AddTransient<IBookingRepository, BookingRepository>();
+            services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             // DATABASE END //
 
             // SERVICES START //
-            services.AddTransient<UserService, UserService>();
-            services.AddTransient<ItemService, ItemService>();
-            services.AddTransient<BookingService, BookingService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IItemService, ItemService>();
+            services.AddTransient<IBookingService, BookingService>();
 
-            services.AddTransient<CategoryService, CategoryService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             // SERVICES END //
 
             // SESSION START //

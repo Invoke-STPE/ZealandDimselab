@@ -7,9 +7,9 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class UserDbService : GenericDbService<User>, IUserDb
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        public UserDbService(DimselabDbContext context) : base(context)
+        public UserRepository(DimselabDbContext context) : base(context)
         {
         }
 

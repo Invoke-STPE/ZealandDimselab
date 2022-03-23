@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.Items
 {
     public class CreateItemModel : PageModel
     {
-        private readonly ItemService itemService;
-        private readonly CategoryService categoryService;
+        private readonly IItemService itemService;
+        private readonly ICategoryService categoryService;
         [BindProperty] public Item Item { get; set; }
         public List<Item> Items { get; set; }
         public List<Category> Categories { get; set; }
@@ -24,7 +24,7 @@ namespace ZealandDimselab.Pages.Items
         [BindProperty] public IFormFile FileUpload { get; set; }
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CreateItemModel(ItemService itemService, CategoryService categoryService, IWebHostEnvironment whe)
+        public CreateItemModel(IItemService itemService, ICategoryService categoryService, IWebHostEnvironment whe)
         {
             this.itemService = itemService;
             this.categoryService = categoryService;

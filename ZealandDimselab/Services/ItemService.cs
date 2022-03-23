@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using ZealandDimselab.Services.Interfaces;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class ItemService
+    public class ItemService : IItemService
     {
-        private IItemDb _itemDbService;
-        public ItemService(IItemDb itemDbService)
+        private IItemRepository _itemDbService;
+        public ItemService(IItemRepository itemDbService)
         {
             _itemDbService = itemDbService;
         }
@@ -48,7 +49,7 @@ namespace ZealandDimselab.Services
             item.Stock = item.Stock - bookedQuantity;
             await _itemDbService.UpdateObjectAsync(item);
         }
-        
+
         //public IEnumerable<Item> FilterByName(string name)
         //{
         //    return from item in GetAllItems()

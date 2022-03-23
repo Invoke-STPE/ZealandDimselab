@@ -9,9 +9,9 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class BookingDbService : GenericDbService<Booking>, IBookingDb
+    public class BookingRepository : GenericRepository<Booking>, IBookingRepository
     {
-        public BookingDbService(DimselabDbContext context) : base(context)
+        public BookingRepository(DimselabDbContext context) : base(context)
         {
         }
 

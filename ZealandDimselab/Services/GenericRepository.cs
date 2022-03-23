@@ -8,11 +8,11 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Services
 {
-    public class GenericDbService<T> : IDbService<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly DimselabDbContext _context;
 
-        public GenericDbService(DimselabDbContext context)
+        public GenericRepository(DimselabDbContext context)
         {
             _context = context;
         }

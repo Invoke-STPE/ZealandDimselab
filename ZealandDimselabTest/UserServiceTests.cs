@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
+using ZealandDimselab.Services.Interfaces;
 using ZealandDimselab.Services;
 
 namespace ZealandDimselabTest
@@ -16,8 +17,8 @@ namespace ZealandDimselabTest
     [TestClass]
     public class UserServiceTests
     {
-        private IUserDb repository;
-        private UserService userService;
+        private IUserRepository repository;
+        private IUserService userService;
 
         [TestInitialize]
         public void InitializeTest()
@@ -183,7 +184,7 @@ namespace ZealandDimselabTest
             Assert.IsNull(claimRole);
         }
 
-        internal class UserMockData : IUserDb
+        internal class UserMockData : IUserRepository
         {
             private static List<User> _users;
             private readonly PasswordHasher<string> passwordHasher;

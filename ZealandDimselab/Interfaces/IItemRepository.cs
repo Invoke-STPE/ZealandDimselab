@@ -7,7 +7,7 @@ using ZealandDimselab.Models;
 
 namespace ZealandDimselab.Interfaces
 {
-    public interface IItemDb : IDbService<Item>
+    public interface IItemRepository : IGenericRepository<Item>
     {
         public Task<Item> GetItemWithCategoriesAsync(int id);
         public Task<List<Item>> GetAllItemsWithCategoriesAsync();

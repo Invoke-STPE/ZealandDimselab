@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.Categories
 {
     public class EditCategoryModel : PageModel
     {
-        private CategoryService categoryService;
+        private ICategoryService categoryService;
         [BindProperty]
         public Category Category { get; set; }
         public List<Category> Categories { get; set; }
 
-        public EditCategoryModel(CategoryService categoryService)
+        public EditCategoryModel(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
         }

@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.BookingPages
 {
     public class LoanedItemsModel : PageModel
     {
-        private BookingService _bookingService;
+        private IBookingService _bookingService;
         public List<BookedItem> BookedItems;
 
-        public LoanedItemsModel(BookingService bookingService)
+        public LoanedItemsModel(IBookingService bookingService)
         {
             _bookingService = bookingService;
         }

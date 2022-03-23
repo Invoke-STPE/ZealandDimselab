@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Models;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 
 namespace ZealandDimselab.Pages.Categories
 {
     public class DeleteCategoryModel : PageModel
     {
-        private CategoryService categoryService;
+        private ICategoryService categoryService;
         public Category Category { get; set; }
         public List<Category> Categories { get; set; }
 
-        public DeleteCategoryModel(CategoryService categoryService)
+        public DeleteCategoryModel(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
         }

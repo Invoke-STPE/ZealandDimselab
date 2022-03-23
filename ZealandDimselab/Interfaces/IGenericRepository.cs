@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ZealandDimselab.Interfaces
 {
-    public interface IDbService<T>
+    public interface IGenericRepository<T>
     {
         Task<IEnumerable<T>> GetObjectsAsync();
         Task<T> GetObjectByKeyAsync(int id);

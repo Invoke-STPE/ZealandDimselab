@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Helpers;
 using ZealandDimselab.Models;
 using ZealandDimselab.MockData;
-using ZealandDimselab.Services;
+using ZealandDimselab.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,16 +18,16 @@ namespace ZealandDimselab.Pages.BookingPages
     {
         public List<Item> Cart { get; set; }
         public double Total { get; set; }
-        private readonly UserService userService;
-        private readonly ItemService itemService;
-        private readonly BookingService bookingService;
+        private readonly IUserService userService;
+        private readonly IItemService itemService;
+        private readonly IBookingService bookingService;
 
         [BindProperty]
         public Booking Booking { get; set; }
         [BindProperty]
         public string Email { get; set; }
 
-        public BookingCartModel(UserService userService, BookingService bookingService, ItemService itemService)
+        public BookingCartModel(IUserService userService, IBookingService bookingService, IItemService itemService)
         {
             this.userService = userService;
             this.itemService = itemService;
