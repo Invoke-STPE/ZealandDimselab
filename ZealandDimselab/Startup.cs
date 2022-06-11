@@ -12,10 +12,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Helpers;
+using ZealandDimselab.Hubs;
 using ZealandDimselab.Interfaces;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 using ZealandDimselab.Services.Interfaces;
+using Microsoft.AspNetCore.ResponseCompression;
 
 namespace ZealandDimselab
 {
@@ -32,8 +34,13 @@ namespace ZealandDimselab
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-
-
+            services.AddServerSideBlazor();
+            services.AddResponseCompression(options => // This ensures that our connection is as small and optimized as possible
+            {
+                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    // Webservers need to know what types of data to process
+                    new[] { "application/octet-stream" });
+            });
             services.AddDbContext<DimselabDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
@@ -104,6 +111,9 @@ namespace ZealandDimselab
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapBlazorHub();
+                endpoints.MapHub<ChatHub>("/chathub");
+    
             });
         }
     }

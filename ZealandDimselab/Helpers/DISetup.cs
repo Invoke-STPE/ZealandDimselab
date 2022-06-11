@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZealandDimselab.Interfaces;
+using ZealandDimselab.MockData;
 using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 using ZealandDimselab.Services.Interfaces;
@@ -28,10 +29,10 @@ namespace ZealandDimselab.Helpers
 
             // SERVICES START //
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IItemService, ItemService>();
+            services.AddTransient<IItemService, MockDataItems>();
             services.AddTransient<IBookingService, BookingService>();
 
-            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<ICategoryService, MockCategory>();
 
             return services;
         }

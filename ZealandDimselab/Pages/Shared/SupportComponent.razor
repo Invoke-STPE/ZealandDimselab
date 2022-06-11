@@ -1,0 +1,98 @@
+﻿@using ZealandDimselab.Models
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Microsoft.AspNetCore.SignalR;
+@inject NavigationManager NavManager
+@implements IAsyncDisposable 
+
+<button class="open-button" onclick="openChat()">Få hjælp her</button>
+
+<div class="chat-popup" id="supportChat">
+    <div class="div-container">
+        <h1>Live Chat</h1>
+        @if (chatConnected)
+        {
+            <label for="msg"><b>Messages</b></label>
+            @foreach (MessageModel message in messages)
+            {
+                <div class="chat-message">
+                    <p>@message.User <span>@message.MessageSent.ToString("t")</span></p>
+                    <p>@message.Message</p>
+                </div>
+            }
+
+            <input class="sendMessage" @bind="messageInput" placeholder="Type message.." name="msg" required />
+            <button class="btn" @onclick="Send">Send</button>
+        }
+        else
+        {
+            <p>Brug før hjælp?</p>
+            <button class="btn" @onclick="ConnectToSupport">Forbind</button>
+        }
+        <button type="button" class="btn cancel" onclick="closeChat()">Close</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool UserIsAdmin { get; set; }
+
+    private HubConnection? hubConnection;
+    private List<MessageModel> messages = new List<MessageModel>(); 
+    private string? userInput; 
+    private string? messageInput;
+    string userName = "";
+    private bool chatConnected = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+       
+        hubConnection = new HubConnectionBuilder() 
+            .WithUrl(NavManager.ToAbsoluteUri("/chathub"))
+            .WithAutomaticReconnect() 
+            .Build();
+        if (UserIsAdmin)
+        {
+            userName = "Support";
+        }
+        else { userName = "Gæst"; }
+
+        hubConnection.On<MessageModel>("ReceiveMessage", (message) =>
+        {
+            messages.Add(message);
+
+            InvokeAsync(StateHasChanged);
+
+        }); 
+
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task Send()
+    {
+        if (hubConnection != null)
+        {
+            MessageModel message = new MessageModel() { User = userName, Message = messageInput };
+            await hubConnection.SendAsync("SendMessage", message);
+        }
+    }
+    
+
+    public async ValueTask DisposeAsync() 
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+
+    private async Task ConnectToSupport()
+    {
+        chatConnected = true;
+    }
+}
+
+
+
+

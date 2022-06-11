@@ -24,8 +24,8 @@ namespace ZealandDimselab.Services
             // Test user: Admin Admin@Dimselab.dk secret1234 (don't tell anyone)
             // Test user: Oscar Oscar@email.com password
             //User user = new User("Oscar", "Osca2324@edu.easj.dk");
-            //User user = new User("Admin", "Admin@Dimselab.dk", "secret1234");
-            //AddUserAsync(user);
+            //User user = new User("Admin@Dimselab.dk", "Admin", "Test1234");
+            //AddUser(user);
 
         }
 
@@ -47,7 +47,7 @@ namespace ZealandDimselab.Services
 
         public async Task AddUserAsync(User user)
         {
-            //user.Password = _passwordHasher.HashPassword(null, user.Password);
+            user.Password = _passwordHasher.HashPassword(null, user.Password);
             string[] subs = user.Email.Split("@");
 
             if (subs[1].ToLower() == "edu.easj.dk")
@@ -59,6 +59,20 @@ namespace ZealandDimselab.Services
                 }
             }
             else { await dbService.AddObjectAsync(user); }
+        }
+        public void AddUser(User user)
+        {
+            user.Password = _passwordHasher.HashPassword(null, user.Password);
+            string[] subs = user.Email.Split("@");
+
+
+                if (!EmailInUseAsync(user.Email).Result)
+                {
+                    user.Role = "admin";
+                    dbService.AddObjectAsync(user);
+                }
+            
+            else { dbService.AddObjectAsync(user); }
         }
 
         public async Task DeleteUserAsync(int id)
