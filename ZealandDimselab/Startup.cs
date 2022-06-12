@@ -18,6 +18,7 @@ using ZealandDimselab.Models;
 using ZealandDimselab.Services;
 using ZealandDimselab.Services.Interfaces;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Http;
 
 namespace ZealandDimselab
 {
@@ -33,8 +34,26 @@ namespace ZealandDimselab
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // AUTHENTICATION START //
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    options =>
+                    {
+                        options.Cookie.Name = "Cookie";
+                        options.LoginPath = "/Account/Login";
+                    }
+                );
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administrator", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "admin"));
+            });
             services.AddRazorPages();
+            services.AddSignalR();
             services.AddServerSideBlazor();
+            services.AddHttpContextAccessor();
+
             services.AddResponseCompression(options => // This ensures that our connection is as small and optimized as possible
             {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -47,20 +66,10 @@ namespace ZealandDimselab
             });
 
             services.AddDIInfo(); // This is an extenstion of the ServiceCollection class, it grathers all my dependensies.
-           
-
             // SESSION START //
             services.AddSession(); // Adds the ability to save into the users cache
             // SESSION END
-
-            // AUTHENTICATION START //
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Administrator", policy =>
-                    policy.RequireClaim(ClaimTypes.Role, "admin"));
-            });
+            //services.AddSignalR();
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
                     {
@@ -97,11 +106,12 @@ namespace ZealandDimselab
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseAuthentication();
+            
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // SESSION START //
@@ -110,10 +120,9 @@ namespace ZealandDimselab
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
-                endpoints.MapBlazorHub();
                 endpoints.MapHub<ChatHub>("/chathub");
-    
+                endpoints.MapRazorPages();
+                endpoints.MapBlazorHub();    
             });
         }
     }

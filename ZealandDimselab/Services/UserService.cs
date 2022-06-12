@@ -47,14 +47,13 @@ namespace ZealandDimselab.Services
 
         public async Task AddUserAsync(User user)
         {
-            user.Password = _passwordHasher.HashPassword(null, user.Password);
+            //user.Password = _passwordHasher.HashPassword(null, user.Password);
             string[] subs = user.Email.Split("@");
 
-            if (subs[1].ToLower() == "edu.easj.dk")
+            if (subs[1].ToLower() == "edu.zealand.dk")
             {
                 if (!(await EmailInUseAsync(user.Email)))
                 {
-                    user.Role = AssignRoleToUser(subs);
                     await dbService.AddObjectAsync(user);
                 }
             }
@@ -107,23 +106,16 @@ namespace ZealandDimselab.Services
             return _passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
         }
 
-        public ClaimsIdentity CreateClaimIdentity(string email)
+        public async Task<ClaimsIdentity> CreateClaimIdentity(string email)
         {
-            User user = GetUserByEmail(email).Result;
+            User user = await GetUserByEmail(email);
+
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, email)
+                new Claim(ClaimTypes.NameIdentifier, email),
+                new Claim(ClaimTypes.Name, email),
+                new Claim(ClaimTypes.Role, user.Role)
             };
-
-            // Regular expression to assing role
-            string[] subs = email.Split('@');
-
-            if (email.ToLower() == "Admin@Dimselab.dk".ToLower()) // This checks if the user attempts to login as an administrator account.
-            {
-                claims.Add(new Claim(ClaimTypes.Role, "admin"));
-            }
-
-            claims.Add(new Claim(ClaimTypes.Role, user.Role));
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             return claimsIdentity;

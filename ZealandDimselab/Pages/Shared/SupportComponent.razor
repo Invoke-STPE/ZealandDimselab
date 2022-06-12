@@ -1,8 +1,14 @@
 ﻿@using ZealandDimselab.Models
 @using Microsoft.AspNetCore.SignalR.Client;
 @using Microsoft.AspNetCore.SignalR;
+@using Microsoft.AspNetCore.Http
+@using ZealandDimselab.Services.Interfaces
+@using System.Web 
 @inject NavigationManager NavManager
-@implements IAsyncDisposable 
+@inject IHttpContextAccessor Context
+@inject IUserService _userService 
+@implements IAsyncDisposable
+
 
 <button class="open-button" onclick="openChat()">Få hjælp her</button>
 
@@ -15,7 +21,7 @@
             @foreach (MessageModel message in messages)
             {
                 <div class="chat-message">
-                    <p>@message.User <span>@message.MessageSent.ToString("t")</span></p>
+                    <p>@message.Sender <span>@message.MessageSent.ToString("t")</span></p>
                     <p>@message.Message</p>
                 </div>
             }
@@ -26,7 +32,12 @@
         else
         {
             <p>Brug før hjælp?</p>
-            <button class="btn" @onclick="ConnectToSupport">Forbind</button>
+            @if (emailError)
+            {
+                <p class="text-danger">Email skal være en edu.zealand.dk</p>
+            }
+                <input class="sendMessage" @bind="studentEmail" placeholder="Zealand Email" name="msg" required />
+                <button class="btn" @onclick="ConnectToSupport">Forbind</button>
         }
         <button type="button" class="btn cancel" onclick="closeChat()">Close</button>
     </div>
@@ -37,25 +48,27 @@
     public bool UserIsAdmin { get; set; }
 
     private HubConnection? hubConnection;
-    private List<MessageModel> messages = new List<MessageModel>(); 
-    private string? userInput; 
+    private List<MessageModel> messages = new List<MessageModel>();
+    private string? userInput;
     private string? messageInput;
+
+    private string? studentEmail = "";
+    private bool emailError = false;
     string userName = "";
     private bool chatConnected = false;
 
 
     protected override async Task OnInitializedAsync()
     {
-       
-        hubConnection = new HubConnectionBuilder() 
-            .WithUrl(NavManager.ToAbsoluteUri("/chathub"))
-            .WithAutomaticReconnect() 
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavManager.ToAbsoluteUri("/chathub"), options =>
+            {
+                options.Cookies.Add(new Uri(NavManager.BaseUri), new System.Net.Cookie("Cookie", Context.HttpContext.Request.Cookies.Where(s => s.Key == "Cookie").FirstOrDefault().Value));
+
+            })
+            .WithAutomaticReconnect()
             .Build();
-        if (UserIsAdmin)
-        {
-            userName = "Support";
-        }
-        else { userName = "Gæst"; }
 
         hubConnection.On<MessageModel>("ReceiveMessage", (message) =>
         {
@@ -63,23 +76,33 @@
 
             InvokeAsync(StateHasChanged);
 
-        }); 
+        });
 
+        if (Context.HttpContext.User.Identity.IsAuthenticated)
+        {
+            chatConnected = true;
+            await hubConnection.StartAsync();
+        }
 
-        await hubConnection.StartAsync();
+        if (UserIsAdmin)
+        {
+            userName = "Support";
+        }
+        else { userName = "Gæst"; }
     }
 
     private async Task Send()
     {
         if (hubConnection != null)
         {
-            MessageModel message = new MessageModel() { User = userName, Message = messageInput };
+            MessageModel message = new MessageModel() { Sender = userName, Message = messageInput };
+            messages.Add(message);
             await hubConnection.SendAsync("SendMessage", message);
         }
     }
-    
 
-    public async ValueTask DisposeAsync() 
+
+    public async ValueTask DisposeAsync()
     {
         if (hubConnection != null)
         {
@@ -89,7 +112,30 @@
 
     private async Task ConnectToSupport()
     {
-        chatConnected = true;
+
+        if (Context.HttpContext.User.Identity.IsAuthenticated == false)
+        {
+            if (studentEmail.Contains("edu.zealand.dk"))
+            {
+                emailError = false;
+                NavManager.NavigateTo($"/Account/Login?paramEmail={@Encode(studentEmail)}", true);
+
+            }
+            else
+            {
+                emailError = true;
+            }
+        } else
+        {
+            chatConnected = true;
+            await hubConnection.StartAsync();
+        }
+
+    }
+
+    private string Encode(string param)
+    {
+        return HttpUtility.UrlEncode(param);
     }
 }
 

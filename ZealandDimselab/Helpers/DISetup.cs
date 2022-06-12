@@ -34,6 +34,8 @@ namespace ZealandDimselab.Helpers
 
             services.AddTransient<ICategoryService, MockCategory>();
 
+
+
             return services;
         }
     }

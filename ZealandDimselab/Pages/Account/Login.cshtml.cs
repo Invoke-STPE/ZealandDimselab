@@ -30,12 +30,41 @@ namespace ZealandDimselab.Pages.Account
             _userService = userService;
         }
 
+        /// <summary>
+        /// Used for login through blazor component.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> OnGetAsync(string paramEmail = "")
+        {
+            if (String.IsNullOrWhiteSpace(paramEmail) == false)
+            {
+                bool emailInUse = await _userService.EmailInUseAsync(paramEmail);
+                if (emailInUse == false)
+                {
+                    User user = new User(paramEmail, "student");
+                    await _userService.AddUserAsync(user);
+                }
+                ClaimsIdentity claimsIdentity = await _userService.CreateClaimIdentity(paramEmail);
+                AuthenticationProperties authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    RedirectUri = Request.Host.Value
+                };
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                              new ClaimsPrincipal(claimsIdentity),
+                                              authProperties);
+                return RedirectToPage("../Index");
+            }
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
 
             if (await _userService.ValidateEmail(Email, Password))
             {
-                var claimsIdentity = _userService.CreateClaimIdentity(Email);
+                var claimsIdentity = await _userService.CreateClaimIdentity(Email);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToPage("../Index");
             }

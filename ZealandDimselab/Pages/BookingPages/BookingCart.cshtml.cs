@@ -146,12 +146,12 @@ namespace ZealandDimselab.Pages.BookingPages
             ClaimsIdentity claimsIdentity;
             if (await userService.EmailInUseAsync(email))
             {
-                claimsIdentity = userService.CreateClaimIdentity(email);
+                claimsIdentity = await userService.CreateClaimIdentity(email);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             } else
             {
                 await userService.AddUserAsync(new User() { Email = email });
-                claimsIdentity = userService.CreateClaimIdentity(email);
+                claimsIdentity = await userService.CreateClaimIdentity(email);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             }
             return RedirectToPage(url);

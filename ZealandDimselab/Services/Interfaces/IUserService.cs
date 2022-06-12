@@ -8,7 +8,7 @@ namespace ZealandDimselab.Services.Interfaces
     public interface IUserService
     {
         Task AddUserAsync(User user);
-        ClaimsIdentity CreateClaimIdentity(string email);
+        Task<ClaimsIdentity> CreateClaimIdentity(string email);
         Task DeleteUserAsync(int id);
         Task<bool> EmailInUseAsync(string email);
         Task<User> GetUserByEmail(string email);

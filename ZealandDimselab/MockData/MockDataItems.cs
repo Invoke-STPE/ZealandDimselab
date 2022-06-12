@@ -19,12 +19,17 @@ namespace ZealandDimselab.MockData
         }
         public Task AddItemAsync(Item item)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => {
+                _items.Add(item);
+                });
         }
 
         public Task DeleteItemAsync(int id)
         {
-            throw new NotImplementedException();
+            Item item = _items.FirstOrDefault(x => x.Id == id);
+            return Task.Run(() => {
+                _items.Remove(item);
+                });
         }
 
         public Task<IEnumerable<Item>> GetAllItems()
@@ -35,12 +40,12 @@ namespace ZealandDimselab.MockData
 
         public Task<List<Item>> GetAllItemsWithCategoriesAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_items);
         }
 
         public Task<Item> GetItemByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_items.First(i => i.CategoryId == id));
         }
 
         public Task<List<Item>> GetItemsWithCategoryIdAsync(int id)
@@ -50,17 +55,17 @@ namespace ZealandDimselab.MockData
 
         public Task<Item> GetItemWithCategoriesAsync(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_items.FirstOrDefault(x => x.Id == id));
         }
 
         public Task ItemStockUpdateAsync(Item item, int bookedQuantity)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public Task UpdateItemAsync(int id, Item item)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
 

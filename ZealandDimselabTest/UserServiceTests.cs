@@ -145,12 +145,12 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void CreateClaim_ValidEmail_ReturnsClaimIdentity()
+        public async void CreateClaim_ValidEmail_ReturnsClaimIdentity()
         {
             // Arrange
             string expectedClaimName = "stev0408@edu.easj.dk";
             // Act
-            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(expectedClaimName);
+            ClaimsIdentity actualClaimIdentity = await userService.CreateClaimIdentity(expectedClaimName);
 
             // Assert
 
@@ -159,12 +159,12 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
+        public async void CreateClaim_LoginAsAdmin_AddsAdminRoleToClaim()
         {
             // Arrange
             string expectedRole = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role: admin"; // Why does it append schemas? Is it for intergration with AD?
             string email = "Admin@Dimselab.dk";
-            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+            ClaimsIdentity actualClaimIdentity = await userService.CreateClaimIdentity(email);
             // Act
             string actualRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin").ToString();
 
@@ -173,11 +173,11 @@ namespace ZealandDimselabTest
         }
 
         [TestMethod]
-        public void CreateClaim_LoginAsUser_DoesNotAddAdminRoleToClaim()
+        public async void CreateClaim_LoginAsUser_DoesNotAddAdminRoleToClaim()
         {
             // Arrange
             string email = "stev0408@edu.easj.dk";
-            ClaimsIdentity actualClaimIdentity = userService.CreateClaimIdentity(email);
+            ClaimsIdentity actualClaimIdentity = await userService.CreateClaimIdentity(email);
             // Act
             Claim claimRole = actualClaimIdentity.Claims.FirstOrDefault(role => role.Value == "admin");
             // Assert
