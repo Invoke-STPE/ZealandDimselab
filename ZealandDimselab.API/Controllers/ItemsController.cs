@@ -55,23 +55,23 @@ namespace ZealandDimselab.API.Controllers
         {
             return await _itemRepository.GetItemsWithCategoryId(id);
         }
-        // POST: api/User
-        // Adds a user.
+        // POST: api/items
+        // Adds an items.
         [HttpPost]
         public async Task Add([FromBody] Item item)
         {
             await _itemRepository.AddObjectAsync(item);
         }
-        // DELETE: api/User
-        // Deletes a user.
+        // DELETE: api/items
+        // Deletes an item.
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
             Item item = await Get(id);
             await _itemRepository.DeleteObjectAsync(item);
         }
-        // PUT: api/Category
-        // Updates a category.
+        // PUT: api/items
+        // Updates an item.
         [HttpPut]
         public async Task Update([FromBody] Item item)
         {

@@ -23,13 +23,13 @@
                         <div class="form-group">
                             <label class="col-form-label ">Zealand Email</label>
                             <div>
-                                <input name="email" type="email" pattern=".+@@edu.easj.dk" required/>
+                                <input name="email" type="email" required/>
                                 <input type="hidden" name="url" value="@Url.Action()">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <button class="btn btn-outline-light" asp-page="BookingCart" asp-page-handler="EmailSubmitted">Submit</button>
+                            <button class="btn btn-outline-light" asp-page="..\Account\Login" asp-page-handler="OnPostModalLoginAsync">Submit</button>
                             <a class="btn btn-danger" type="submit" asp-page="..\Items\Cards\AllItems">Return</a>
                         </div>
                     </form>

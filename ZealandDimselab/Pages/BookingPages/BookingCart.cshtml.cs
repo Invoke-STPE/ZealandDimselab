@@ -5,33 +5,39 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Helpers;
-using ZealandDimselab.Models;
-using ZealandDimselab.MockData;
-using ZealandDimselab.Services.Interfaces;
+
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ZealandDimselab.Lib.Models;
+using ZealandDimselab.Lib.JuntionTables;
+using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using System.Text.Json;
+using System.Text;
 
 namespace ZealandDimselab.Pages.BookingPages
 {
     public class BookingCartModel : PageModel
     {
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
+
         public List<Item> Cart { get; set; }
         public double Total { get; set; }
-        private readonly IUserService userService;
-        private readonly IItemService itemService;
-        private readonly IBookingService bookingService;
+        //private readonly IUserService userService;
+        //private readonly IItemService itemService;
+        //private readonly IBookingService bookingService;
 
         [BindProperty]
         public Booking Booking { get; set; }
         [BindProperty]
         public string Email { get; set; }
 
-        public BookingCartModel(IUserService userService, IBookingService bookingService, IItemService itemService)
+        public BookingCartModel(HttpClient httpClient, IConfiguration configuration)
         {
-            this.userService = userService;
-            this.itemService = itemService;
-            this.bookingService = bookingService;
+            _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         public void OnGet()
@@ -56,7 +62,7 @@ namespace ZealandDimselab.Pages.BookingPages
             {
                 Cart = new List<Item>
                 {
-                    await itemService.GetItemByIdAsync(id)
+                    await GetItemByIdAsync(id)
                 };
                 SetCart(Cart);
             }
@@ -65,7 +71,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 int index = Exists(Cart, id);
                 if (index == -1) // if the item does not exists in the cart, append it.
                 {
-                    Cart.Add( await itemService.GetItemByIdAsync(id) );
+                    Cart.Add( await GetItemByIdAsync(id) );
                 }
                 //else 
                 //{
@@ -102,7 +108,7 @@ namespace ZealandDimselab.Pages.BookingPages
 
             for (var i = 0; i < Cart.Count; i++)
             {
-                if ((await itemService.GetItemByIdAsync(Cart[i].Id)).Stock < quantities[i])
+                if ((await GetItemByIdAsync(Cart[i].Id)).Stock < quantities[i])
                 {
                     ViewData["error"] = "Quantity cannot exceed item stock.";
                     Cart = GetCart();
@@ -112,7 +118,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 SetCart(Cart);
             }
 
-            User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
+            User user = await GetUserByEmailAsync(HttpContext.User.Identity.Name);
             if (user != null)
             {
 
@@ -129,9 +135,9 @@ namespace ZealandDimselab.Pages.BookingPages
                 foreach (var item in Cart)
                 {
                     _booking.BookingItems.Add(new BookingItem { ItemId = item.Id, Quantity = item.BookingQuantity });
-                    await itemService.ItemStockUpdateAsync((await itemService.GetItemByIdAsync(item.Id)), item.BookingQuantity);
+                    await ItemStockUpdateAsync((await GetItemByIdAsync(item.Id)), item.BookingQuantity);
                 }
-                await bookingService.AddBookingAsync(_booking);
+                await AddBookingAsync(_booking);
             }
             return RedirectToPage("MyBookings");
         }
@@ -141,21 +147,21 @@ namespace ZealandDimselab.Pages.BookingPages
             SetCart(new List<Item>());
             return RedirectToPage("BookingCart");
         }
-        public async Task<IActionResult> OnPostEmailSubmitted(string email, string url)
-        {
-            ClaimsIdentity claimsIdentity;
-            if (await userService.EmailInUseAsync(email))
-            {
-                claimsIdentity = userService.CreateClaimIdentity(email);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            } else
-            {
-                await userService.AddUserAsync(new User() { Email = email });
-                claimsIdentity = userService.CreateClaimIdentity(email);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            }
-            return RedirectToPage(url);
-        }
+        //public async Task<IActionResult> OnPostEmailSubmitted(string email, string url)
+        //{
+        //    ClaimsIdentity claimsIdentity;
+        //    if (await userService.EmailInUseAsync(email))
+        //    {
+        //        claimsIdentity = userService.CreateClaimIdentity(email);
+        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+        //    } else
+        //    {
+        //        await userService.AddUserAsync(new User() { Email = email });
+        //        claimsIdentity = userService.CreateClaimIdentity(email);
+        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+        //    }
+        //    return RedirectToPage(url);
+        //}
         /// <summary>
         /// Check if an item in a cart exists.
         /// </summary>
@@ -199,6 +205,47 @@ namespace ZealandDimselab.Pages.BookingPages
                 Booking.BookingItems.Add(new BookingItem { ItemId = item.Id });
             }
             return Booking;
+        }
+
+
+        private async Task<Item> GetItemByIdAsync(int id)
+        {
+            var builder = new UriBuilder(_configuration.GetValue<string>("ItemAPI:BaseUrlItem"));
+            builder.Query = $"id={id}";
+            string url = builder.ToString();
+            var response = await _httpClient.GetAsync(url);
+            string jsonResult = await response.Content.ReadAsStringAsync();
+            
+            return JsonSerializer.Deserialize<Item>(jsonResult); ;
+        }
+
+        private async Task ItemStockUpdateAsync(Item item, int bookedQuantity)
+        {
+            item.Stock = item.Stock - bookedQuantity;
+
+            string itemInJson = JsonSerializer.Serialize(item);
+            StringContent stringContent = new StringContent(itemInJson, Encoding.UTF8, "application/json");
+            string url = _configuration.GetValue<string>("ItemAPI:BaseUrlItem");
+            await _httpClient.PutAsync(url, stringContent);
+        }
+
+        private async Task<User> GetUserByEmailAsync(string email)
+        {
+            var builder = new UriBuilder(_configuration.GetValue<string>("UserAPI:BaseUrlUser"));
+            builder.Query = $"email={email}";
+            string url = builder.ToString();
+            var response = await _httpClient.GetAsync(url);
+            string jsonResult = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<User>(jsonResult); ;
+        }
+
+        private async Task AddBookingAsync(Booking booking)
+        {
+            string bookingInJson = JsonSerializer.Serialize(booking);
+            StringContent stringContent = new StringContent(bookingInJson, Encoding.UTF8, "application/json");
+            string url = _configuration.GetValue<string>("BookingAPI:BaseUrlBooking");
+            await _httpClient.PostAsync(url, stringContent);
         }
     }
 }
