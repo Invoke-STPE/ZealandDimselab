@@ -26,4 +26,8 @@
     <Folder Include="wwwroot\images\ItemImages\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ZealandDimselab.Lib\ZealandDimselab.Lib.csproj" />
+  </ItemGroup>
+
 </Project>

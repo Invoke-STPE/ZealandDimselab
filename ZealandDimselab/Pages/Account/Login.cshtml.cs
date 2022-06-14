@@ -16,7 +16,7 @@ namespace ZealandDimselab.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly IUserService _userService;
+        //private readonly IUserService _userService;
         [BindProperty]
         public string Email { get; set; }
 
@@ -25,13 +25,15 @@ namespace ZealandDimselab.Pages.Account
 
         public string Message { get; set; }
 
-        public LoginModel(IUserService userService)
-        {
-            _userService = userService;
-        }
+        //public LoginModel(IUserService userService)
+        //{
+        //    _userService = userService;
+        //}
 
         public async Task<IActionResult> OnPostAsync()
         {
+
+
 
             if (await _userService.ValidateEmail(Email, Password))
             {
