@@ -34,21 +34,21 @@ namespace ZealandDimselab.API.Controllers
         {
             return await _itemRepository.GetObjectByKeyAsync(id);
         }
-        // GET: api/User/GetItemsWithCategories
+        // GET: api/items/GetItemsWithCategories
         // Returns one item with a category.
-        [HttpGet("GetItemsWithCategories")]
-        public async Task<Item> GetItemsWithCategories([FromQuery] int id)
+        [HttpGet("GetItemWithCategories")]
+        public async Task<Item> GetItemWithCategories([FromQuery] int id)
         {
             return await _itemRepository.GetItemWithCategoriesAsync(id);
         }
-        // GET: api/User/GetAllItemsWithCategories
+        // GET: api/items/GetAllItemsWithCategories
         // Returns Items with Categories prop filled.
         [HttpGet("GetAllItemsWithCategories")]
-        public async Task<IEnumerable<Item>> IsEmailInUse()
+        public async Task<IEnumerable<Item>> GetAllItemsWithCategories()
         {
             return await _itemRepository.GetAllItemsWithCategoriesAsync();
         }
-        // GET: api/User/GetItemsWithCategoryId
+        // GET: api/items/GetItemsWithCategoryId
         // Gets all item for a specific category.
         [HttpGet("GetItemsWithCategoryId")]
         public async Task<IEnumerable<Item>> GetItemsWithCategoryId([FromQuery] int id)

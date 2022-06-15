@@ -7,36 +7,43 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services.Interfaces;
+using ZealandDimselab.DTO;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.Lib.Models;
+
 
 namespace ZealandDimselab.Pages.Items
 {
     public class EditItemModel : PageModel
     {
-        private readonly IItemService itemService;
-        private readonly ICategoryService categoryService;
-        private readonly IBookingService _bookingService;
-        [BindProperty] public Item Item { get; set; }
-        public List<Item> Items { get; set; }
-        public List<Category> Categories { get; set; }
+  
+        [BindProperty] public ItemDto Item { get; set; }
+        public List<ItemDto> Items { get; set; }
+        public List<CategoryDto> Categories { get; set; }
         [BindProperty] public int CategoryId { get; set; }
         [BindProperty] public IFormFile FileUpload { get; set; }
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EditItemModel(IItemService itemService, ICategoryService categoryService, IBookingService bookingService, IWebHostEnvironment whe)
+        private readonly IHttpClientItem _httpClientItem;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpClientBooking _httpClientBooking;
+        private readonly IHttpClientCategory _httpClientCategory;
+
+        public EditItemModel(IHttpClientItem httpClientItem,
+                            IWebHostEnvironment whe,
+                            IHttpClientBooking httpClientBooking,
+                            IHttpClientCategory httpClientCategory)
         {
-            this.itemService = itemService;
-            this.categoryService = categoryService;
-            _bookingService = bookingService;
+            _httpClientItem = httpClientItem;
             _webHostEnvironment = whe;
+            _httpClientBooking = httpClientBooking;
+            _httpClientCategory = httpClientCategory;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Items = await itemService.GetAllItemsWithCategoriesAsync();
-            Categories = await categoryService.GetAllCategoriesAsync();
-            Item = await itemService.GetItemWithCategoriesAsync(id);
+            Items = await _httpClientItem.GetAllItemsWithCategoriesAsync();
+            Categories = await _httpClientCategory.GetAllCategoriesAsync();
+            Item = await _httpClientItem.GetItemWithCategoriesAsync(id);
             CategoryId = 0;
 
             return Page();
@@ -46,9 +53,9 @@ namespace ZealandDimselab.Pages.Items
         {
             if (category == 0) return RedirectToPage("EditItem", new { id });
 
-            Items = await itemService.GetItemsWithCategoryIdAsync(category);
-            Categories = await categoryService.GetAllCategoriesAsync();
-            Item = await itemService.GetItemWithCategoriesAsync(id);
+            Items = await _httpClientItem.GetItemsWithCategoryIdAsync(category);
+            Categories = await _httpClientCategory.GetAllCategoriesAsync();
+            Item = await _httpClientItem.GetItemWithCategoriesAsync(id);
             CategoryId = category;
 
             return Page();
@@ -75,10 +82,10 @@ namespace ZealandDimselab.Pages.Items
             }
             else
             {
-                Item.ImageName = (await itemService.GetItemWithCategoriesAsync(Item.Id)).ImageName;
+                Item.ImageName = (await _httpClientItem.GetItemWithCategoriesAsync(Item.Id)).ImageName;
             }
 
-            var bookedItems = await _bookingService.GetAllBookedItemsAsync();
+            var bookedItems = await _httpClientBooking.GetAllBookedItemsAsync();
             int matchingId = 0;
             foreach (var bookedItem in bookedItems)
             {
@@ -89,7 +96,7 @@ namespace ZealandDimselab.Pages.Items
             }
             Item.Stock = Item.Quantity - matchingId;
 
-            await itemService.UpdateItemAsync(Item.Id, Item);
+            await _httpClientItem.UpdateItemAsync(Item);
             return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });
         }
     }

@@ -5,26 +5,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services.Interfaces;
+using ZealandDimselab.DTO;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-        public List<Category> Categories { get; set; }
-        private ICategoryService categoryService;
+        private readonly IHttpClientCategory _httpClientCategory;
 
-        public IndexModel(ILogger<IndexModel> logger, ICategoryService categoryService)
+        public List<CategoryDto> Categories { get; set; }
+
+        public IndexModel(IHttpClientCategory httpClientCategory)
         {
-            _logger = logger;
-            this.categoryService = categoryService;
+            _httpClientCategory = httpClientCategory;
         }
 
         public async Task OnGetAsync()
         {
-            Categories = await categoryService.GetAllCategoriesAsync();
+            Categories = await _httpClientCategory.GetAllCategoriesAsync();
         }
     }
 }

@@ -11,11 +11,11 @@ namespace ZealandDimselab.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CatagoryController : ControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly IGenericRepository<Category> _repository;
 
-        public CatagoryController(IGenericRepository<Category> genericRepository)
+        public CategoryController(IGenericRepository<Category> genericRepository)
         {
             _repository = genericRepository;
         }

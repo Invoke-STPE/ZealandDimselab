@@ -12,15 +12,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using ZealandDimselab.DTO;
+using ZealandDimselab.Helpers.HttpClients;
 using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
         private readonly PasswordHasher<string> _passwordHasher;
+        private readonly IHttpClientUser _httpClientUser;
 
         [BindProperty]
         public string Email { get; set; }
@@ -30,20 +31,19 @@ namespace ZealandDimselab.Pages.Account
 
         public string Message { get; set; }
 
-        public LoginModel(HttpClient httpClient, IConfiguration configuration)
+        public LoginModel(IHttpClientUser httpClientUser)
         {
-            _httpClient = httpClient;
-            _configuration = configuration;
             _passwordHasher = new PasswordHasher<string>();
+            _httpClientUser = httpClientUser;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
-            User user = null;
+
+            UserDto user = null;
             try
             {
-                user = await GetUserFromApiByEmailAsync();
+                user = await _httpClientUser.GetUserByEmailAsync(Email);
             }
             catch
             {
@@ -51,26 +51,36 @@ namespace ZealandDimselab.Pages.Account
                 return Page();
             }
 
-            VerifyPassword(user);
-            ClaimsIdentity claimsIdentity = CreateClaimIdentity(user);
-            // Sign in
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            // Redirect
+            var result = VerifyPassword(user);
+            if (result == PasswordVerificationResult.Success)
+            {
+                ClaimsIdentity claimsIdentity = CreateClaimIdentity(user);
+                // Sign in
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                // Redirect
+                
+            }
             return RedirectToPage("../Index");
+
         }
 
         public async Task<IActionResult> OnPostModalLoginAsync(string paramEmail, string url)
         {
-            User user = null;
+            UserDto user = null;
 
             try
             {
-                user = await GetUserFromApiByEmailAsync(paramEmail);
+                user = await _httpClientUser.GetUserByEmailAsync(paramEmail);
             }
             catch 
             {
-                Message = "Invalid attempt";
+                await _httpClientUser.AddUserAsync(paramEmail);
+                user = await _httpClientUser.GetUserByEmailAsync(paramEmail);
             }
+            
+  
+                
+            
 
             if (user != null)
             {
@@ -81,34 +91,17 @@ namespace ZealandDimselab.Pages.Account
             return Page();
         }
 
-        private string BuildUrl(string paramEmail = "")
+        private PasswordVerificationResult VerifyPassword(UserDto user)
         {
-            var builder = new UriBuilder(_configuration.GetValue<string>("UserAPI:BaseUrlUser"));
-            string email = string.IsNullOrWhiteSpace(paramEmail) ? Email : paramEmail;
-            builder.Query = $"email={email}";
-            string url = builder.ToString();
-            return url;
+            return _passwordHasher.VerifyHashedPassword(null, user.Password, Password);
         }
 
-        private async Task<User> GetUserFromApiByEmailAsync(string paramEmail = "")
-        {
-            string url = string.IsNullOrWhiteSpace(paramEmail) ? BuildUrl(Email) : BuildUrl(paramEmail);
-            var response = await _httpClient.GetAsync(url);
-            string jsonResult = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<User>(jsonResult); ;
-        }
-
-        private void VerifyPassword(User user)
-        {
-            PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(null, user.Password, Password);
-        }
-
-        private ClaimsIdentity CreateClaimIdentity(User user)
+        private ClaimsIdentity CreateClaimIdentity(UserDto user)
         {
             List<Claim> claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, Email),
-                new Claim(ClaimTypes.Name, Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Email),
+                new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 

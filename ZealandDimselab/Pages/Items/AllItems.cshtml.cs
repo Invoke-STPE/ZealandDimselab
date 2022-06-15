@@ -4,27 +4,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services.Interfaces;
+using ZealandDimselab.Lib.Models;
 using ZealandDimselab.Helpers;
+using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.DTO;
 
 namespace ZealandDimselab.Pages.Items
 {
     public class AllItemsModel : PageModel
     {
-        public List<Item> Items { get; set; }
-        private readonly IItemService _itemService;
-        public int CategoryId { get; set; }
-        public List<Item> Cart { get; set; }
+        private readonly IHttpClientItem _httpClient;
 
-        public AllItemsModel(IItemService itemService)
+        public List<ItemDto> Items { get; set; }
+        public int CategoryId { get; set; }
+        public List<ItemDto> Cart { get; set; }
+
+        public AllItemsModel(IHttpClientItem httpClient)
         {
-            _itemService = itemService;
+            _httpClient = httpClient;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Items = await _itemService.GetAllItemsWithCategoriesAsync();
+            Items = await _httpClient.GetAllItemsWithCategoriesAsync();
             CategoryId = 0;
             return Page();
         }
@@ -33,19 +37,19 @@ namespace ZealandDimselab.Pages.Items
         {
             if (category == 0) return OnGetAsync().Result;
             CategoryId = category;
-            Items = await _itemService.GetItemsWithCategoryIdAsync(category);
+            Items = await _httpClient.GetItemsWithCategoryIdAsync(category);
             return Page();
         }
 
         public async Task<IActionResult> OnGetAddToCart(int id)
         {
-            Cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            Cart = SessionHelper.GetObjectFromJson<List<ItemDto>>(HttpContext.Session, "cart");
 
             if (Cart == null) // Check if Cart exists in user cache.
             {
-                Cart = new List<Item>
+                Cart = new List<ItemDto>
                 {
-                    await _itemService.GetItemByIdAsync(id)
+                    await _httpClient.GetItemByIdAsync(id)
                 };
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", Cart);
             }
@@ -54,7 +58,7 @@ namespace ZealandDimselab.Pages.Items
                 int index = SessionHelper.Exists(Cart, id);
                 if (index == -1) // if the item does not exists in the cart, append it.
                 {
-                    Cart.Add(await _itemService.GetItemByIdAsync(id));
+                    Cart.Add(await _httpClient.GetItemByIdAsync(id));
                 }
                 //else 
                 //{

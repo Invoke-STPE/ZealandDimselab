@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Helpers;
-
+using ZealandDimselab.Helpers.HttpClients;
 
 namespace ZealandDimselab
 {
@@ -32,6 +32,10 @@ namespace ZealandDimselab
             services.AddRazorPages();
             services.AddSession();
             services.AddSingleton<HttpClient>();
+            services.AddTransient<IHttpClientItem, HttpClientItem>();
+            services.AddTransient<IHttpClientCategory, HttpClientCategory>();
+            services.AddTransient<IHttpClientUser, HttpClientUser>();
+            services.AddTransient<IHttpClientBooking, HttpClientBooking>();
 
             // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

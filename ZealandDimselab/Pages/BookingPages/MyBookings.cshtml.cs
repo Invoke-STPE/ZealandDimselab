@@ -7,34 +7,33 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using ZealandDimselab.Helpers.HttpClients;
 using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.Pages.BookingPages
 {
     public class MyBookingsModel : PageModel
     {
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        
+        private readonly IHttpClientBooking _httpClientBooking;
 
         public List<Booking> Bookings { get; set; }
 
-        public MyBookingsModel(HttpClient httpClient, IConfiguration configuration )
+        public MyBookingsModel(IHttpClientBooking httpClientBooking)
         {
             Bookings = new List<Booking>();
-            _httpClient = httpClient;
-            _configuration = configuration;
+        
+            _httpClientBooking = httpClientBooking;
         }
         public async Task<IActionResult> OnGetAsync()
         {
             if (HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("teacher"))
             {
-                Bookings = (await GetAllBookingsAsync()).ToList();
+                Bookings = (await _httpClientBooking.GetAllBookingsAsync()).ToList();
             } else if (HttpContext.User.IsInRole("student"))
             {
-                Bookings = (await GetBookingsByEmailAsync(HttpContext.User.Identity.Name)).ToList();
+                Bookings = (await _httpClientBooking.GetBookingsByEmailAsync(HttpContext.User.Identity.Name)).ToList();
             }
-         
-
             return Page();
 
         }
@@ -44,36 +43,14 @@ namespace ZealandDimselab.Pages.BookingPages
         {
             if (HttpContext.User.IsInRole("admin"))
             {
-                await ReturnedBooking(id); // Need to implement this
+                await _httpClientBooking.ReturnedBooking(id); // Need to implement this
             }
             return RedirectToPage("MyBookings");
         }
 
 
-        private async Task<List<Booking>> GetAllBookingsAsync()
-        {
-            string url = _configuration.GetValue<string>("BookingAPI:BaseUrlBooking");
+       
 
-            var response = await _httpClient.GetAsync(url);
-
-            string jsonResult = await response.Content.ReadAsStringAsync();
-
-            return JsonSerializer.Deserialize<List<Booking>>(jsonResult);
-        }
-
-        private async Task<List<Booking>> GetBookingsByEmailAsync(string email)
-        {
-            var builder = new UriBuilder(_configuration.GetValue<string>("BookingAPI:GetBookingsByEmail"));
-            builder.Query = $"email={email}";
-
-            var response = await _httpClient.GetAsync(builder.ToString());
-
-            string jsonString = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Booking>>(jsonString);
-        }
-
-        private async Task ReturnedBooking(int id)
-        {
-        }
+   
     }
 }
