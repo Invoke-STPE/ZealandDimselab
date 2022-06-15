@@ -34,6 +34,13 @@ namespace ZealandDimselab.API.Controllers
         {
             return await _bookingRepository.GetObjectByKeyAsync(id);
         }
+        // GET: api/Booking/GetBookingsByEmail
+        // Returns one booking.
+        [HttpGet("GetBookingsByEmail")]
+        public async Task<List<Booking>> GetBookingsByEmail(string email)
+        {
+            return await _bookingRepository.GetBookingsByEmailAsync(email);
+        }
         // POST: api/Booking
         // Adds a booking.
         [HttpPost]

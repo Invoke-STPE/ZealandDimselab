@@ -40,5 +40,12 @@ namespace ZealandDimselab.API.DataAccess
 
             return booking;
         }
+
+        public async Task<List<Booking>> GetBookingsByEmailAsync(string email)
+        {
+            return await _context.Bookings
+                    .Include(b => b.User.Email == email)
+                    .ToListAsync();
+        }
     }
 }

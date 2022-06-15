@@ -9,5 +9,6 @@ namespace ZealandDimselab.API.DataAccess.Interfaces
 {
     public interface IBookingRepository : IGenericRepository<Booking>
     {
+        Task<List<Booking>> GetBookingsByEmailAsync(string email);
     }
 }
