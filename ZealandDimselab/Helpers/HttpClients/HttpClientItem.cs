@@ -24,10 +24,11 @@ namespace ZealandDimselab.Helpers.HttpClients
 
         public async Task AddItemAsync(ItemDto item)
         {
+            string url = _configuration.GetValue<string>(_urlBase);
             string jsonString = JsonSerializer.Serialize(item);
-            StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, _urlBase);
+            StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            await _httpClient.PostAsync(jsonString, stringContent);
+            await _httpClient.PostAsync(url, stringContent);
 
         }
 
@@ -95,16 +96,18 @@ namespace ZealandDimselab.Helpers.HttpClients
             item.Stock = item.Stock - bookingQuantity;
             string itemInJson = JsonSerializer.Serialize(item);
             StringContent stringContent = new StringContent(itemInJson, Encoding.UTF8, "application/json");
-            string url = _configuration.GetValue<string>("ItemAPI:BaseUrlItem");
+            string url = _configuration.GetValue<string>(_urlBase);
             await _httpClient.PutAsync(url, stringContent);
         }
 
         public async Task UpdateItemAsync(ItemDto item)
         {
-            string jsonString = JsonSerializer.Serialize(item);
-            StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, _urlBase);
+            string urlBase = _configuration.GetValue<string>(_urlBase);
 
-            await _httpClient.PutAsync(jsonString, stringContent);
+            string jsonString = JsonSerializer.Serialize(item);
+            StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            await _httpClient.PutAsync(urlBase, stringContent);
         }
     }
 }

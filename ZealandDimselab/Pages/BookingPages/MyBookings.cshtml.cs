@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using ZealandDimselab.DTO;
 using ZealandDimselab.Helpers.HttpClients;
 using ZealandDimselab.Lib.Models;
 
@@ -17,11 +18,11 @@ namespace ZealandDimselab.Pages.BookingPages
         
         private readonly IHttpClientBooking _httpClientBooking;
 
-        public List<Booking> Bookings { get; set; }
+        public List<BookingDto> Bookings { get; set; }
 
         public MyBookingsModel(IHttpClientBooking httpClientBooking)
         {
-            Bookings = new List<Booking>();
+            Bookings = new List<BookingDto>();
         
             _httpClientBooking = httpClientBooking;
         }

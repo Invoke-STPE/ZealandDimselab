@@ -36,6 +36,7 @@ namespace ZealandDimselab
             services.AddTransient<IHttpClientCategory, HttpClientCategory>();
             services.AddTransient<IHttpClientUser, HttpClientUser>();
             services.AddTransient<IHttpClientBooking, HttpClientBooking>();
+           
 
             // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ZealandDimselab.DTO;
 using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.Helpers.HttpClients
@@ -22,7 +23,7 @@ namespace ZealandDimselab.Helpers.HttpClients
             _configuration = configuration;
         }
 
-        public async Task AddBookingAsync(Booking booking)
+        public async Task AddBookingAsync(BookingDto booking)
         {
             string bookingInJson = JsonSerializer.Serialize(booking);
             StringContent stringContent = new StringContent(bookingInJson, Encoding.UTF8, "application/json");
@@ -30,17 +31,17 @@ namespace ZealandDimselab.Helpers.HttpClients
             await _httpClient.PostAsync(url, stringContent);
         }
 
-        public async Task<List<BookedItem>> GetAllBookedItemsAsync()
+        public async Task<List<BookedItemDto>> GetAllBookedItemsAsync()
         {
             var url = _configuration.GetValue<string>(_baseUrl);
             var response = await _httpClient.GetAsync(url);
 
             string jsonResult = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<BookedItem>>(jsonResult);
+            return JsonSerializer.Deserialize<List<BookedItemDto>>(jsonResult);
         }
 
-        public async Task<List<Booking>> GetAllBookingsAsync()
+        public async Task<List<BookingDto>> GetAllBookingsAsync()
         {
             string url = _configuration.GetValue<string>(_baseUrl);
 
@@ -48,18 +49,18 @@ namespace ZealandDimselab.Helpers.HttpClients
 
             string jsonResult = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<Booking>>(jsonResult);
+            return JsonSerializer.Deserialize<List<BookingDto>>(jsonResult);
         }
 
-        public async Task<List<Booking>> GetBookingsByEmailAsync(string email)
+        public async Task<List<BookingDto>> GetBookingsByEmailAsync(string email)
         {
-            var builder = new UriBuilder(_configuration.GetValue<string>(_baseUrl));
-            builder.Query = $"email={email}";
-
-            var response = await _httpClient.GetAsync(builder.ToString());
-
-            string jsonString = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Booking>>(jsonString);
+            string url = _configuration.GetValue<string>("BookingAPI:GetBookingsByEmail");
+            var builder = new UriBuilder(url)
+            {
+                Query = $"email={email}"
+            };
+            var response = await _httpClient.GetStreamAsync(builder.ToString());
+            return await JsonSerializer.DeserializeAsync<List<BookingDto>>(response);
         }
 
         //TODO: need to implement this

@@ -33,7 +33,7 @@ namespace ZealandDimselab.Pages.BookingPages
         //private readonly IBookingService bookingService;
 
         [BindProperty]
-        public Booking Booking { get; set; }
+        public BookingDto Booking { get; set; }
         [BindProperty]
         public string Email { get; set; }
 
@@ -127,19 +127,19 @@ namespace ZealandDimselab.Pages.BookingPages
             if (user != null)
             {
 
-                var _booking = new Booking
+                var _booking = new BookingDto
                 {
                     Details = details,
                     BookingDate = DateTime.Now.Date,
                     ReturnDate = Booking.ReturnDate,
                     UserId = user.Id,
-                    BookingItems = new List<BookingItem>(),
+                    BookingItems = new List<BookingItemDto>(),
                     Returned = false
                 };
 
                 foreach (var item in Cart)
                 {
-                    _booking.BookingItems.Add(new BookingItem { ItemId = item.Id, Quantity = item.BookingQuantity });
+                    _booking.BookingItems.Add(new BookingItemDto { ItemId = item.Id, Quantity = item.BookingQuantity });
                     await _httpClientItem.ItemStockUpdateAsync((await _httpClientItem.GetItemByIdAsync(item.Id)), item.BookingQuantity);
                 }
                 await _httpClientBooking.AddBookingAsync(_booking);
@@ -199,7 +199,7 @@ namespace ZealandDimselab.Pages.BookingPages
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
         }
 
-        private Booking CreateBooking(string email, User user)
+        private BookingDto CreateBooking(string email, User user)
         {
             Cart = GetCart();
             Booking.BookingDate = DateTime.Now.Date;
@@ -207,7 +207,7 @@ namespace ZealandDimselab.Pages.BookingPages
 
             foreach (var item in Cart)
             {
-                Booking.BookingItems.Add(new BookingItem { ItemId = item.Id });
+                Booking.BookingItems.Add(new BookingItemDto { ItemId = item.Id });
             }
             return Booking;
         }

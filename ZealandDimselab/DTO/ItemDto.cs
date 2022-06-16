@@ -44,5 +44,10 @@ namespace ZealandDimselab.DTO
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
