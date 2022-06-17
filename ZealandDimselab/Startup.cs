@@ -9,13 +9,11 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZealandDimselab.Helpers;
-using ZealandDimselab.Interfaces;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services;
-using ZealandDimselab.Services.Interfaces;
+using ZealandDimselab.Helpers.HttpClients;
 
 namespace ZealandDimselab
 {
@@ -32,19 +30,13 @@ namespace ZealandDimselab
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-
-
-            services.AddDbContext<DimselabDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
-            });
-
-            services.AddDIInfo(); // This is an extenstion of the ServiceCollection class, it grathers all my dependensies.
+            services.AddSession();
+            services.AddSingleton<HttpClient>();
+            services.AddTransient<IHttpClientItem, HttpClientItem>();
+            services.AddTransient<IHttpClientCategory, HttpClientCategory>();
+            services.AddTransient<IHttpClientUser, HttpClientUser>();
+            services.AddTransient<IHttpClientBooking, HttpClientBooking>();
            
-
-            // SESSION START //
-            services.AddSession(); // Adds the ability to save into the users cache
-            // SESSION END
 
             // AUTHENTICATION START //
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -59,14 +51,6 @@ namespace ZealandDimselab
                     {
                         options.Conventions.AuthorizeFolder("/Account");
                         options.Conventions.AllowAnonymousToPage("/Account/Login");
-
-                        //options.Conventions.AuthorizeFolder("/Items");
-                        //options.Conventions.AllowAnonymousToPage("/Items/AllItems");
-                        //options.Conventions.AllowAnonymousToPage("/Items/ItemDetails");
-                        //options.Conventions.AllowAnonymousToPage("/Items/Cards/AllItems");
-                        //options.Conventions.AllowAnonymousToPage("/Items/Cards/ItemDetails");
-
-
                         options.Conventions.AuthorizeFolder("/BookingPages");
                         options.Conventions.AllowAnonymousToPage("/BookingPages/BookingCart");
                         options.Conventions.AllowAnonymousToPage("/BookingPages/MyBookings");
@@ -74,7 +58,6 @@ namespace ZealandDimselab
 
                     }
                 );
-            // AUTHENTICATION END //
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,9 +80,7 @@ namespace ZealandDimselab
             app.UseRouting();
             app.UseAuthorization();
 
-            // SESSION START //
-            app.UseSession(); // Starter automatisk en session med brugeren.
-            // SESSION END // 
+            app.UseSession(); 
 
             app.UseEndpoints(endpoints =>
             {

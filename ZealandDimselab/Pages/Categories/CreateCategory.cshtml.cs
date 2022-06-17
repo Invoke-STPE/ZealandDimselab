@@ -1,29 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
+using ZealandDimselab.DTO;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.Pages.Categories
 {
     public class CreateCategoryModel : PageModel
     {
-        private ICategoryService categoryService;
-        [BindProperty] 
-        public Category Category { get; set; }
-        public List<Category> Categories { get; set; }
+        private readonly IHttpClientCategory _httpClientCategory;
 
-        public CreateCategoryModel(ICategoryService categoryService)
+        [BindProperty] 
+        public CategoryDto Category { get; set; }
+        public List<CategoryDto> Categories { get; set; }
+
+        public CreateCategoryModel(IHttpClientCategory httpClientCategory)
         {
-            this.categoryService = categoryService;
+        
+            _httpClientCategory = httpClientCategory;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Categories = await categoryService.GetAllCategoriesAsync();
+            Categories = await _httpClientCategory.GetAllCategoriesAsync();
             return Page();
         }
 
@@ -31,11 +38,11 @@ namespace ZealandDimselab.Pages.Categories
         {
             if (!ModelState.IsValid)
             {
-                Categories = await categoryService.GetAllCategoriesAsync();
+                Categories = await _httpClientCategory.GetAllCategoriesAsync();
                 return Page();
             }
 
-            await categoryService.AddCategoryAsync(Category);
+            await _httpClientCategory.AddCategoryAsync(Category);
             return RedirectToPage("/Index");
         }
     }

@@ -5,33 +5,44 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZealandDimselab.Helpers;
-using ZealandDimselab.Models;
-using ZealandDimselab.MockData;
-using ZealandDimselab.Services.Interfaces;
+
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ZealandDimselab.Lib.Models;
+using ZealandDimselab.Lib.JuntionTables;
+using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using System.Text.Json;
+using System.Text;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.DTO;
 
 namespace ZealandDimselab.Pages.BookingPages
 {
     public class BookingCartModel : PageModel
     {
-        public List<Item> Cart { get; set; }
+        private readonly IHttpClientItem _httpClientItem;
+        private readonly IHttpClientUser _httpClientUser;
+        private readonly IHttpClientBooking _httpClientBooking;
+
+        public List<ItemDto> Cart { get; set; }
         public double Total { get; set; }
-        private readonly IUserService userService;
-        private readonly IItemService itemService;
-        private readonly IBookingService bookingService;
+        //private readonly IUserService userService;
+        //private readonly IItemService itemService;
+        //private readonly IBookingService bookingService;
 
         [BindProperty]
-        public Booking Booking { get; set; }
+        public BookingDto Booking { get; set; }
         [BindProperty]
         public string Email { get; set; }
 
-        public BookingCartModel(IUserService userService, IBookingService bookingService, IItemService itemService)
+        public BookingCartModel(IHttpClientItem httpClientItem, IHttpClientUser httpClientUser, IHttpClientBooking httpClientBooking)
         {
-            this.userService = userService;
-            this.itemService = itemService;
-            this.bookingService = bookingService;
+
+            _httpClientItem = httpClientItem;
+            _httpClientUser = httpClientUser;
+            _httpClientBooking = httpClientBooking;
         }
 
         public void OnGet()
@@ -39,7 +50,7 @@ namespace ZealandDimselab.Pages.BookingPages
             Cart = GetCart();
             if (Cart == null)
             {
-                Cart = new List<Item>();
+                Cart = new List<ItemDto>();
             }
         }
 
@@ -54,9 +65,9 @@ namespace ZealandDimselab.Pages.BookingPages
 
             if (Cart == null) // Check if Cart exists in user cache.
             {
-                Cart = new List<Item>
+                Cart = new List<ItemDto>
                 {
-                    await itemService.GetItemByIdAsync(id)
+                    await _httpClientItem.GetItemByIdAsync(id)
                 };
                 SetCart(Cart);
             }
@@ -65,7 +76,7 @@ namespace ZealandDimselab.Pages.BookingPages
                 int index = Exists(Cart, id);
                 if (index == -1) // if the item does not exists in the cart, append it.
                 {
-                    Cart.Add( await itemService.GetItemByIdAsync(id) );
+                    Cart.Add(await _httpClientItem.GetItemByIdAsync(id));
                 }
                 //else 
                 //{
@@ -102,7 +113,7 @@ namespace ZealandDimselab.Pages.BookingPages
 
             for (var i = 0; i < Cart.Count; i++)
             {
-                if ((await itemService.GetItemByIdAsync(Cart[i].Id)).Stock < quantities[i])
+                if ((await _httpClientItem.GetItemByIdAsync(Cart[i].Id)).Stock < quantities[i])
                 {
                     ViewData["error"] = "Quantity cannot exceed item stock.";
                     Cart = GetCart();
@@ -112,57 +123,57 @@ namespace ZealandDimselab.Pages.BookingPages
                 SetCart(Cart);
             }
 
-            User user = await userService.GetUserByEmail(HttpContext.User.Identity.Name);
+            UserDto user = await _httpClientUser.GetUserByEmailAsync(HttpContext.User.Identity.Name);
             if (user != null)
             {
 
-                var _booking = new Booking
+                var _booking = new BookingDto
                 {
                     Details = details,
                     BookingDate = DateTime.Now.Date,
                     ReturnDate = Booking.ReturnDate,
                     UserId = user.Id,
-                    BookingItems = new List<BookingItem>(), 
+                    BookingItems = new List<BookingItemDto>(),
                     Returned = false
                 };
 
                 foreach (var item in Cart)
                 {
-                    _booking.BookingItems.Add(new BookingItem { ItemId = item.Id, Quantity = item.BookingQuantity });
-                    await itemService.ItemStockUpdateAsync((await itemService.GetItemByIdAsync(item.Id)), item.BookingQuantity);
+                    _booking.BookingItems.Add(new BookingItemDto { ItemId = item.Id, Quantity = item.BookingQuantity });
+                    await _httpClientItem.ItemStockUpdateAsync((await _httpClientItem.GetItemByIdAsync(item.Id)), item.BookingQuantity);
                 }
-                await bookingService.AddBookingAsync(_booking);
+                await _httpClientBooking.AddBookingAsync(_booking);
             }
             return RedirectToPage("MyBookings");
         }
 
         public IActionResult OnPostClearCart()
         {
-            SetCart(new List<Item>());
+            SetCart(new List<ItemDto>());
             return RedirectToPage("BookingCart");
         }
-        public async Task<IActionResult> OnPostEmailSubmitted(string email, string url)
-        {
-            ClaimsIdentity claimsIdentity;
-            if (await userService.EmailInUseAsync(email))
-            {
-                claimsIdentity = userService.CreateClaimIdentity(email);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            } else
-            {
-                await userService.AddUserAsync(new User() { Email = email });
-                claimsIdentity = userService.CreateClaimIdentity(email);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            }
-            return RedirectToPage(url);
-        }
+        //public async Task<IActionResult> OnPostEmailSubmitted(string email, string url)
+        //{
+        //    ClaimsIdentity claimsIdentity;
+        //    if (await userService.EmailInUseAsync(email))
+        //    {
+        //        claimsIdentity = userService.CreateClaimIdentity(email);
+        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+        //    } else
+        //    {
+        //        await userService.AddUserAsync(new User() { Email = email });
+        //        claimsIdentity = userService.CreateClaimIdentity(email);
+        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+        //    }
+        //    return RedirectToPage(url);
+        //}
         /// <summary>
         /// Check if an item in a cart exists.
         /// </summary>
         /// <param name="cart"></param>
         /// <param name="id"></param>
         /// <returns>Returns index of item, if none is found it returns -1</returns>
-        private int Exists(List<Item> cart, int id)
+        private int Exists(List<ItemDto> cart, int id)
         {
             for (int i = 0; i < Cart.Count; i++)
             {
@@ -178,25 +189,25 @@ namespace ZealandDimselab.Pages.BookingPages
         /// Gets the current session's Cart.
         /// </summary>
         /// <returns></returns>
-        private List<Item> GetCart()
+        private List<ItemDto> GetCart()
         {
-            return SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            return SessionHelper.GetObjectFromJson<List<ItemDto>>(HttpContext.Session, "cart");
         }
 
-        private void SetCart(List<Item> cart)
+        private void SetCart(List<ItemDto> cart)
         {
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
         }
 
-        private Booking CreateBooking(string email, User user)
+        private BookingDto CreateBooking(string email, User user)
         {
             Cart = GetCart();
             Booking.BookingDate = DateTime.Now.Date;
             Booking.UserId = user.Id;
-            
+
             foreach (var item in Cart)
             {
-                Booking.BookingItems.Add(new BookingItem { ItemId = item.Id });
+                Booking.BookingItems.Add(new BookingItemDto { ItemId = item.Id });
             }
             return Booking;
         }

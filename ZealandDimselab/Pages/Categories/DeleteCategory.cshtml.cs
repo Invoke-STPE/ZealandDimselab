@@ -1,36 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
+using ZealandDimselab.DTO;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.Pages.Categories
 {
     public class DeleteCategoryModel : PageModel
     {
-        private ICategoryService categoryService;
-        public Category Category { get; set; }
-        public List<Category> Categories { get; set; }
 
-        public DeleteCategoryModel(ICategoryService categoryService)
+        private readonly IHttpClientCategory _httpClientCategory;
+
+        public CategoryDto Category { get; set; }
+        public List<CategoryDto> Categories { get; set; }
+
+        public DeleteCategoryModel(IHttpClientCategory httpClientCategory)
         {
-            this.categoryService = categoryService;
+            _httpClientCategory = httpClientCategory;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Category = await categoryService.GetCategoryByIdAsync(id);
-            Categories = await categoryService.GetAllCategoriesAsync();
+            Category = await _httpClientCategory.GetCategoryByIdAsync(id);
+            Categories = await _httpClientCategory.GetAllCategoriesAsync();
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            await categoryService.DeleteCategoryAsync(id);
+            await _httpClientCategory.DeleteCategoryAsync(id);
             return RedirectToPage("/Index");
         }
+
+
     }
 }

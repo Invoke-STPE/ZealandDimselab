@@ -8,34 +8,36 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services.Interfaces;
+using ZealandDimselab.Lib.Models;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.DTO;
 
 namespace ZealandDimselab.Pages.Items
 {
     public class CreateItemModel : PageModel
     {
-        private readonly IItemService itemService;
-        private readonly ICategoryService categoryService;
-        [BindProperty] public Item Item { get; set; }
-        public List<Item> Items { get; set; }
-        public List<Category> Categories { get; set; }
+
+        [BindProperty] public ItemDto Item { get; set; }
+        public List<ItemDto> Items { get; set; }
+        public List<CategoryDto> Categories { get; set; }
         [BindProperty] public int CategoryId { get; set; }
         [BindProperty] public IFormFile FileUpload { get; set; }
+
+        private readonly IHttpClientItem _httpClientItem;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpClientCategory _httpClientCategory;
 
-        public CreateItemModel(IItemService itemService, ICategoryService categoryService, IWebHostEnvironment whe)
+        public CreateItemModel(IHttpClientItem httpClientItem, IWebHostEnvironment whe, IHttpClientCategory httpClientCategory)
         {
-            this.itemService = itemService;
-            this.categoryService = categoryService;
+            _httpClientItem = httpClientItem;
             _webHostEnvironment = whe;
-
+            _httpClientCategory = httpClientCategory;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Items = await itemService.GetAllItemsWithCategoriesAsync();
-            Categories = await categoryService.GetAllCategoriesAsync();
+            Items = await _httpClientItem.GetAllItemsWithCategoriesAsync();
+            Categories = await _httpClientCategory.GetAllCategoriesAsync();
             CategoryId = 0;
 
             return Page();
@@ -45,8 +47,8 @@ namespace ZealandDimselab.Pages.Items
         {
             if (category == 0) return RedirectToPage("CreateItem");
 
-            Items = await itemService.GetItemsWithCategoryIdAsync(category);
-            Categories = await categoryService.GetAllCategoriesAsync();
+            Items = await _httpClientItem.GetItemsWithCategoryIdAsync(category);
+            Categories = await _httpClientCategory.GetAllCategoriesAsync();
             CategoryId = category;
 
             return Page();
@@ -61,8 +63,8 @@ namespace ZealandDimselab.Pages.Items
                 return await OnGetFilterByCategoryAsync(CategoryId);
             }
 
-            await itemService.AddItemAsync(Item);
-            Item item = (await itemService.GetAllItems()).Last();
+            await _httpClientItem.AddItemAsync(Item);
+            ItemDto item = (await _httpClientItem.GetAllItemsAsync()).Last();
 
             if (FileUpload != null)
             {
@@ -76,7 +78,7 @@ namespace ZealandDimselab.Pages.Items
                 item.ImageName = fileName;
             }
 
-            await itemService.UpdateItemAsync(item.Id, item);
+            await _httpClientItem.UpdateItemAsync(item);
 
             if (CategoryId == 0) return RedirectToPage("AllItems");
             if (Item.CategoryId != CategoryId)

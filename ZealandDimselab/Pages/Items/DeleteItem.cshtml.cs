@@ -6,29 +6,34 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ZealandDimselab.Models;
-using ZealandDimselab.Services.Interfaces;
+using ZealandDimselab.DTO;
+using ZealandDimselab.Helpers.HttpClients;
+using ZealandDimselab.Lib.Models;
+
 
 namespace ZealandDimselab.Pages.Items
 {
     public class DeleteItemModel : PageModel
     {
-        private readonly IItemService itemService;
-        public Item Item { get; set; }
-        public List<Item> Items { get; set; }
+        
+        public ItemDto Item { get; set; }
+        public List<ItemDto> Items { get; set; }
         [BindProperty] public int CategoryId { get; set; }
+
+        private readonly IHttpClientItem _httpClientItem;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public DeleteItemModel(IItemService itemService, IWebHostEnvironment webHostEnvironment)
+        public DeleteItemModel(IHttpClientItem httpClientItem, IWebHostEnvironment webHostEnvironment)
         {
-            this.itemService = itemService;
+            
+            _httpClientItem = httpClientItem;
             _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Item = await itemService.GetItemWithCategoriesAsync(id);
-            Items = await itemService.GetAllItemsWithCategoriesAsync();
+            Item = await _httpClientItem.GetItemWithCategoriesAsync(id);
+            Items = await _httpClientItem.GetAllItemsWithCategoriesAsync();
             CategoryId = 0;
             return Page();
         }
@@ -37,8 +42,8 @@ namespace ZealandDimselab.Pages.Items
         {
             if (category == 0) return RedirectToPage("DeleteItem", new { id });
 
-            Item = await itemService.GetItemWithCategoriesAsync(id);
-            Items = await itemService.GetItemsWithCategoryIdAsync(category);
+            Item = await _httpClientItem.GetItemWithCategoriesAsync(id);
+            Items = await _httpClientItem.GetItemsWithCategoryIdAsync(category);
             CategoryId = category;
 
             return Page();
@@ -47,7 +52,7 @@ namespace ZealandDimselab.Pages.Items
         public async Task<IActionResult> OnPostAsync(int id)
         {
 
-            var image = (await itemService.GetItemByIdAsync(id)).ImageName;
+            var image = (await _httpClientItem.GetItemByIdAsync(id)).ImageName;
             if (!String.IsNullOrEmpty(image))
             {
                 var file = Path.Combine(_webHostEnvironment.WebRootPath, "images/ItemImages", image);
@@ -61,7 +66,7 @@ namespace ZealandDimselab.Pages.Items
             }
 
 
-            await itemService.DeleteItemAsync(id);
+            await _httpClientItem.DeleteItemAsync(id);
             return RedirectToPage("AllItems", "FilterByCategory", new { category = CategoryId });
         }
     

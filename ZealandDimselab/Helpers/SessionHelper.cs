@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ZealandDimselab.Models;
+using ZealandDimselab.DTO;
+using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.Helpers
 {
@@ -37,7 +38,7 @@ namespace ZealandDimselab.Helpers
             return value == null ? default(T) : JsonSerializer.Deserialize<T>(value);
         }
 
-        public static int Exists(List<Item> cart, int id)
+        public static int Exists(List<ItemDto> cart, int id)
         {
             for (int i = 0; i < cart.Count; i++)
             {
