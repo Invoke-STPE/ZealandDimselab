@@ -58,11 +58,6 @@ namespace ZealandDimselab.API
                 c.SwaggerEndpoint("./swagger/v1/swagger.json", "Dimselab API");
                 c.RoutePrefix = string.Empty;
             });
-            //app.UseSwaggerUI(option =>
-            //{
-            //    option.SwaggerEndpoint("./swagger/v1/swagger.json", "Dimselab API");
-            //    option.RoutePrefix = string.Empty;
-            //});
             app.UseHttpsRedirection();
             
             app.UseRouting();
