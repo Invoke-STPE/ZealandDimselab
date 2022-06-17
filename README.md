@@ -13,6 +13,9 @@ I implemented interfaces on my repository and service classes, so that razor pag
 ### Web API
 Following TimCo Retail manager course, I decided that I wanted to implement the things I have learned there in this project aswell, first step was a major overhaul of how the project worked, added an API and class library project and moved code around.
 
+### Swagger Documentation
+Added swagger to Zealand Dimselab for better API documentation.
+
 [Steven Pedersen]: https://github.com/Invoke-STPE
 [Christoper Jepsen]: https://github.com/ChristopherLoeve
 [Mikkel Meiling]: https://github.com/mikkelm909
