@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZealandDimselab.API\ZealandDimselab.API.csproj" />
     <ProjectReference Include="..\ZealandDimselab\ZealandDimselab.csproj" />
   </ItemGroup>
 

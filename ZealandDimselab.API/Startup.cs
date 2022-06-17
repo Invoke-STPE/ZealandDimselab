@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ZealandDimselab.API.Context;
 using ZealandDimselab.API.Extensions;
-
+using Microsoft.OpenApi.Models;
 
 namespace ZealandDimselab.API
 {
@@ -22,9 +22,21 @@ namespace ZealandDimselab.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "Dimselab API",
+                    Version = "v1",
+                    Description = "An API for Zealand Dimselab",
+                });
+            });
+            services.AddSwaggerGen();
+
             services.AddDbContext<DimselabDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
@@ -39,11 +51,21 @@ namespace ZealandDimselab.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("./swagger/v1/swagger.json", "Dimselab API");
+                c.RoutePrefix = string.Empty;
+            });
+            //app.UseSwaggerUI(option =>
+            //{
+            //    option.SwaggerEndpoint("./swagger/v1/swagger.json", "Dimselab API");
+            //    option.RoutePrefix = string.Empty;
+            //});
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
