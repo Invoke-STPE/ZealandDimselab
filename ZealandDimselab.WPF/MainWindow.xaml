@@ -60,7 +60,7 @@
                  x:Name="catagoryList">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="Droner" />
+                    <TextBlock Text="{Binding CategoryName}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

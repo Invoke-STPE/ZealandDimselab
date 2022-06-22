@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using ZealandDimselab.WPF.Services;
 
 namespace ZealandDimselab.WPF
 {
@@ -14,7 +16,7 @@ namespace ZealandDimselab.WPF
     /// </summary>
     public partial class App : Application
     {
-        private IServiceProvider _serviceProvider;
+        private ServiceProvider _serviceProvider;
 
         public App()
         {
@@ -25,12 +27,16 @@ namespace ZealandDimselab.WPF
 
         private void ConfigureServices(ServiceCollection services)
         {
-            
+            services.AddSingleton<HttpClient>();
+            services.AddTransient<HttpCategoryService>();
+            services.AddSingleton<MainWindow>();
+
         }
 
         private void OnStartup(object sender, StartupEventArgs eventArgs)
         {
-
+            var mainWindow = _serviceProvider.GetService<MainWindow>();
+            mainWindow.Show();
         }
     }
 }
