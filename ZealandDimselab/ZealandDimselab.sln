@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselab", "ZealandD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselabTest", "..\ZealandDimselabTest\ZealandDimselabTest.csproj", "{B4CC37EE-ACD7-4E42-937F-1D8E0133EBAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZealandDimselab.API", "..\ZealandDimselab.API\ZealandDimselab.API.csproj", "{5403332D-3665-4394-97C2-DA49AB8B046E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselab.API", "..\ZealandDimselab.API\ZealandDimselab.API.csproj", "{5403332D-3665-4394-97C2-DA49AB8B046E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZealandDimselab.Lib", "..\ZealandDimselab.Lib\ZealandDimselab.Lib.csproj", "{99161439-147F-401B-BDE0-D004A4FDD4A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselab.Lib", "..\ZealandDimselab.Lib\ZealandDimselab.Lib.csproj", "{99161439-147F-401B-BDE0-D004A4FDD4A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZealandDimselab.WPF", "..\ZealandDimselab.WPF\ZealandDimselab.WPF.csproj", "{6A8BBE47-BC20-4BD7-BBB3-0FED89D173C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{99161439-147F-401B-BDE0-D004A4FDD4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99161439-147F-401B-BDE0-D004A4FDD4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99161439-147F-401B-BDE0-D004A4FDD4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A8BBE47-BC20-4BD7-BBB3-0FED89D173C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A8BBE47-BC20-4BD7-BBB3-0FED89D173C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A8BBE47-BC20-4BD7-BBB3-0FED89D173C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A8BBE47-BC20-4BD7-BBB3-0FED89D173C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
