@@ -29,6 +29,7 @@ namespace ZealandDimselab.WPF
         {
             services.AddSingleton<HttpClient>();
             services.AddTransient<HttpCategoryService>();
+            services.AddTransient<HttpItemService>();
             services.AddSingleton<MainWindow>();
 
         }
