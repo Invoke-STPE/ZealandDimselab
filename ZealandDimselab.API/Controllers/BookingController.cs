@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Zealand.Dimselab.Domain.Models;
 using ZealandDimselab.API.DataAccess.Interfaces;
+using ZealandDimselab.Domain.QCRS.Commands;
+using ZealandDimselab.Domain.QCRS.Queries.BookingQueries;
 using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.API.Controllers
@@ -13,55 +17,54 @@ namespace ZealandDimselab.API.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private readonly IBookingRepository _bookingRepository;
+        private readonly IMediator _mediator;
 
-        public BookingController(IBookingRepository bookingRepository)
+        public BookingController(IMediator mediator)
         {
-            _bookingRepository = bookingRepository;
+            _mediator = mediator;
         }
 
         // GET: api/Booking
         // Returns all bookings.
         [HttpGet]
-        public async Task<IEnumerable<Booking>> Get()
+        public async Task<IEnumerable<BookingModel>> Get()
         {
-            return await _bookingRepository.GetObjectsAsync();
+            return await _mediator.Send(new GetAllBookingsQuery());
         }
         // GET: api/Booking
         // Returns one booking.
         [HttpGet("{id}")]
-        public async Task<Booking> Get(int id)
+        public async Task<BookingModel> Get(int id)
         {
-            return await _bookingRepository.GetObjectByKeyAsync(id);
+            return await _mediator.Send(new GetBookingByIdQuery(id));
         }
         // GET: api/Booking/GetBookingsByEmail
         // Returns one booking.
         [HttpGet("GetBookingsByEmail")]
-        public async Task<List<Booking>> GetBookingsByEmail(string email)
+        public async Task<List<BookingModel>> GetBookingsByEmail(string email)
         {
-            return await _bookingRepository.GetBookingsByEmailAsync(email);
+            return await _mediator.Send(new GetBookingsByEmailQuery(email));
         }
         // POST: api/Booking
         // Adds a booking.
         [HttpPost]
-        public async Task Add([FromBody] Booking booking)
+        public async Task<BookingModel> Add([FromBody] BookingModel booking)
         {
-            await _bookingRepository.AddObjectAsync(booking);
+            return await _mediator.Send(new InsertBookingCommand(booking));
         }
         // DELETE: api/booking
         // Deletes a booking.
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<BookingModel> Delete(int id)
         {
-            Booking booking = await Get(id);
-            await _bookingRepository.DeleteObjectAsync(booking);
+            return await _mediator.Send(new DeleteBookingCommand(id));
         }
         // PUT: api/booking
         // Updates a booking.
         [HttpPut]
-        public async Task Update([FromBody] Booking booking)
+        public async Task<BookingModel> Update([FromBody] BookingModel booking)
         {
-            await _bookingRepository.UpdateObjectAsync(booking);
+            return await _mediator.Send(new UpdateBookingCommand(booking));
         }
     }
 }

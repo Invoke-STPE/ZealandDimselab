@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using ZealandDimselab.API.Context;
 using ZealandDimselab.API.Extensions;
 using Microsoft.OpenApi.Models;
+using MediatR;
+using ZealandDimselab.Domain;
+using ZealandDimselab.Infrastructure.Extensions;
 
 namespace ZealandDimselab.API
 {
@@ -41,7 +44,10 @@ namespace ZealandDimselab.API
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
+            services.OldAddRepositories(); // This should be replaced
             services.AddRepositories();
+
+            services.AddMediatR(typeof(MediatrEntrypoint).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
