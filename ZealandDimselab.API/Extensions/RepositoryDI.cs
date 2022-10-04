@@ -15,14 +15,13 @@ namespace ZealandDimselab.API.Extensions
     /// </summary>
     public static class RepositoryDI
     {
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        public static IServiceCollection OldAddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<IItemRepository, ItemRepository>();
             services.AddTransient<IGenericRepository<User>, GenericRepository<User>>();
             services.AddTransient<IGenericRepository<Category>, GenericRepository<Category>>();
-            services.AddTransient<IBookingRepository, BookingRepository>();
             services.AddTransient<IItemRepository, ItemRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            //services.AddTransient<IBookingRepository, BookingRepository>
             return services;
         }
     }

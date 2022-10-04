@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselab", "ZealandDimselab.csproj", "{08C45B0D-55CB-4A46-AA82-46170595E3BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselabTest", "..\ZealandDimselabTest\ZealandDimselabTest.csproj", "{B4CC37EE-ACD7-4E42-937F-1D8E0133EBAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselab.API", "..\ZealandDimselab.API\ZealandDimselab.API.csproj", "{5403332D-3665-4394-97C2-DA49AB8B046E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZealandDimselab.API", "..\ZealandDimselab.API\ZealandDimselab.API.csproj", "{5403332D-3665-4394-97C2-DA49AB8B046E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZealandDimselab.Lib", "..\ZealandDimselab.Lib\ZealandDimselab.Lib.csproj", "{99161439-147F-401B-BDE0-D004A4FDD4A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZealandDimselab.Lib", "..\ZealandDimselab.Lib\ZealandDimselab.Lib.csproj", "{99161439-147F-401B-BDE0-D004A4FDD4A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZealandDimselab.Domain", "..\Zealand.Dimselab.Domain\ZealandDimselab.Domain.csproj", "{408DC99A-1016-4865-8337-3D43A9EF4C7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZealandDimselab.Infrastructure", "..\ZealandDimselab.Infrastructure\ZealandDimselab.Infrastructure.csproj", "{D29DD182-7CAB-4414-8C69-A32725EC300F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +23,6 @@ Global
 		{08C45B0D-55CB-4A46-AA82-46170595E3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08C45B0D-55CB-4A46-AA82-46170595E3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08C45B0D-55CB-4A46-AA82-46170595E3BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4CC37EE-ACD7-4E42-937F-1D8E0133EBAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4CC37EE-ACD7-4E42-937F-1D8E0133EBAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4CC37EE-ACD7-4E42-937F-1D8E0133EBAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4CC37EE-ACD7-4E42-937F-1D8E0133EBAE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5403332D-3665-4394-97C2-DA49AB8B046E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5403332D-3665-4394-97C2-DA49AB8B046E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5403332D-3665-4394-97C2-DA49AB8B046E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +31,14 @@ Global
 		{99161439-147F-401B-BDE0-D004A4FDD4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99161439-147F-401B-BDE0-D004A4FDD4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99161439-147F-401B-BDE0-D004A4FDD4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{408DC99A-1016-4865-8337-3D43A9EF4C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{408DC99A-1016-4865-8337-3D43A9EF4C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{408DC99A-1016-4865-8337-3D43A9EF4C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408DC99A-1016-4865-8337-3D43A9EF4C7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29DD182-7CAB-4414-8C69-A32725EC300F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29DD182-7CAB-4414-8C69-A32725EC300F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29DD182-7CAB-4414-8C69-A32725EC300F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29DD182-7CAB-4414-8C69-A32725EC300F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
