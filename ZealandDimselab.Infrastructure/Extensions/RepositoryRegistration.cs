@@ -12,6 +12,7 @@ namespace ZealandDimselab.Infrastructure.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IBookingRepository, BookingRepository>();
+            services.AddTransient<IItemRepository, ItemRepository>();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Zealand.Dimselab.Domain.Models;
 using ZealandDimselab.API.DataAccess.Interfaces;
-using ZealandDimselab.Domain.QCRS.Commands;
+using ZealandDimselab.Domain.QCRS.Commands.BookingCommands;
 using ZealandDimselab.Domain.QCRS.Queries.BookingQueries;
 using ZealandDimselab.Lib.Models;
 

@@ -19,7 +19,6 @@ namespace ZealandDimselab.API.Extensions
         {
             services.AddTransient<IGenericRepository<User>, GenericRepository<User>>();
             services.AddTransient<IGenericRepository<Category>, GenericRepository<Category>>();
-            services.AddTransient<IItemRepository, ItemRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             //services.AddTransient<IBookingRepository, BookingRepository>
             return services;

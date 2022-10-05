@@ -4,7 +4,7 @@ using Zealand.Dimselab.Domain.Models;
 
 namespace ZealandDimselab.Domain.Interfaces.DataAccess.InMemoryDataBase
 {
-    public interface IItemRepository
+    public interface IItemRepository : IBaseRepository<ItemModel>
     {
         Task<List<ItemModel>> GetAllItemsWithCategoriesAsync();
         Task<List<ItemModel>> GetItemsWithCategoryId(int id);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Zealand.Dimselab.Domain.Models;
 
-namespace ZealandDimselab.Domain.QCRS.Commands
+namespace ZealandDimselab.Domain.QCRS.Commands.BookingCommands
 {
     public class UpdateBookingCommand : IRequest<BookingModel>
     {
