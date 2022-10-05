@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ZealandDimselab.Domain.Interfaces.DataAccess.InMemoryDataBase;
+using ZealandDimselab.Domain.Interfaces.DatabaseAccess;
 using ZealandDimselab.Infrastructure.InMemoryDataBase;
 
 namespace ZealandDimselab.Infrastructure.Extensions
@@ -13,6 +13,8 @@ namespace ZealandDimselab.Infrastructure.Extensions
         {
             services.AddTransient<IBookingRepository, BookingRepository>();
             services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
         }
     }
 }

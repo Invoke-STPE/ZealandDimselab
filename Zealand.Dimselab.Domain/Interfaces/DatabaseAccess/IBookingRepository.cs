@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Zealand.Dimselab.Domain.Models;
 
-namespace ZealandDimselab.Domain.Interfaces.DataAccess.InMemoryDataBase
+namespace ZealandDimselab.Domain.Interfaces.DatabaseAccess
 {
     public interface IBookingRepository : IBaseRepository<BookingModel>
     {

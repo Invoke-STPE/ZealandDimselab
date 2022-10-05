@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Zealand.Dimselab.Domain.Models;
-using ZealandDimselab.API.DataAccess.Interfaces;
 using ZealandDimselab.Domain.QCRS.Commands.ItemCommands;
 using ZealandDimselab.Domain.QCRS.Queries.ItemQueries;
 using ZealandDimselab.Lib.Models;

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ZealandDimselab.API.DataAccess.Interfaces;
+using Zealand.Dimselab.Domain.Models;
+using ZealandDimselab.Domain.QCRS.Commands.CategoryCommands;
+using ZealandDimselab.Domain.QCRS.Queries.CategoryQueries;
 using ZealandDimselab.Lib.Models;
 
 namespace ZealandDimselab.API.Controllers
@@ -13,47 +16,46 @@ namespace ZealandDimselab.API.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly IGenericRepository<Category> _repository;
+        private readonly IMediator _mediator;
 
-        public CategoryController(IGenericRepository<Category> genericRepository)
+        public CategoryController(IMediator mediator)
         {
-            _repository = genericRepository;
+            _mediator = mediator;
         }
         // GET: api/Category
         // Returns all categories.
         [HttpGet]
-        public async Task<IEnumerable<Category>> Get()
+        public async Task<IEnumerable<CategoryModel>> Get()
         {
-            return await _repository.GetObjectsAsync();
+            return await _mediator.Send(new GetAllCategoriesQuery());
         }
         // GET: api/Category
         // Returns one category.
         [HttpGet("{id}")]
-        public async Task<Category> Get(int id)
+        public async Task<CategoryModel> Get(int id)
         {
-            return await _repository.GetObjectByKeyAsync(id);
+            return await _mediator.Send(new GetCategoryByIdQuery(id));
         }
         // POST: api/Category
         // Adds a category.
         [HttpPost]
-        public async Task Add([FromBody] Category category)
+        public async Task<CategoryModel> Add([FromBody] CategoryModel category)
         {
-            await _repository.AddObjectAsync(category);
+            return await _mediator.Send(new InsertCategoryCommand(category));
         }
         // DELETE: api/Category
         // Deletes a category.
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<CategoryModel> Delete(int id)
         {
-            Category category = await Get(id);
-            await _repository.DeleteObjectAsync(category);
+            return await _mediator.Send(new DeleteCategoryCommand(id));
         }
         // PUT: api/Category
         // Updates a category.
         [HttpPut]
-        public async Task Update([FromBody] Category category)
+        public async Task<CategoryModel> Update([FromBody] CategoryModel category)
         {
-            await _repository.UpdateObjectAsync(category);
+            return await _mediator.Send(new UpdateCategoryCommand(category));
         }
     }
 }

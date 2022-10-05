@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zealand.Dimselab.Domain.Models;
-using ZealandDimselab.Domain.Interfaces.DataAccess.InMemoryDataBase;
+using ZealandDimselab.Domain.Interfaces.DatabaseAccess;
 
 namespace ZealandDimselab.Infrastructure.InMemoryDataBase
 {

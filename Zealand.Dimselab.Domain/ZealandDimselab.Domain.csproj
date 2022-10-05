@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="QCRS\Queries\CategoryQueries\" />
-    <Folder Include="QCRS\Queries\UserQueries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MediatR" Version="11.0.0" />
   </ItemGroup>
 

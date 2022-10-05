@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Zealand.Dimselab.Domain.Models;
-using ZealandDimselab.Domain.Interfaces.DataAccess.InMemoryDataBase;
+using ZealandDimselab.Domain.Interfaces.DatabaseAccess;
 using ZealandDimselab.Domain.QCRS.Commands.BookingCommands;
 
 namespace ZealandDimselab.Domain.QCRS.Handlers.BookingHandlers

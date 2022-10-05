@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ZealandDimselab.API.Context;
-using ZealandDimselab.API.Extensions;
 using Microsoft.OpenApi.Models;
 using MediatR;
 using ZealandDimselab.Domain;
@@ -44,7 +43,6 @@ namespace ZealandDimselab.API
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
-            services.OldAddRepositories(); // This should be replaced
             services.AddRepositories();
 
             services.AddMediatR(typeof(MediatrEntrypoint).Assembly);

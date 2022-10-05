@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ZealandDimselab.Domain.Interfaces.DataAccess
+namespace ZealandDimselab.Domain.Interfaces.DatabaseAccess
 {
     public interface IBaseRepository<T> where T : class
     {
