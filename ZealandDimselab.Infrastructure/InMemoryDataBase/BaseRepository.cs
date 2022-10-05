@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using ZealandDimselab.Domain.Interfaces.DataAccess;
+using ZealandDimselab.Domain.Interfaces.DatabaseAccess;
 
 namespace ZealandDimselab.Infrastructure.InMemoryDataBase
 {
@@ -15,32 +15,22 @@ namespace ZealandDimselab.Infrastructure.InMemoryDataBase
 
         public virtual async Task<T> GetObjectByKeyAsync(int key)
         {
-
             return null;
-
         }
 
         public virtual async Task<T> InsertAsync(T obj)
         {
-
             return null;
-
         }
 
         public virtual async Task<T> DeleteAsync(int id)
         {
-
             return null;
-
-
         }
 
         public virtual async Task<T> UpdateAsync(T obj)
         {
-
             return null;
-
-
         }
 
         protected async Task<T> CommitChangesAsync()
